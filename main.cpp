@@ -16,28 +16,27 @@ void show_kitty(void);
 
 int main(void)
 {
-    int count;
-    double a,b,c,d;
-    bool is_complex;
-    union root x1,x2;
-
+    printf("Эта программа решает квадратные уравнения!\nVersion: ***\n");
     while(true)
     {
         show_separator();
         printf("Введите коэффициенты через пробел:\n");
+        double a,b,c;
+        a = b = c = 0;
 
-        count = get_coefs(&a,&b,&c);
-
-        if(!validate_coefs(a,b,c, count))
+        if(get_coefs(&a,&b,&c) != 3)
         {
+            printf("Ошибка при вводе коэффициентов");
             if(!ask_for_continue()) break;
             continue;
         }
 
-        d = discr_solver(a,b,c);
-        is_complex = quadratic_solver(a,b,d,&x1,&x2);
+        double _Complex x1,x2;
+        x1 = x2 = 0;
+        int numOfRoots = 0;
+        numOfRoots = quadratic_solver(a,b,c,&x1,&x2);
 
-        print_roots(x1,x2,is_complex);
+        print_roots(x1,x2, numOfRoots);
 
         if(!ask_for_continue()) break;
     }

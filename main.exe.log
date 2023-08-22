@@ -1,0 +1,222 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x27BC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:19:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:21:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x27BC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:19:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:21:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x2B50 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:19:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:22:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x2B50 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:19:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:22:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x37AC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:24:03, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:24:18
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x37AC (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:24:03, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 14:24:18
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
