@@ -2,7 +2,6 @@
 #include <TXlib.h>
 
 #include <stdio.h>
-#include <ctype.h>
 #include <math.h>
 #include <complex.h>
 #include <stdbool.h>
@@ -30,29 +29,6 @@ int compare_with_zero(double a)
 
 // Global functions initialization
 
-void skip_line(void)
-{
-    int ch;
-    while ( ((ch=getchar()) != '\n') && (ch != EOF) ) continue;
-}
-
-int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
-{
-    assert(a_ptr);
-    assert(b_ptr);
-    assert(c_ptr);
-
-    assert(!(a_ptr == b_ptr));
-    assert(!(a_ptr == c_ptr));
-    assert(!(b_ptr == c_ptr));
-
-    int count = scanf("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
-
-    skip_line(); // Clear buffer
-
-    return count;
-}
-
 // Returns discriminant value
 double calculate_discriminant(const double a, const double b, const double c)
 {
@@ -78,16 +54,8 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         return false;
     }
 
-    if (a == 0) { // linear
-        if (b == 0) {
-            // 0th power equation
-        }
-    } else {
-
-    }
-
-    if ((compare_with_zero(a) == 0) && !(compare_with_zero(b) == 0) && !(compare_with_zero(c) == 0)) // Linear equation
-    {   //                                                    ^~ TODO: use not equal: !=
+    if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation
+    {
         solve_linear_equation(b,c,x1);
         *NumberOfRoots = 1;
         return true;
@@ -140,7 +108,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         *NumberOfRoots =  2;
         return true;
     }
-    return false; // TODO: instead of 1 and 0 use true and false
+    return false;
 }
 
 // Show roots on the display

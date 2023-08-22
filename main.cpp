@@ -2,7 +2,7 @@
 
 
 
-/* компилировать вместе с quad_solver.cpp и TXLib.cpp*/
+/* компилировать вместе с quad_solver.cpp и TXLib.cpp и quad_solver_interactive*/
 #define   TX_COMPILED
 #include <TXlib.h>
 
@@ -11,9 +11,8 @@
 #include <stdbool.h>
 
 #include "quad_solver.h"
+#include "quad_solver_interactive.h"
 
-bool ask_for_continue(void);
-bool ask_coefs(double *a, double *b, double *c); // TODO: better name? Maybe read
 void show_separator(void);
 void show_kitty(void);
 
@@ -23,22 +22,17 @@ int main(void)
     while(true)
     {
         double a = NAN, b = NAN, c = NAN;
-        if(!ask_coefs(&a,&b,&c))
+        show_separator();
+        if(ask_coefs(&a,&b,&c))
         {
-            if(!ask_for_continue()) break;  // TODO: think
-            continue;
+            double _Complex x1 = NAN, x2 = NAN;
+            int numOfRoots = NAN;
+
+            if(solve_quadratic_equation(a, b, c, &x1, &x2, &numOfRoots))
+            {
+                print_roots(x1, x2, numOfRoots);
+            }
         }
-
-        double _Complex x1 = NAN, x2 = NAN;
-        int numOfRoots = NAN;
-        if(!solve_quadratic_equation(a, b, c, &x1, &x2, &numOfRoots))
-        {
-            if(!ask_for_continue()) break;
-            continue;
-        }
-
-        print_roots(x1, x2, numOfRoots);
-
         if(!ask_for_continue()) break;
     }
 

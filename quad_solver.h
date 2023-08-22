@@ -1,9 +1,6 @@
 #ifndef QUAD_SOLVER_H
 #define QUAD_SOLVER_H
 
-// операция:    получения значений коэффициентов
-// постусловия: a,b,c получают введенные значения
-int read_coefs(double *a, double *b, double *c); // TODO: name read?
 
 // операция:    вычисление дискриминанта
 // постусловия: функция возвращает значение дискриминанта
@@ -21,7 +18,5 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 
 // операция:    вывод значений на экран
 void print_roots(const double _Complex x1, const double _Complex x2, int n);
-
-void skip_line(void);
 
 #endif
