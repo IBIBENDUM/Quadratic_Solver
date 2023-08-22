@@ -6,111 +6,171 @@
 #include <math.h>
 #include <complex.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #include "quad_solver.h"
 
-#define PRECISION 0.01
+// Constants initialization
 
-#define EQUALS_ZERO(X) ((fabs((X)) < PRECISION)? 1:0)
-#define LARGER_ZERO(X) ((fabs((X)) > PRECISION)? 1:0)
+const int INFINITE_ROOTS = INT_MAX;
+const int NO_ROOTS = 0;
+const double PRECISION = 0.001;
 
-int get_coefs(double * a_ptr, double * b_ptr, double *c_ptr)
+
+// Local functions initialization
+int compare_with_zero(double a);
+
+int compare_with_zero(double a)
 {
-    int count;
-    count = scanf("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
+    if (fabs(a) < PRECISION) return 0; // a == 0
+    if (a > 0) return 1;               // a > PRECISION
+    return -1;                         // a < PRECISION
+}
 
-    while (getchar() != '\n') continue; // Очистка буфера
+
+// Global functions initialization
+
+void skip_line(void)
+{
+    int ch;
+    while ( ((ch=getchar()) != '\n') && (ch != EOF) ) continue;
+}
+
+int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
+{
+    assert(a_ptr);
+    assert(b_ptr);
+    assert(c_ptr);
+
+    assert(!(a_ptr == b_ptr));
+    assert(!(a_ptr == c_ptr));
+    assert(!(b_ptr == c_ptr));
+
+    int count = scanf("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
+
+    skip_line(); // Clear buffer
 
     return count;
 }
 
-// Возвращает значение дискриминанта
-double discr_solver(const double a, const double b, const double c)
+// Returns discriminant value
+double calculate_discriminant(const double a, const double b, const double c)
 {
     return (b*b - 4*a*c);
 }
 
-void linear_solver(const double b, const double c, double _Complex *x1)
+void solve_linear_equation(const double b, const double c, double _Complex *x1)
 {
+    assert(x1);
     *x1 = -b/c;
 }
 
 
-// Возвращает количество корней
-int quadratic_solver(const double a,const double b,const double c,double _Complex *x1,double _Complex *x2)
+// Returns the number of roots
+bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *NumberOfRoots)
 {
-    if(EQUALS_ZERO(a)) // Линейное уравнение
+    assert(x1);
+    assert(x2);
+
+    if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
     {
-        linear_solver(b,c,x1);
-        return 1;
+        printf("Некорректный коэффициент\n");
+        return false;
     }
 
-    if(!EQUALS_ZERO(a) && EQUALS_ZERO(b) && EQUALS_ZERO(c)) // Линейное уравнение
+    if (a == 0) { // linear
+        if (b == 0) {
+            // 0th power equation
+        }
+    } else {
+
+    }
+
+    if ((compare_with_zero(a) == 0) && !(compare_with_zero(b) == 0) && !(compare_with_zero(c) == 0)) // Linear equation
+    {   //                                                    ^~ TODO: use not equal: !=
+        solve_linear_equation(b,c,x1);
+        *NumberOfRoots = 1;
+        return true;
+    }
+
+    if (compare_with_zero(a) != 0 && (compare_with_zero(b) == 0) && (compare_with_zero(c) == 0)) // Linear equation with root = 0
     {
         *x1 = 0;
-        return 1;
+        *NumberOfRoots = 1;
+        return true;
     }
 
-    if(EQUALS_ZERO(a) && EQUALS_ZERO(b) && EQUALS_ZERO(c)) // Корень принадлежит R
+    if (compare_with_zero(a) == 0 && compare_with_zero(b) == 0)
     {
-        return -1;
+        if (compare_with_zero(c) == 0)
+        {
+            *NumberOfRoots = INFINITE_ROOTS;                // Root is any number
+            return true;
+        }
+        else
+        {
+            *NumberOfRoots = NO_ROOTS;
+            return true;                                        // No roots
+        }
     }
 
-    if((EQUALS_ZERO(a) && EQUALS_ZERO(b) && !EQUALS_ZERO(c))) // Нет корней
-    {
-        return 0;
-    }
-
-    double d = 0;
-    d = discr_solver(a,b,c);
+    double d = calculate_discriminant(a,b,c);
 
     const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
 
-    const double x_const = -b/(a*2.0);
-    *x1 = *x2 = x_const;
+    *x1 = *x2 = -b/(a*2.0);
 
-    if (LARGER_ZERO(d))
+    if (compare_with_zero(d) > 0) // D > 0
     {
 
         *x1 -= d_sqrt_half;
         *x2 += d_sqrt_half;
-        return 2;
+        *NumberOfRoots = 2;
+        return true;
     }
-    else if (EQUALS_ZERO(d))
+    else if (compare_with_zero(d) == 0) // D == 0
     {
-        *x1 = 0;
-        return 1;
+        *NumberOfRoots = 1;
+        return true;
     }
-    else
+    else                               // D < 0
     {
         *x1 -= I*d_sqrt_half;
         *x2 += I*d_sqrt_half;
-        return 2;
+        *NumberOfRoots =  2;
+        return true;
     }
+    return false; // TODO: instead of 1 and 0 use true and false
 }
 
-// Выводит значения корней на экран
+// Show roots on the display
 void print_roots(const double _Complex x1, const double _Complex x2, int n)
 {
     switch(n)
     {
-        case -1: printf("X принадлежит R");
-                 break;
+        case INFINITE_ROOTS: {
+            printf("X принадлежит R\n");
+            break;
+        }
 
-        case 0: printf("Нет корней");
-                break;
+        case NO_ROOTS: {
+            printf("Нет корней\n");
+            break;
+        }
 
-        case 1: printf("x = %.2lf",creal(x1));
-                break;
+        case 1: {
+            printf("x = %.2lf\n",creal(x1));
+            break;
+        }
 
-        case 2: if(EQUALS_ZERO(cimag(x1))) // Если мнимая часть равна нулю, выводить только действительную
-                    printf("x1 = %.2lf, x2 = %.2lf", creal(x1), creal(x2));
-                else
-                    printf("x1 = %.2lf%+.2lfi, x2 = %.2lf%+.2lfi\n",creal(x1), cimag(x1), creal(x2),cimag(x2));
-                break;
+        case 2: {
+            if(compare_with_zero(cimag(x1)) == 0) // If imaginary part = 0 print only real part
+                printf("x1 = %.2lf, x2 = %.2lf\n", creal(x1), creal(x2));
+            else
+                printf("x1 = %.2lf%+.2lfi, x2 = %.2lf%+.2lfi\n",creal(x1), cimag(x1), creal(x2),cimag(x2));
+            break;
+        }
 
         default: break;
     }
-
-
 }

@@ -220,3 +220,110 @@ Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
 Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x3CE0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:34:01, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 15:25:39
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (8, 0x00): SIGFPE: Грубая ошибка в вычислениях. 
+
+Недопустимая операция с плавающей точкой.
+
+#1: Исключение EXCEPTION_FLT_INVALID_OPERATION (0xC0000090) при выполнении кода по адресу 0x004016D1 в функции linear_solver() в модуле D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F42F4 (32-bit), Flags: Cmdre0, Thread: 0x3CE0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004016D1 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: linear_solver()
+# 1 0x00401733 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: quadratic_solver()
+# 2 0x004014B2 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 14:34:01, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 15:25:39
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe, файл: quad_solver.cpp, строка: 40, функция: int get_coefs(double*, double*, double*),
+
+Сообщение: ВНЕЗАПНО: Логическая ошибка: Неверно, что "a_ptr == b_ptr".
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x47F0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00401851 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: get_coefs()
+# 1 0x0040156A in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: request_coefs()
+# 2 0x00401424 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: main()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 22 2023 17:09:28, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 22 2023 17:09:41
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------

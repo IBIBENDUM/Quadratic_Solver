@@ -1,0 +1,4 @@
+#ifndef QUAD_SOLVER_INTERACTIVE_H
+#define QUAD_SOLVER_INTERACTIVE_H
+
+#endif
