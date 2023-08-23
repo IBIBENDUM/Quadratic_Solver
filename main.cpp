@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "quad_solver.h"
 #include "quad_solver_interactive.h"
@@ -13,24 +14,35 @@
 void show_separator();
 void show_kitty();
 
-int main(void)
+int main(int argc, char **argv)
 {
+    (void)argc;
+
     printf("Эта программа решает квадратные уравнения!\nVersion: 1.2\n");
     while(true)
     {
-        double a = NAN, b = NAN, c = NAN;
         show_separator();
-        if(ask_coefs(&a,&b,&c))
-        {
-            double _Complex x1 = NAN, x2 = NAN;
-            int numOfRoots = NAN;
+        double a = NAN, b = NAN, c = NAN;
 
-            if(solve_quadratic_equation(a, b, c, &x1, &x2, &numOfRoots))
-            {
-                print_roots(x1, x2, numOfRoots);
-            }
+        if (!strcmp(argv[1],"--test"))
+        {
+            test_all_equations();
+            break;
         }
-        if(!ask_for_continue()) break;
+        else
+        {
+            if(ask_coefs(&a,&b,&c))
+            {
+                double _Complex x1 = NAN, x2 = NAN;
+                int num_of_roots = NAN;
+
+                if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
+                {
+                    print_roots(x1, x2, num_of_roots);
+                }
+            }
+            if(!ask_for_continue()) break;
+        }
     }
 
     show_separator();
@@ -39,6 +51,7 @@ int main(void)
 
     return 0;
 }
+
 
 void show_separator(void)
 {

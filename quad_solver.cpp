@@ -17,17 +17,75 @@ const double PRECISION = 0.001;
 
 
 // Local functions initialization
-int compare_with_zero(double a);
+static int compare_with_zero(double a);
 
-int compare_with_zero(double a)
+static int compare_with_zero(double a)
 {
     if (fabs(a) < PRECISION) return 0; // a == 0
-    if (a > 0) return 1;               // a > PRECISION
+    if (a > 0.0) return 1;               // a > PRECISION
     return -1;                         // a < PRECISION
+}
+
+static int compare_complex_doubles(double _Complex a, double _Complex b);
+
+static int compare_complex_doubles(double _Complex a, double _Complex b)
+{
+    if (cabs(a-b) < PRECISION) return 0; // a == b
+    if (cabs(a-b) > 0.0) return 1;               // a > b
+    return -1;                         // a < b
+}
+
+static void swap_complex(double _Complex *a, double _Complex *b);
+
+static void swap_complex(double _Complex *a, double _Complex *b)
+{
+    if(compare_complex_doubles(*a, *b) > 0) // If a > b swap it
+    {
+        double _Complex temp = NAN;
+        temp = *a;
+        *a = *b;
+        *b = temp;
+    }
+
 }
 
 
 // Global functions initialization
+
+
+int test_all_equations()
+{
+    int number_of_success = 0;
+    number_of_success += test_one_equation(1, 1,-7,12,3,4,2);
+    return number_of_success;
+}
+
+int test_one_equation(int num_of_test, double a, double b, double c, double _Complex x1_ref, double _Complex x2_ref, int num_of_roots_ref)
+{
+    double _Complex x1 = NAN, x2 = NAN;
+    int num_of_roots = NAN;
+
+    solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots);
+
+    swap_complex(&x1,&x2);
+    swap_complex(&x1_ref,&x2_ref);
+
+    if (num_of_roots == num_of_roots_ref)
+    {
+        if(compare_complex_doubles(x1, x1_ref) == 0 || compare_complex_doubles(x2, x2_ref) == 0)
+        {
+            printf("TEST ¹%d: OK\n", num_of_test);
+            return 1;
+        }
+    }
+
+    printf("TEST ¹%d FAILED: x1 = %lf, x2 = %lf, num_of_roots = %d\n"
+           "      EXPECTED: x1_ref = %lf, x2_ref = %lf, num_of_roots_ref = %d\n",\
+         num_of_test, creal(x1), creal(x2), num_of_roots, creal(x1_ref), creal(x2_ref), num_of_roots_ref);
+    return 0;
+
+}
+
 
 // Returns discriminant value
 double calculate_discriminant(const double a, const double b, const double c)
