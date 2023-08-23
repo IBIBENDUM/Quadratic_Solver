@@ -112,9 +112,9 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 }
 
 // Show roots on the display
-void print_roots(const double _Complex x1, const double _Complex x2, int n)
+void print_roots(const double _Complex x1, const double _Complex x2, const int NumberOfRoots)
 {
-    switch(n)
+    switch(NumberOfRoots)
     {
         case INFINITE_ROOTS: {
             printf("X принадлежит R\n");

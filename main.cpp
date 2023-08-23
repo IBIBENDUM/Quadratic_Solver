@@ -1,6 +1,3 @@
-//@
-
-
 
 /* компилировать вместе с quad_solver.cpp и TXLib.cpp и quad_solver_interactive*/
 #define   TX_COMPILED
@@ -18,7 +15,7 @@ void show_kitty(void);
 
 int main(void)
 {
-    printf("Эта программа решает квадратные уравнения!\nVersion: ***\n");
+    printf("Эта программа решает квадратные уравнения!\nVersion: 1.2\n");
     while(true)
     {
         double a = NAN, b = NAN, c = NAN;

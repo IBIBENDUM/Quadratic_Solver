@@ -11,9 +11,7 @@
 
 bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
-    assert(a_ptr != b_ptr);
-    assert(a_ptr != c_ptr);
-    assert(b_ptr != c_ptr);
+
     printf("Введите коэффициенты через пробел:\n");
 
     if(read_coefs(a_ptr, b_ptr, c_ptr) != 3)
@@ -24,7 +22,7 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
     return true;
 
 }
-bool ask_for_continue(void)
+bool ask_for_continue()
 {
     int ch;
 
@@ -39,7 +37,7 @@ bool ask_for_continue(void)
 }
 
 
-void skip_line(void)
+void skip_line()
 {
     int ch;
     while ( ((ch=getchar()) != '\n') && (ch != EOF) ) continue;
