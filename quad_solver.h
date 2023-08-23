@@ -1,6 +1,13 @@
 #ifndef QUAD_SOLVER_H
 #define QUAD_SOLVER_H
 
+#include <limits.h>
+
+const int INFINITE_ROOTS = -1;
+const int NO_ROOTS = 0;
+const double PRECISION = 0.001;
+
+
 /// Calculate discriminant
 ///
 /// Formula: *D = b*b-4*a*c*
@@ -43,8 +50,5 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 ///@param x1, x2 Roots of equation
 ///@param NumberOfRoots Number of roots
 void print_roots(const double _Complex x1, const double _Complex x2, const int NumberOfRoots);
-
-int test_all_equations();
-int test_one_equation(int num_of_test, double a, double b, double c, double _Complex x1_ref, double _Complex x2_ref, int num_of_roots_ref);
 
 #endif

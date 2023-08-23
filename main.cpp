@@ -10,23 +10,22 @@
 
 #include "quad_solver.h"
 #include "quad_solver_interactive.h"
+#include "quadratka_test.h"
 
 void show_separator();
 void show_kitty();
 
 int main(int argc, char **argv)
 {
-    (void)argc;
-
     printf("Эта программа решает квадратные уравнения!\nVersion: 1.2\n");
     while(true)
     {
         show_separator();
         double a = NAN, b = NAN, c = NAN;
 
-        if (!strcmp(argv[1],"--test"))
+        if (!strcmp(argv[1],"--test") && argc == 3)
         {
-            test_all_equations();
+            test_all_equations(argv[2]);
             break;
         }
         else
