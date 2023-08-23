@@ -10,8 +10,8 @@
 #include "quad_solver.h"
 #include "quad_solver_interactive.h"
 
-void show_separator(void);
-void show_kitty(void);
+void show_separator();
+void show_kitty();
 
 int main(void)
 {
