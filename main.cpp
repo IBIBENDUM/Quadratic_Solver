@@ -1,4 +1,3 @@
-
 /* компилировать вместе с quad_solver.cpp и TXLib.cpp и quad_solver_interactive*/
 #define   TX_COMPILED
 #include <TXlib.h>
@@ -40,6 +39,7 @@ int main(int argc, char **argv)
                     print_roots(x1, x2, num_of_roots);
                 }
             }
+
             if(!ask_for_continue()) break;
         }
 

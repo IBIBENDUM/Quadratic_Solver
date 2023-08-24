@@ -8,12 +8,9 @@
 
 #include "quad_solver.h"
 
+static bool check_specific_cases (const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-// Constants initialization
-
-static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
-
-int compare_with_zero(double a)
+int compare_with_zero (double a)
 {
     if (fabs(a) < PRECISION) return 0; // a == 0
     if (a > 0.0) return 1;               // a > PRECISION
@@ -21,16 +18,16 @@ int compare_with_zero(double a)
 }
 
 
+
 // Global functions initialization
 
-
 // Returns discriminant value
-double calculate_discriminant(const double a, const double b, const double c)
+double calculate_discriminant (const double a, const double b, const double c)
 {
     return (b*b - 4*a*c);
 }
 
-void solve_linear_equation(const double b, const double c, double _Complex *x1)
+void solve_linear_equation (const double b, const double c, double _Complex *x1)
 {
     assert(x1);
     *x1 = -b/c;
@@ -84,12 +81,10 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
     assert(x2);
 
     if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
-    {
-        printf("Некорректный коэффициент\n");
         return false;
-    }
 
-    if(check_specific_cases(a, b, c, x1, x2, num_of_roots)) return true;
+    if(check_specific_cases(a, b, c, x1, x2, num_of_roots))
+        return true;
 
     double d = calculate_discriminant(a,b,c);
 
@@ -136,12 +131,12 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
             break;
         }
 
-        case 1: {
+        case ONE_ROOT: {
             printf("x = %.2lf\n",creal(x1));
             break;
         }
 
-        case 2: {
+        case TWO_ROOTS: {
             if(compare_with_zero(cimag(x1)) == 0) // If imaginary part = 0 print only real part
                 printf("x1 = %.2lf, x2 = %.2lf\n", creal(x1), creal(x2));
             else

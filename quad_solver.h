@@ -3,9 +3,7 @@
 
 #include <limits.h>
 
-//const int INFINITE_ROOTS = -1;
-//const int NO_ROOTS = 0;
-const double PRECISION = 0.001;
+const double PRECISION = 0.0000001;
 
 enum roots_number_enum
 {
@@ -15,7 +13,7 @@ enum roots_number_enum
     INFINITE_ROOTS = -1
 };
 
-int compare_with_zero(double a);
+int compare_with_zero (double a);
 
 /// Calculate discriminant
 ///
@@ -33,7 +31,7 @@ double calculate_discriminant(const double a, const double b, const double c);
 /// @attention If equation is linear, x1 gets root value, x2 doesn't change
 /// @warning If a, b, c are infinite or NaN it will display error
 /// @see solve_linear_equation()
-bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *NumberOfRoots);
+bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
 /// Calculate root of linear equation
 ///
@@ -58,6 +56,6 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 /// ~~~~~~~~~~~~~~~~~~~~~~~~
 ///@param x1, x2 Roots of equation
 ///@param NumberOfRoots Number of roots
-void print_roots(const double _Complex x1, const double _Complex x2, const int NumberOfRoots);
+void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots);
 
 #endif
