@@ -12,8 +12,6 @@ static double calculate_discriminant(const double a, const double b, const doubl
 
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-static char* complex_number_to_str(_Complex double a);
-
 // Global functions initialization
 
 // Returns discriminant value
@@ -113,22 +111,6 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
     *x2 += I*d_sqrt_half;
     *num_of_roots =  TWO_ROOTS;
     return true;
-}
-
-char* complex_number_to_str(_Complex double a)
-{
-    char *complex_string = (char *) malloc(11 * sizeof(char));
-
-    if (compare_with_zero(cimag(a)) != 0 && compare_with_zero(cimag(a)) != 0)
-        sprintf(complex_string, "%.2lf%+.2lfi", creal(a), cimag(a));
-
-    else if (compare_with_zero(cimag(a)) != 0 && compare_with_zero(cimag(a)) == 0)
-        sprintf(complex_string, "%.2lf", creal(a));
-
-    else if (compare_with_zero(cimag(a)) == 0 && compare_with_zero(cimag(a)) != 0)
-        sprintf(complex_string, "%+.2lfi", cimag(a));
-
-    return complex_string;
 }
 
 // Show roots on the display

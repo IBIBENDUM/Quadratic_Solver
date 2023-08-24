@@ -1,1 +1,1 @@
-1 1 1 1 NAN NAN NAN 1
+1 1 1 1 NAN 1 1 1

@@ -14,5 +14,6 @@ void sort_complex_by_ascending(double _Complex *a, double _Complex *b);
 
 int get_expected_args_amount(const char *format);
 
+char* complex_number_to_str(_Complex double a);
 
 #endif

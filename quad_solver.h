@@ -45,4 +45,5 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 ///@param NumberOfRoots Number of roots
 void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots);
 
+
 #endif
