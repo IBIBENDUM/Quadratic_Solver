@@ -405,3 +405,237 @@ Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
 Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
 
 --------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x2A14 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:28:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x2A14 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:28:59
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x3B7C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:30:03
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x3B7C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:30:03
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x3A98 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:37:48
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x7544DE70 в функции strcmp(). Попытка прочесть данные по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400], Instance: 0x004F52F4 (32-bit), Flags: Cmdre0, Thread: 0x3A98 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x7544DE70 in C:\Windows\System32\msvcrt.dll: strcmp()
+# 1 0x0040127D in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: __mingw_CRTStartup()
+# 2 0x004012A5 in D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe: mainCRTStartup()
+# 3 0x7761B79B in C:\Windows\SYSTEM32\ntdll.dll: RtlInitializeExceptionChain()
+# 4 0x7761B71F in C:\Windows\SYSTEM32\ntdll.dll: RtlClearBits()
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 172, Date: 2023-08-12 11:12:24 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\TX\TXLib.h
+Compiled:	Aug 23 2023 21:57:22, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Aug 24 2023 02:37:48
+
+Run file:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver\main.exe
+Directory:	D:\Ucheba\C_Progs\Summer_School\Quadratic_Solver
+
+--------------------------------------------------

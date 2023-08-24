@@ -10,11 +10,9 @@
 
 // Constants initialization
 
+static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-// Local functions initialization
-static int compare_with_zero(double a);
-
-static int compare_with_zero(double a)
+int compare_with_zero(double a)
 {
     if (fabs(a) < PRECISION) return 0; // a == 0
     if (a > 0.0) return 1;               // a > PRECISION
@@ -37,9 +35,49 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1)
     *x1 = -b/c;
 }
 
+static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
+{
+    if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation
+    {
+        solve_linear_equation(b,c,x1);
+        *x2 = NAN;
+        *num_of_roots = 1;
+        return true;
+    }
+
+    if (compare_with_zero(a) != 0 && (compare_with_zero(b) == 0) && (compare_with_zero(c) == 0)) // Linear equation with root = 0
+    {
+        *x1 = 0;
+        *x2 = NAN;
+        *num_of_roots = 1;
+        return true;
+    }
+
+    if (compare_with_zero(a) == 0 && compare_with_zero(b) == 0)
+    {
+        if (compare_with_zero(c) == 0)
+        {
+            *x1 = NAN;
+            *x2 = NAN;
+            *num_of_roots = INFINITE_ROOTS;                // Root is any number
+            return true;
+        }
+        else
+        {
+            *x1 = NAN;
+            *x2 = NAN;
+            *num_of_roots = NO_ROOTS;
+            return true;                                        // No roots
+        }
+    }
+
+    return false;
+
+}
+
 
 // Returns the number of roots
-bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *NumberOfRoots)
+bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
     assert(x1);
     assert(x2);
@@ -50,39 +88,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         return false;
     }
 
-    if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation
-    {
-        solve_linear_equation(b,c,x1);
-        *x2 = NAN;
-        *NumberOfRoots = 1;
-        return true;
-    }
-
-    if (compare_with_zero(a) != 0 && (compare_with_zero(b) == 0) && (compare_with_zero(c) == 0)) // Linear equation with root = 0
-    {
-        *x1 = 0;
-        *x2 = NAN;
-        *NumberOfRoots = 1;
-        return true;
-    }
-
-    if (compare_with_zero(a) == 0 && compare_with_zero(b) == 0)
-    {
-        if (compare_with_zero(c) == 0)
-        {
-            *x1 = NAN;
-            *x2 = NAN;
-            *NumberOfRoots = INFINITE_ROOTS;                // Root is any number
-            return true;
-        }
-        else
-        {
-            *x1 = NAN;
-            *x2 = NAN;
-            *NumberOfRoots = NO_ROOTS;
-            return true;                                        // No roots
-        }
-    }
+    if(check_specific_cases(a, b, c, x1, x2, num_of_roots)) return true;
 
     double d = calculate_discriminant(a,b,c);
 
@@ -95,29 +101,29 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
         *x1 -= d_sqrt_half;
         *x2 += d_sqrt_half;
-        *NumberOfRoots = 2;
+        *num_of_roots = 2;
         return true;
     }
     else if (compare_with_zero(d) == 0) // D == 0
     {
         *x2 = NAN;
-        *NumberOfRoots = 1;
+        *num_of_roots = 1;
         return true;
     }
     else                               // D < 0
     {
         *x1 -= I*d_sqrt_half;
         *x2 += I*d_sqrt_half;
-        *NumberOfRoots =  2;
+        *num_of_roots =  2;
         return true;
     }
     return false;
 }
 
 // Show roots on the display
-void print_roots(const double _Complex x1, const double _Complex x2, const int NumberOfRoots)
+void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots)
 {
-    switch(NumberOfRoots)
+    switch(num_of_roots)
     {
         case INFINITE_ROOTS: {
             printf("X belongs to R\n");

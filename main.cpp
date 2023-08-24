@@ -23,7 +23,7 @@ int main(int argc, char **argv)
         show_separator();
         double a = NAN, b = NAN, c = NAN;
 
-        if (!strcmp(argv[1],"--test") && argc == 3)
+        if (argc == 3 && !strcmp(argv[1],"--test"))
         {
             test_all_equations(argv[2]);
             break;
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
             if(ask_coefs(&a,&b,&c))
             {
                 double _Complex x1 = NAN, x2 = NAN;
-                int num_of_roots = NAN;
+                int num_of_roots = 0;
 
                 if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
                 {
@@ -42,6 +42,7 @@ int main(int argc, char **argv)
             }
             if(!ask_for_continue()) break;
         }
+
     }
 
     show_separator();

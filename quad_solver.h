@@ -8,6 +8,8 @@ const int NO_ROOTS = 0;
 const double PRECISION = 0.001;
 
 
+int compare_with_zero(double a);
+
 /// Calculate discriminant
 ///
 /// Formula: *D = b*b-4*a*c*

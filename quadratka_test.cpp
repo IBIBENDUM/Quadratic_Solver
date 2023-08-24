@@ -7,6 +7,20 @@
 #include "quadratka_test.h"
 #include "quad_solver.h"
 
+static int compare_complex_doubles(double _Complex a, double _Complex b);
+
+static void sort_complex_by_ascending(double _Complex *a, double _Complex *b);
+
+static int get_file_size(FILE *file_ptr);
+
+static int count_lines(FILE *file_ptr);
+
+static int complex_isnan(_Complex double x)
+{
+//    return x!=x;
+    return (std::isnan(creal(x)) && std::isnan(cimag(x)));
+}
+
 static int compare_complex_doubles(double _Complex a, double _Complex b)
 {
     if (cabs(a-b) < PRECISION) return 0; // a == b
@@ -14,7 +28,7 @@ static int compare_complex_doubles(double _Complex a, double _Complex b)
     return -1;                         // a < b
 }
 
-static void swap_complex(double _Complex *a, double _Complex *b)
+static void sort_complex_by_ascending(double _Complex *a, double _Complex *b)
 {
     if(compare_complex_doubles(*a, *b) > 0) // If a > b swap it
     {
@@ -26,7 +40,6 @@ static void swap_complex(double _Complex *a, double _Complex *b)
 }
 
 struct test_values_data {
-    int num_of_test;
     double a;
     double b;
     double c;
@@ -35,25 +48,33 @@ struct test_values_data {
     int num_of_roots_ref;
 };
 
-int count_lines(FILE *file_ptr)
+static int get_file_size(FILE *file_ptr)
 {
-    assert(file_ptr);   // почитать про file_stat для размера файла
-                        // можно сразу же прочитать файл в буфер и потом в нем символы \n считать
-    int lines = 0;
-    int ch = 0;
+    int prev_pos = ftell(file_ptr);
+    fseek(file_ptr, 0, SEEK_END);
+    int size = ftell(file_ptr);
+    fseek(file_ptr, prev_pos, SEEK_SET);
 
-    while(true)
-    {
-        ch = fgetc(file_ptr);
-        if(ch == '\n')
-            lines++;
-        if(ch == EOF)
-        {
-            lines++;
-            break;
-        }
-    }
+    return size;
+}
+
+static int count_lines(FILE *file_ptr)
+{
+    assert(file_ptr);
+
+    int n = get_file_size(file_ptr)/(int)sizeof(char);
+    char symbols[n];
+
     fseek(file_ptr, 0, SEEK_SET);
+
+    fread(symbols, sizeof(float), n, file_ptr);
+
+    int lines = 0;
+    for(int i = 0; i < n; i++)
+    {
+        if(symbols[i] == '\n')
+            lines++;
+    }
     return lines;
 }
 
@@ -61,9 +82,8 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 {
     assert(file_ptr);
     double x1_real = NAN, x1_imag = NAN, x2_real = NAN, x2_imag = NAN;
-    ///
-    if (fscanf(file_ptr, "%d %lf %lf %lf %lf %lf %lf %lf %d",
-    &test_values->num_of_test,
+    int aboba = 0;
+    if ((aboba = fscanf(file_ptr, "%lf %lf %lf %lf %lf %lf %lf %d",
     &test_values->a,
     &test_values->b,
     &test_values->c,
@@ -71,9 +91,10 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
     &x1_imag,
     &x2_real,
     &x2_imag,
-    &test_values->num_of_roots_ref) != 9)
-//        return 0;
-
+    &test_values->num_of_roots_ref)) != 8)
+    {
+        return 0;
+    }
     test_values->x1_ref = x1_real + x1_imag*I;
     test_values->x2_ref = x2_real + x2_imag*I;
     return 1;
@@ -87,7 +108,6 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 
 void test_all_equations(const char *filename)
 {
-    // TODO: Make cases with 1 root work correctly
     int number_of_success = 0, number_of_failed = 0;
     FILE *file_ptr = NULL;
 
@@ -97,12 +117,16 @@ void test_all_equations(const char *filename)
     int n = count_lines(file_ptr);
     struct test_values_data test_values;
 
+    fseek(file_ptr, 0, SEEK_SET);
+
+    int test_number = 0;
 
     for (int i = 0; i < n; i++)
     {
         if (!read_reference_values(&test_values, file_ptr))
             continue;
-        TEST_EQUATION(test_values.num_of_test,
+        test_number++;
+        TEST_EQUATION(test_number,
                       test_values.a,
                       test_values.b,
                       test_values.c,
@@ -123,24 +147,89 @@ int test_one_equation(int num_of_test, double a, double b, double c, double _Com
 
     solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots);
 
-    swap_complex(&x1,&x2);
-    swap_complex(&x1_ref,&x2_ref);
+    sort_complex_by_ascending(&x1_ref,&x2_ref);
 
-    /// TODO: Make NAN cases work correctly
     if (num_of_roots == num_of_roots_ref)
     {
-        if(compare_complex_doubles(x1, x1_ref) == 0 && compare_complex_doubles(x2, x2_ref) == 0)
+        switch(num_of_roots)
         {
-            printf("TEST №%d: OK\n", num_of_test);
-            return 1;
+            case INFINITE_ROOTS:
+            case NO_ROOTS:{
+                printf("TEST №%d: OK\n", num_of_test); // No need compare values because where is no values
+                return 1;
+                break;
+            }
+            case 1:{
+                if(compare_complex_doubles(x1, x1_ref) == 0) // Compare only x1 because x2 is NAN
+                {
+                    printf("TEST №%d: OK\n", num_of_test);
+                    return 1;
+                    break;
+                }
+            }
+            case 2:{
+                if(compare_complex_doubles(x1, x1_ref) == 0 && compare_complex_doubles(x2, x2_ref) == 0)
+                {
+                    printf("TEST №%d: OK\n", num_of_test);
+                    return 1;
+                    break;
+                }
+            }
+            default: break;
         }
     }
 
-    // TODO: Add imaginary value display (if imaginary is null dont print it)
-    printf("TEST №%d FAILED: x1 = %lf, x2 = %lf, num_of_roots = %d\n"
-           "      EXPECTED: x1_ref = %lf, x2_ref = %lf, num_of_roots_ref = %d\n",\
-         num_of_test, creal(x1), creal(x2), num_of_roots, creal(x1_ref), creal(x2_ref), num_of_roots_ref);
+    print_failed_values(num_of_test, x1, x2, num_of_roots);
+    print_expected_values(x1_ref, x2_ref, num_of_roots_ref);
     return 0;
+
+}
+
+void print_expected_values(_Complex double x1_ref, _Complex double x2_ref, int num_of_roots_ref)
+{
+    if (compare_with_zero(creal(x1_ref)) != 0 && compare_with_zero(cimag(x1_ref)) != 0)
+        printf("EXPECTED: x1 = %.2lf%+.2lfi, x2 = %.2lf%+.2lfi, num_of_roots_ref = %d\n",
+        creal(x1_ref), cimag(x1_ref), creal(x2_ref), cimag(x2_ref), num_of_roots_ref);
+
+    else if (compare_with_zero(creal(x1_ref)) == 0 && compare_with_zero(cimag(x1_ref)) != 0)
+        printf("EXPECTED: x1 = %+.2lfi, x2 = %+.2lfi, num_of_roots_ref = %d\n",
+        cimag(x1_ref), cimag(x2_ref), num_of_roots_ref);
+
+    else if (compare_with_zero(creal(x1_ref)) != 0 && compare_with_zero(cimag(x1_ref)) == 0)
+        printf("EXPECTED: x1 = %.2lf, x2 = %.2lf, num_of_roots_ref = %d\n",
+        creal(x1_ref), creal(x2_ref), num_of_roots_ref);
+}
+
+
+
+void print_failed_values(int num_of_test, _Complex double x1, _Complex double x2, int num_of_roots)
+{
+
+    if(complex_isnan(x1) && complex_isnan(x2))
+        printf("TEST №%d FAILED: x1 = NaN, x2 = NaN, num_of_roots = %d\n",
+               num_of_test, num_of_roots);
+
+    else if (!complex_isnan(x1) && complex_isnan(x2))
+        printf("TEST №%d FAILED: x1 = NaN, num_of_roots = %d\n",
+               num_of_test, num_of_roots);
+
+
+    else if (!complex_isnan(x1) && !complex_isnan(x2))
+    {
+        if (compare_with_zero(creal(x1)) == 0 && compare_with_zero(creal(x2)) == 0)
+            printf("TEST №%d FAILED: x1 = %+.2lfi, x2 = %+.2lfi, num_of_roots = %d\n",
+            num_of_test, cimag(x1), cimag(x2), num_of_roots);
+
+        else if (compare_with_zero(creal(x1)) != 0 && compare_with_zero(cimag(x1)) == 0 &&
+                 compare_with_zero(creal(x2)) != 0 && compare_with_zero(cimag(x2)) == 0)
+                 printf("TEST №%d FAILED: x1 = %.2lf, x2 = %.2lf, num_of_roots = %d\n",
+                 num_of_test, creal(x1), creal(x2), num_of_roots);
+
+        else if (compare_with_zero(creal(x1)) != 0 && compare_with_zero(cimag(x2)) != 0 &&
+                 compare_with_zero(cimag(x1)) != 0 && compare_with_zero(cimag(x2)) != 0)
+                 printf("TEST №%d FAILED: x1 = %.2lf%+.2lfi, x2 = %+.2lf%+.2lfi, num_of_roots = %d\n",
+                 num_of_test, creal(x1), cimag(x1), creal(x1), cimag(x2), num_of_roots);
+    }
 
 }
 
