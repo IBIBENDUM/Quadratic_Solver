@@ -1,12 +1,12 @@
 #ifndef QUAD_SOLVER_INTERACTIVE_H
 #define QUAD_SOLVER_INTERACTIVE_H
 
-/// Ask user does he want to continue
+/// Ask user if he want to continue
 /// ### Output example
 /// ~~~~~~~~~~~~~~~~~~~~~~~~.cpp
-/// Желаете продолжить? (Y для продолжения, что-то другое для выхода)
+/// Do you want to continue? (Y for continue, something else for exit)
 /// ~~~~~~~~~~~~~~~~~~~~~~~~
-///@return Return true if 'Y', false if else
+///@return Return true if 'Y', false otherwise
 bool ask_for_continue();
 
 /// Ask user for coefficients value
@@ -16,10 +16,7 @@ bool ask_for_continue();
 /// @see read_coefs()
 bool ask_coefs(double *a, double *b, double *c);
 
-/// Skip characters until end of line
-void skip_line();
-
-/// Read coefficient from standart input
+/// Read coefficient from standard input
 /// ### Input examples
 /// ~~~~~~~~~~~~~~~~~~~~~~~~.cpp
 /// 1 2 3 // correct
@@ -32,4 +29,5 @@ void skip_line();
 /// @return Return number of correct read coefficients
 /// @see ask_coeffs()
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr);
+
 #endif

@@ -1,55 +1,18 @@
-#define   TX_COMPILED
-#include <TXlib.h>
-
 #include <stdio.h>
 #include <complex.h>
+#include <assert.h>
+#include <stdlib.h>
 
 #include "quadratka_test.h"
 #include "quad_solver.h"
+#include "comparators.h"
 
-static int compare_complex_doubles (double _Complex a, double _Complex b);
 
-static void sort_complex_by_ascending (double _Complex *a, double _Complex *b);
+static int get_file_size(FILE *file_ptr);
 
-static int get_file_size (FILE *file_ptr);
+static int count_lines(FILE *file_ptr);
 
-static int count_lines (FILE *file_ptr);
-
-static int complex_isnan (_Complex double x)
-{
-    return (std::isnan(creal(x)) && std::isnan(cimag(x)));
-}
-
-static int compare_complex_doubles(double _Complex a, double _Complex b)
-{
-    if (cabs(a-b) < PRECISION) return 0; // a == b
-    if (cabs(a-b) > 0.0) return 1;               // a > b
-    return -1;                         // a < b
-}
-
-static void sort_complex_by_ascending(double _Complex *a, double _Complex *b)
-{
-    assert(a);
-    assert(b);
-    if(compare_complex_doubles(*a, *b) > 0) // If a > b swap it
-    {
-        double _Complex temp = NAN;
-        temp = *a;
-        *a = *b;
-        *b = temp;
-    }
-}
-
-struct test_values_data {
-    double a;
-    double b;
-    double c;
-    double _Complex x1_ref;
-    double _Complex x2_ref;
-    int num_of_roots_ref;
-};
-
-static int get_file_size(FILE *file_ptr)
+int get_file_size(FILE *file_ptr)
 {
     assert(file_ptr);
 
@@ -62,18 +25,19 @@ static int get_file_size(FILE *file_ptr)
     return size;
 }
 
-static int count_lines(FILE *file_ptr)
+int count_lines(FILE *file_ptr)
 {
     assert(file_ptr);
 
     int n = get_file_size(file_ptr)/(int)sizeof(char);
-    char symbols[n];
+
+    char *symbols = (char *) malloc(n * sizeof(char));
 
     fseek(file_ptr, 0, SEEK_SET);
 
-    fread(symbols, sizeof(float), n, file_ptr);
+    fread(symbols, sizeof(char), n, file_ptr);
 
-    int lines = 0;
+    int lines = 1;
     for(int i = 0; i < n; i++)
     {
         if(symbols[i] == '\n')
@@ -82,36 +46,43 @@ static int count_lines(FILE *file_ptr)
     return lines;
 }
 
-bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
+bool read_complex_number(FILE *file_ptr, const char *format, _Complex double *a);
+bool read_complex_number(FILE *file_ptr, const char *format, _Complex double *a)
 {
-    assert(file_ptr);
-    double x1_real = NAN, x1_imag = NAN, x2_real = NAN, x2_imag = NAN;
-    if (fscanf(file_ptr, "%lf %lf %lf %lf %lf %lf %lf %d",
-    &test_values->a,
-    &test_values->b,
-    &test_values->c,
-    &x1_real,
-    &x1_imag,
-    &x2_real,
-    &x2_imag,
-    &test_values->num_of_roots_ref) != 8)
+    double a_real = NAN, a_imag = NAN;
+    if (fscanf(file_ptr, format, &a_real, &a_imag) != get_expected_args_amount(format))
     {
+        printf("JUI");
         return false;
     }
-    test_values->x1_ref = x1_real + x1_imag*I;
-    test_values->x2_ref = x2_real + x2_imag*I;
+
+    *a = a_real + a_imag*I;
+
     return true;
 }
 
-#define TEST_EQUATION(num_of_test, a, b, c, x1_ref, x2_ref, num_of_roots_ref)\
-    if(test_one_equation(num_of_test, a, b, c, x1_ref, x2_ref, num_of_roots_ref))\
-        number_of_success += 1;\
-    else\
-        number_of_failed += 1
+bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
+{
+    assert(file_ptr);
+    assert(test_values);
+
+    const char coeff_format[] = "%lf %lf %lf";
+    if (fscanf(file_ptr, coeff_format, &test_values->a, &test_values->b, &test_values->c) == get_expected_args_amount(coeff_format))
+    {
+        const char complex_format[] = "%lf %lf";
+        if (read_complex_number(file_ptr, complex_format, &test_values->x1_ref) && read_complex_number(file_ptr, complex_format, &test_values->x2_ref))
+        {
+            const char num_of_roots_format[] = "%d";
+            if (fscanf(file_ptr, num_of_roots_format, &test_values->num_of_roots_ref) == get_expected_args_amount(num_of_roots_format))
+                return false;
+        }
+    }
+    return true;
+}
 
 void test_all_equations(const char *filename)
 {
-    int number_of_success = 0, number_of_failed = 0;
+    int number_of_succeed = 0, number_of_failed = 0;
     FILE *file_ptr = NULL;
 
     file_ptr = fopen(filename, "r");
@@ -129,40 +100,43 @@ void test_all_equations(const char *filename)
             continue;
         test_number++;
 
-        TEST_EQUATION(test_number,
-                      test_values.a,
-                      test_values.b,
-                      test_values.c,
-                      test_values.x1_ref,
-                      test_values.x2_ref,
-                      test_values.num_of_roots_ref);
+        if(test_one_equation(test_number, &test_values))
+            number_of_succeed += 1;
+        else
+            number_of_failed += 1;
     }
 
-    printf("Success: %d Failed: %d\n", number_of_success, number_of_failed);
+    fclose(file_ptr);
+
+    printf("Succeed: %d Failed: %d\n", number_of_succeed, number_of_failed);
 }
-#undef TEST_EQUATION
 
-
-int test_one_equation(int num_of_test, double a, double b, double c, double _Complex x1_ref, double _Complex x2_ref, int num_of_roots_ref)
+int test_one_equation(int num_of_test, struct test_values_data *test_values)
 {
+    double a = test_values->a;
+    double b = test_values->b;
+    double c = test_values->c;
+    _Complex double x1_ref = test_values->x1_ref;
+    _Complex double x2_ref = test_values->x2_ref;
+    int num_of_roots_ref = test_values->num_of_roots_ref;
+
     double _Complex x1 = NAN, x2 = NAN;
     int num_of_roots = NAN;
-
     solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots);
 
-    sort_complex_by_ascending(&x1_ref,&x2_ref);
+//    sort_complex_by_ascending(&x1_ref,&x2_ref);
 
     if (num_of_roots == num_of_roots_ref)
     {
         switch(num_of_roots)
         {
-            case INFINITE_ROOTS:
+            case INFINITE_ROOTS: // TODO: Why you repeat 3 times TEST OK?
             case NO_ROOTS:{
                 printf("TEST ¹%d: OK\n", num_of_test); // No need compare values because where is no values
                 return 1;
                 break;
             }
-            case 1:{
+            case 1:{ // TODO: dealt with this cringe
                 if(compare_complex_doubles(x1, x1_ref) == 0) // Compare only x1 because x2 is NAN
                 {
                     printf("TEST ¹%d: OK\n", num_of_test);
@@ -187,6 +161,9 @@ int test_one_equation(int num_of_test, double a, double b, double c, double _Com
     return 0;
 
 }
+//Learn how to write and use makefiles.
+
+// TODO: make it better.................
 
 void print_expected_values(_Complex double x1_ref, _Complex double x2_ref, int num_of_roots_ref)
 {

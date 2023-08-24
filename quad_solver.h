@@ -1,10 +1,6 @@
 #ifndef QUAD_SOLVER_H
 #define QUAD_SOLVER_H
 
-#include <limits.h>
-
-const double PRECISION = 0.0000001;
-
 enum roots_number_enum
 {
     NO_ROOTS = 0,
@@ -13,23 +9,14 @@ enum roots_number_enum
     INFINITE_ROOTS = -1
 };
 
-int compare_with_zero (double a);
-
-/// Calculate discriminant
-///
-/// Formula: *D = b*b-4*a*c*
-/// @param a, b, c Coefficients of the square equation
-/// @return Return discriminant value
-double calculate_discriminant(const double a, const double b, const double c);
-
 /// Calculate roots of the square equation
 ///
 /// @param a, b, c Coefficients of quadratic equation (*ax^2 + bx + c = 0*)
-/// @param x1, x2 Roots of quadratic equation (*x - x1*)(*x - x2*) = *0*
+/// @param x1, x2 Roots of quadratic equation *a*(*x - x1*)(*x - x2*) = *0*
 /// @param NumberOfRoots Number of quadratic equation roots
-/// @return Return false if coefficients are incorrect
+/// @return Return false if coefficients are incorrect // TODO: no need for returns
 /// @attention If equation is linear, x1 gets root value, x2 doesn't change
-/// @warning If a, b, c are infinite or NaN it will display error
+/// @warning If a, b, c are infinite or NaN it will display error // TODO: assert doesn't "display error", it signals that function shouldn't be used like that
 /// @see solve_linear_equation()
 bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
@@ -48,8 +35,8 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 /// If roots are complex it will display like complex value
 /// ### Output examples
 /// ~~~~~~~~~~~~~~~~~~~~~~~~.cpp
-/// X принадлежит R // Output when X is any number
-/// Нет корней // Output when equation have no roots
+/// X belongs to R // Output when X is any number
+/// No roots // Output when equation have no roots
 /// x = 3.00 // Output when equation have 1 root
 /// x1 = 3.00, x2 = 4.00 // Output when equation have 2 real roots
 /// x1 = -1.00+1.41i, x2 = -1.00-1.41i // Output when equation have 2 complex roots

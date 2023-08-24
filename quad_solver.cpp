@@ -1,44 +1,48 @@
-#define   TX_COMPILED
-#include <TXlib.h>
-
 #include <stdio.h>
 #include <math.h>
 #include <complex.h>
 #include <stdbool.h>
+#include <assert.h>
+#include <stdlib.h>
 
 #include "quad_solver.h"
+#include "comparators.h"
 
-static bool check_specific_cases (const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
+static double calculate_discriminant(const double a, const double b, const double c);
 
-int compare_with_zero (double a)
-{
-    if (fabs(a) < PRECISION) return 0; // a == 0
-    if (a > 0.0) return 1;               // a > PRECISION
-    return -1;                         // a < PRECISION
-}
+static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-
+static char* complex_number_to_str(_Complex double a);
 
 // Global functions initialization
 
 // Returns discriminant value
-double calculate_discriminant (const double a, const double b, const double c)
+
+double calculate_discriminant(const double a, const double b, const double c)
 {
+    assert(std::isfinite(a));
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
     return (b*b - 4*a*c);
 }
 
-void solve_linear_equation (const double b, const double c, double _Complex *x1)
+void solve_linear_equation(const double b, const double c, double _Complex *x1)
 {
     assert(x1);
+
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
+
     *x1 = -b/c;
 }
 
-static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
+bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
+    *x1 = *x2 = NAN;
+
     if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation
     {
         solve_linear_equation(b,c,x1);
-        *x2 = NAN;
         *num_of_roots = ONE_ROOT;
         return true;
     }
@@ -46,7 +50,6 @@ static bool check_specific_cases(const double a, const double b, const double c,
     if (compare_with_zero(a) != 0 && (compare_with_zero(b) == 0) && (compare_with_zero(c) == 0)) // Linear equation with root = 0
     {
         *x1 = 0;
-        *x2 = NAN;
         *num_of_roots = ONE_ROOT;
         return true;
     }
@@ -55,15 +58,11 @@ static bool check_specific_cases(const double a, const double b, const double c,
     {
         if (compare_with_zero(c) == 0)
         {
-            *x1 = NAN;
-            *x2 = NAN;
             *num_of_roots = INFINITE_ROOTS;                // Root is any number
             return true;
         }
         else
         {
-            *x1 = NAN;
-            *x2 = NAN;
             *num_of_roots = NO_ROOTS;
             return true;                                        // No roots
         }
@@ -80,40 +79,56 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
     assert(x1);
     assert(x2);
 
-    if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
-        return false;
+    *x1 = *x2 = NAN;
 
+    if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
+    {
+        return false;
+    }
     if(check_specific_cases(a, b, c, x1, x2, num_of_roots))
         return true;
 
     double d = calculate_discriminant(a,b,c);
 
-    const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
 
     *x1 = *x2 = -b/(a*2.0);
 
+    if (compare_with_zero(d) == 0) // D == 0
+    {
+        *num_of_roots = ONE_ROOT;
+        return true;
+    }
+
+    const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
+
     if (compare_with_zero(d) > 0) // D > 0
     {
-
         *x1 -= d_sqrt_half;
         *x2 += d_sqrt_half;
         *num_of_roots = TWO_ROOTS;
         return true;
     }
-    else if (compare_with_zero(d) == 0) // D == 0
-    {
-        *x2 = NAN;
-        *num_of_roots = ONE_ROOT;
-        return true;
-    }
-    else                               // D < 0
-    {
-        *x1 -= I*d_sqrt_half;
-        *x2 += I*d_sqrt_half;
-        *num_of_roots =  TWO_ROOTS;
-        return true;
-    }
-    return false;
+
+    *x1 -= I*d_sqrt_half;        // D < 0
+    *x2 += I*d_sqrt_half;
+    *num_of_roots =  TWO_ROOTS;
+    return true;
+}
+
+char* complex_number_to_str(_Complex double a)
+{
+    char *complex_string = (char *) malloc(11 * sizeof(char));
+
+    if (compare_with_zero(cimag(a)) != 0 && compare_with_zero(cimag(a)) != 0)
+        sprintf(complex_string, "%.2lf%+.2lfi", creal(a), cimag(a));
+
+    else if (compare_with_zero(cimag(a)) != 0 && compare_with_zero(cimag(a)) == 0)
+        sprintf(complex_string, "%.2lf", creal(a));
+
+    else if (compare_with_zero(cimag(a)) == 0 && compare_with_zero(cimag(a)) != 0)
+        sprintf(complex_string, "%+.2lfi", cimag(a));
+
+    return complex_string;
 }
 
 // Show roots on the display
@@ -132,15 +147,13 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
         }
 
         case ONE_ROOT: {
-            printf("x = %.2lf\n",creal(x1));
+            printf("x = %s\n", complex_number_to_str(x1));
             break;
         }
 
         case TWO_ROOTS: {
-            if(compare_with_zero(cimag(x1)) == 0) // If imaginary part = 0 print only real part
-                printf("x1 = %.2lf, x2 = %.2lf\n", creal(x1), creal(x2));
-            else
-                printf("x1 = %.2lf%+.2lfi, x2 = %.2lf%+.2lfi\n",creal(x1), cimag(x1), creal(x2),cimag(x2));
+
+            printf("x1 = %s x2 = %s\n", complex_number_to_str(x1), complex_number_to_str(x2));
             break;
         }
 

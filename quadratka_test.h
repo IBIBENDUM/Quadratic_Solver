@@ -1,9 +1,18 @@
 #ifndef QUADRATKA_TEST_H
 #define QUADRATKA_TEST_H
 
+struct test_values_data {
+    double a;
+    double b;
+    double c;
+    double _Complex x1_ref;
+    double _Complex x2_ref;
+    int num_of_roots_ref;
+};
+
 /// Read values for test from file
 ///
-/// @param *test_values Struct of test values
+/// @param *test_values Struct of test values // TODO: Why say that it's a struct?
 /// @param *file_ptr File pointer
 /// @return Return false if there are error in values reading
 bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
@@ -14,12 +23,12 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 /// @see test_one_equation()
 void test_all_equations(const char *filename);
 
-/// Test quad_solver by input values
 /// @param num_of_test Number of test
+/// Test quad_solver by input values
 /// @param a, b, c Coefficients of quadratic equation
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots Number of roots of quadratic equation
-int test_one_equation(int num_of_test, double a, double b, double c, double _Complex x1_ref, double _Complex x2_ref, int num_of_roots_ref);
+int test_one_equation(int num_of_test, struct test_values_data *test_values);  // TODO: make a struct representing a test
 
 /// Print expected values
 /// ### Example output
