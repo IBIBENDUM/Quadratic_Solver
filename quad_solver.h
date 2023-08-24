@@ -3,10 +3,17 @@
 
 #include <limits.h>
 
-const int INFINITE_ROOTS = -1;
-const int NO_ROOTS = 0;
+//const int INFINITE_ROOTS = -1;
+//const int NO_ROOTS = 0;
 const double PRECISION = 0.001;
 
+enum roots_number_enum
+{
+    NO_ROOTS = 0,
+    ONE_ROOT = 1,
+    TWO_ROOTS = 2,
+    INFINITE_ROOTS = -1
+};
 
 int compare_with_zero(double a);
 

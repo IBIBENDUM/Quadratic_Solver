@@ -8,6 +8,7 @@
 
 #include "quad_solver.h"
 
+
 // Constants initialization
 
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
@@ -41,7 +42,7 @@ static bool check_specific_cases(const double a, const double b, const double c,
     {
         solve_linear_equation(b,c,x1);
         *x2 = NAN;
-        *num_of_roots = 1;
+        *num_of_roots = ONE_ROOT;
         return true;
     }
 
@@ -49,7 +50,7 @@ static bool check_specific_cases(const double a, const double b, const double c,
     {
         *x1 = 0;
         *x2 = NAN;
-        *num_of_roots = 1;
+        *num_of_roots = ONE_ROOT;
         return true;
     }
 
@@ -101,20 +102,20 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
         *x1 -= d_sqrt_half;
         *x2 += d_sqrt_half;
-        *num_of_roots = 2;
+        *num_of_roots = TWO_ROOTS;
         return true;
     }
     else if (compare_with_zero(d) == 0) // D == 0
     {
         *x2 = NAN;
-        *num_of_roots = 1;
+        *num_of_roots = ONE_ROOT;
         return true;
     }
     else                               // D < 0
     {
         *x1 -= I*d_sqrt_half;
         *x2 += I*d_sqrt_half;
-        *num_of_roots =  2;
+        *num_of_roots =  TWO_ROOTS;
         return true;
     }
     return false;
