@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <complex.h>
-#include <assert.h>
-#include <string.h>
 #include <stdlib.h>
-
 
 #include "format_complex.h"
 #include "comparators.h"

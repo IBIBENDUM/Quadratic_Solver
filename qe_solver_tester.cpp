@@ -117,6 +117,7 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 
 void test_all_equations(const char *filename)
 {
+    assert(filename);
     FILE *file_ptr = fopen(filename, "rt");
     assert(file_ptr);
 
@@ -150,6 +151,8 @@ void test_all_equations(const char *filename)
 
 bool test_one_equation(int num_of_test, struct test_values_data *test_values)
 {
+    assert(test_values);
+
     double a = test_values->a;
     double b = test_values->b;
     double c = test_values->c;

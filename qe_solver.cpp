@@ -82,6 +82,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 {
     assert(x1);
     assert(x2);
+    assert(num_of_roots);
 
     *x1 = *x2 = NAN;
 

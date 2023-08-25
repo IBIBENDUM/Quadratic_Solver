@@ -29,6 +29,7 @@ static void skip_space_symbols()
 
 static int get_expected_args_amount(const char *format)
 {
+    assert(format);
     int expected_args_amount = 0;
     for (unsigned int i = 0; i < strlen(format); i++)
     {

@@ -3,7 +3,7 @@ CFLAGS = -c -Wall
 
 all: main
 test: tester
-main: main.o qe_solver.o qe_solver.o comparators.o format_complex.o
+main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o
 	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o -o main.exe
 
 tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o
@@ -18,7 +18,7 @@ qe_solver_tester.o: qe_solver_tester.cpp
 	$(CC) $(CFLAGS) qe_solver_tester.cpp
 qe_solver.o: qe_solver.cpp
 	$(CC) $(CFLAGS) qe_solver.cpp
-qe_interactive.o: qe_solver_interactive.cpp
+qe_solver_interactive: qe_solver_interactive.cpp
 	$(CC) $(CFLAGS) qe_solver_interactive.cpp
 comparators.o: comparators.cpp
 	$(CC) $(CFLAGS) comparators.cpp

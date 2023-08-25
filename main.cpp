@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "quad_solver.h"
-#include "quad_solver_interactive.h"
+#include "qe_solver.h"
+#include "qe_solver_interactive.h"
 #include "colors.h"
 
 static void show_separator();
@@ -60,6 +60,5 @@ static void show_kitty(void)
          :  '  |    ;       ;-.      \n\
          ; '   : :`-:     _.`* ;      \n\
       .*' /  .*' ; .*`- +'  `*'        \n\
-      `*-*   `*-*  `*-*'                \n\
-      " COLOR_RESET);
+      `*-*   `*-*  `*-*'                \n" COLOR_RESET);
 }
