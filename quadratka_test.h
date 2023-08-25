@@ -15,7 +15,7 @@ struct test_values_data {
 /// @param *test_values Struct of test values // TODO: Why say that it's a struct?
 /// @param *file_ptr File pointer
 /// @return Return false if there are error in values reading
-bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
+void read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
 
 /// Test quad_solver by file with values
 /// @param *filename Filename

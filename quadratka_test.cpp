@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <complex.h>
 #include <assert.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "quadratka_test.h"
@@ -29,9 +30,9 @@ int count_lines(FILE *file_ptr)
 {
     assert(file_ptr);
 
-    int n = get_file_size(file_ptr)/(int)sizeof(int);
+    int n = get_file_size(file_ptr)/(char)sizeof(char);
 
-    char *symbols = (char *) malloc(n * sizeof(int));
+    char *symbols = (char *) malloc(n * sizeof(char));
 
     fseek(file_ptr, 0, SEEK_SET);
 
@@ -76,23 +77,35 @@ bool read_complex_number(FILE *file_ptr, const char *format, _Complex double *a)
     return true;
 }
 
-bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
+const int MAX_LINE_LEN = 256;
+
+void read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 {
     assert(file_ptr);
     assert(test_values);
 
-    const char coeff_format[] = "%lf %lf %lf";
-    if (fscanf(file_ptr, coeff_format, &test_values->a, &test_values->b, &test_values->c) == get_expected_args_amount(coeff_format))
+    char line[MAX_LINE_LEN] = {};
+    fgets(line, MAX_LINE_LEN, file_ptr);
+
+    const int values_count = 7;
+    enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag };
+    double values[values_count] = {};
+    char *ptr = NULL;
+
+    ptr = strtok(line, " ");
+    for (int i = 0; i < values_count; i++)
     {
-        const char complex_format[] = "%lf %lf";
-        if (read_complex_number(file_ptr, complex_format, &test_values->x1_ref) && read_complex_number(file_ptr, complex_format, &test_values->x2_ref))
-        {
-            const char num_of_roots_format[] = "%d";
-            if (fscanf(file_ptr, num_of_roots_format, &test_values->num_of_roots_ref) == get_expected_args_amount(num_of_roots_format))
-                return false;
-        }
+        values[i] = (strcmp(ptr,"NAN") == 0) ? NAN : strtod(ptr, NULL);
+        ptr = strtok(NULL, " ");
     }
-    return true;
+
+    test_values->a = values[a];
+    test_values->b = values[b];
+    test_values->c = values[c];
+    test_values->x1_ref = write_complex_value(values[x1_real], values[x1_imag]);
+    test_values->x2_ref = write_complex_value(values[x2_real], values[x2_imag]);
+    test_values->num_of_roots_ref = (strcmp(ptr,"NAN") == 0) ? NAN : atoi(ptr);
+
 }
 
 void test_all_equations(const char *filename)
@@ -111,8 +124,7 @@ void test_all_equations(const char *filename)
 
     for (int i = 0, test_number = 0; i < n; i++)
     {
-        if (!read_reference_values(&test_values, file_ptr))
-            continue;
+        read_reference_values(&test_values, file_ptr);
         test_number++;
 
         if(test_one_equation(test_number, &test_values))
@@ -140,7 +152,7 @@ int test_one_equation(int num_of_test, struct test_values_data *test_values)
     int num_of_roots = NAN;
     solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots);
 
-    sort_complex_by_ascending(&x1_ref,&x2_ref);
+//    sort_complex_by_ascending(&x1_ref,&x2_ref);
 
     if (num_of_roots == num_of_roots_ref)
     {

@@ -15,7 +15,7 @@ void show_kitty();
 
 int main()
 {
-    test_all_equations("tests.bin");
+    test_all_equations("tests.txt");
     return 0;
 }
 
