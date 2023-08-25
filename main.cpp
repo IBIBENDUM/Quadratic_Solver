@@ -1,16 +1,55 @@
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
 #include "colors.h"
+#include "make_logs.h"
 
 static void show_separator();
 static void show_kitty();
 
+
 int main(int argc, char **argv)
 {
+    // .\main.exe -log error -console
+    // .\main.exe -log message -file
+    // .\main.exe -log message -file aboba.txt
+
+    if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
+    {
+        current_log_level = LOG_MESSAGE;
+
+        if (argc >= 3)
+        {
+            if (strcmp(argv[2], "disable") == 0)
+                current_log_level = LOG_DISABLED;
+
+            else if (strcmp(argv[2], "message") == 0)
+                current_log_level = LOG_MESSAGE;
+
+            else if (strcmp(argv[2], "error") == 0)
+                current_log_level = LOG_ERROR;
+            if (argc >= 4)
+            {
+                if (strcmp(argv[3], "-console") == 0)
+                    current_log_mode = TO_CONSOLE;
+
+                else if (strcmp(argv[3], "-file") == 0)
+                    current_log_mode = TO_FILE;
+
+                if (argc >= 5)
+                    strcpy(log_file_name, argv[4]);
+            }
+        }
+
+        clear_log_file();
+    }
+
     printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+    LOG("ABOBA", LOG_MESSAGE);
+
     while(true)
     {
         show_separator();
@@ -38,12 +77,12 @@ int main(int argc, char **argv)
 }
 
 
-static void show_separator(void)
+static void show_separator()
 {
     printf(COLOR_WHITE "=======================================================================\n" COLOR_RESET);
 }
 
-static void show_kitty(void)
+static void show_kitty()
 {
     printf(COLOR_PURPLE "\
        _                  \n\
