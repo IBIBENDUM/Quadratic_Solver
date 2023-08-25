@@ -43,6 +43,13 @@ void write_log(const char message[], int log_level, const char file[], const cha
     }
 }
 
+void my_assert(const char expr[], const char file[], const char func[], const int line)
+{
+    write_log(expr, LOG_ERROR, file, func, line);
+    printf("The program ended with an error");
+    exit(EXIT_FAILURE);
+}
+
 void clear_log_file()
 {
     fclose(fopen(log_file_name, "w"));

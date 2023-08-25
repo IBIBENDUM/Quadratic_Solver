@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     // .\main.exe -log message -file
     // .\main.exe -log message -file aboba.txt
 
+    // TODO: CHECK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
     if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
     {
         current_log_level = LOG_MESSAGE;

@@ -53,7 +53,7 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
 /// x2 = +2.54i
 /// x  = 1.22
 /// ~~~~~~~~~~~~~~~~~~
-char* cast_to_root_format(int n, char complex_string[]);
+char* cast_to_root_format(int n, _Complex double root);
 
 
 #endif

@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "qe_solver.h"
 #include "comparators.h"
 #include "format_complex.h"
+#include "make_logs.h"
 
 static double calculate_discriminant(const double a, const double b, const double c);
 
@@ -18,10 +20,17 @@ static bool check_specific_cases(const double a, const double b, const double c,
 // Returns discriminant value
 static double calculate_discriminant(const double a, const double b, const double c)
 {
-    assert(std::isfinite(a));
+    MY_ASSERT(!std::isfinite(a));
     assert(std::isfinite(b));
     assert(std::isfinite(c));
-    return (b*b - 4*a*c);
+
+    char str[5] = {};
+    strcpy(str,"D = ");
+
+    double d = b*b - 4*a*c;
+    LOG(strcat(str ,complex_number_to_str(d + I*0)), LOG_MESSAGE);
+
+    return d;
 }
 
 // Check for specific cases of quadratic equation

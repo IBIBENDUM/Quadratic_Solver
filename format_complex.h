@@ -1,7 +1,7 @@
 #ifndef FORMAT_COMPLEX_H
 #define FORMAT_COMPLEX_H
 
-    const int MAX_LEN = 16;
+const int MAX_LEN = 16;
 
 char* complex_number_to_str(_Complex double a);
 

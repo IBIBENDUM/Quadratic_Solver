@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "make_logs.h"
 #include "comparators.h"
 
 bool complex_isnan(_Complex double x)
