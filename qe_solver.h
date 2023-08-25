@@ -1,5 +1,5 @@
-#ifndef QUAD_SOLVER_H
-#define QUAD_SOLVER_H
+#ifndef QE_SOLVER_H
+#define QE_SOLVER_H
 
 enum roots_number_enum
 {
@@ -44,6 +44,16 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 ///@param x1, x2 Roots of equation
 ///@param NumberOfRoots Number of roots
 void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots);
+
+/// Return string in root format
+///
+/// ### Examples
+/// ~~~~~~~~~~~~~~~~~~.cpp
+/// x1 = 1.22+1.54i
+/// x2 = +2.54i
+/// x  = 1.22
+/// ~~~~~~~~~~~~~~~~~~
+char* cast_to_root_format(int n, char complex_string[]);
 
 
 #endif

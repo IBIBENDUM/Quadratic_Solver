@@ -5,18 +5,18 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "quad_solver.h"
+#include "qe_solver.h"
 #include "comparators.h"
+#include "format_complex.h"
 
 static double calculate_discriminant(const double a, const double b, const double c);
 
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-// Global functions initialization
+// Local functions initialization
 
 // Returns discriminant value
-
-double calculate_discriminant(const double a, const double b, const double c)
+static double calculate_discriminant(const double a, const double b, const double c)
 {
     assert(std::isfinite(a));
     assert(std::isfinite(b));
@@ -24,17 +24,11 @@ double calculate_discriminant(const double a, const double b, const double c)
     return (b*b - 4*a*c);
 }
 
-void solve_linear_equation(const double b, const double c, double _Complex *x1)
-{
-    assert(x1);
+// Check for specific cases of quadratic equation
+static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 
-    assert(std::isfinite(b));
-    assert(std::isfinite(c));
+// Should i check for incomplete quadratic equations? (ax^2 + c = 0) ) (ax^2 + bx = 0)
 
-    *x1 = -b/c;
-}
-
-bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
     *x1 = *x2 = NAN;
 
@@ -70,6 +64,18 @@ bool check_specific_cases(const double a, const double b, const double c, double
 
 }
 
+// Global functions initialization
+
+void solve_linear_equation(const double b, const double c, double _Complex *x1)
+{
+    assert(x1);
+
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
+
+    *x1 = -b/c;
+}
+
 
 // Returns the number of roots
 bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
@@ -79,38 +85,51 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
     *x1 = *x2 = NAN;
 
-    if(!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
+    if(std::isfinite(a) && std::isfinite(b) && std::isfinite(c)) // If number is finite move forward
     {
-        return false;
-    }
-    if(check_specific_cases(a, b, c, x1, x2, num_of_roots))
+        if(!check_specific_cases(a, b, c, x1, x2, num_of_roots))    // If it isn't specific case move forward otherwise return true
+        {
+            double d = calculate_discriminant(a,b,c);
+
+            *x1 = *x2 = -b/(a*2.0);
+
+            if (compare_with_zero(d) == 0)         // D == 0
+            {
+                *num_of_roots = ONE_ROOT;
+            }
+            else
+            {
+                const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
+
+                if (compare_with_zero(d) > 0)      // D > 0
+                {
+                    *x1 -= d_sqrt_half;
+                    *x2 += d_sqrt_half;
+                }
+                else
+                {
+                    *x1 -= I*d_sqrt_half;          // D < 0
+                    *x2 += I*d_sqrt_half;
+                }
+
+                *num_of_roots =  TWO_ROOTS;
+            }
+        }
+
         return true;
-
-    double d = calculate_discriminant(a,b,c);
-
-
-    *x1 = *x2 = -b/(a*2.0);
-
-    if (compare_with_zero(d) == 0) // D == 0
-    {
-        *num_of_roots = ONE_ROOT;
-        return true;
     }
 
-    const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
+    return false;
+}
 
-    if (compare_with_zero(d) > 0) // D > 0
-    {
-        *x1 -= d_sqrt_half;
-        *x2 += d_sqrt_half;
-        *num_of_roots = TWO_ROOTS;
-        return true;
-    }
+// Return string in root form
+char* cast_to_root_format(int n, _Complex double root)
+{
+    char *root_string = (char *) malloc(50 * sizeof(char));
 
-    *x1 -= I*d_sqrt_half;        // D < 0
-    *x2 += I*d_sqrt_half;
-    *num_of_roots =  TWO_ROOTS;
-    return true;
+    sprintf(root_string, "x%c = %s", (n == 0) ? ' ' : n + '0', complex_number_to_str(root));
+
+    return root_string;
 }
 
 // Show roots on the display
@@ -129,13 +148,13 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
         }
 
         case ONE_ROOT: {
-            printf("x = %s\n", complex_number_to_str(x1));
+            printf("%s\n", cast_to_root_format(0, x1));
             break;
         }
 
         case TWO_ROOTS: {
 
-            printf("x1 = %s x2 = %s\n", complex_number_to_str(x1), complex_number_to_str(x2));
+            printf("%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
             break;
         }
 

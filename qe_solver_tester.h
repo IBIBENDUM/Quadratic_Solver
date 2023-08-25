@@ -1,5 +1,7 @@
-#ifndef QUADRATKA_TEST_H
-#define QUADRATKA_TEST_H
+#ifndef QE_SOLVER_TESTER_H
+#define QE_SOLVER_TESTER_H
+
+const int MAX_LINE_LEN = 256;
 
 struct test_values_data {
     double a;
@@ -12,10 +14,9 @@ struct test_values_data {
 
 /// Read values for test from file
 ///
-/// @param *test_values Struct of test values // TODO: Why say that it's a struct?
+/// @param *test_values Values for test
 /// @param *file_ptr File pointer
-/// @return Return false if there are error in values reading
-void read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
+bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
 
 /// Test quad_solver by file with values
 /// @param *filename Filename
@@ -28,7 +29,9 @@ void test_all_equations(const char *filename);
 /// @param a, b, c Coefficients of quadratic equation
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots Number of roots of quadratic equation
-int test_one_equation(int num_of_test, struct test_values_data *test_values);  // TODO: make a struct representing a test
+bool test_one_equation(int num_of_test, struct test_values_data *test_values);
+
+char* cast_to_root_format(int n, char complex_string[]);
 
 /// Print expected values
 /// ### Example output

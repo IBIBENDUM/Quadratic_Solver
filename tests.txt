@@ -1,2 +1,13 @@
-1 2 3 4 5 6 7 8
-NAN 2 3 NAN 5 NAN 7 8
+// "//" Stands for comment line
+// a b c x1_real x1_imag x2_real x2_imag num_of_roots
+0 4 2 -2 0 NAN NAN 1         // Linear equation
+2 0 0 0 0 NAN NAN 1          // Linear equation with root 0
+0 0 1 NAN NAN NAN NAN 0      // No roots
+0 0 0 NAN NAN NAN NAN -1     // Root is any number
+4 20 25 -2.5 0 -2.5 NAN 1    // Two identical roots
+5 10 2 -1.77 0 -0.23 NAN 2   // D > 0
+5 10 2 -0.23 0 -1.77 NAN 2   // D > 0
+1 1 2.5 -0.5 -1.5 -0.5 1.5 2 // D < 0
+1 1 2.5 -0.5 1.5 -0.5 -1.5 2 // D < 0
+1 1 1 1 NAN NAN 1 1          // Only for demonstation
+aboba

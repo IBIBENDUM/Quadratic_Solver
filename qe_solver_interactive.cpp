@@ -4,18 +4,40 @@
 #include <assert.h>
 #include <string.h>
 
-#include "quad_solver_interactive.h"
+#include "qe_solver_interactive.h"
 #include "comparators.h"
 
 static void skip_line();
 static void skip_space_symbols();
+static int get_expected_args_amount(const char *format);
 
-void skip_line()
+static void skip_line()
 {
     int ch = 0;
     while ( ((ch=getchar()) != '\n') && (ch != EOF) )
         continue;
 }
+
+static void skip_space_symbols()
+{
+    int ch = 0;
+    while (isspace(ch = getchar()))
+        continue;
+    ungetc(ch, stdin);
+}
+
+
+static int get_expected_args_amount(const char *format)
+{
+    int expected_args_amount = 0;
+    for (unsigned int i = 0; i < strlen(format); i++)
+    {
+        if(format[i] == '%')
+            expected_args_amount++;
+    }
+    return expected_args_amount;
+}
+
 
 bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
@@ -43,15 +65,6 @@ bool ask_for_continue()
 
     return (toupper(ch) == 'Y');
 }
-
-void skip_space_symbols()
-{
-    int ch = 0;
-    while (isspace(ch = getchar()))
-        continue;
-    ungetc(ch, stdin);
-}
-
 
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {

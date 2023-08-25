@@ -1,21 +1,29 @@
 #include <stdio.h>
-#include <ctype.h>
-#include <stdbool.h>
-#include <string.h>
-#include <math.h>
 
-#include "quad_solver.h"
-#include "quadratka_test.h"
-#include "comparators.h"
-#include "quadratka_test.h"
+#include "qe_solver_tester.h"
 #include "colors.h"
 
-void show_separator();
-void show_kitty();
+#include <complex.h>
 
-int main()
+static void show_separator();
+
+int main(int argc, char **argv)
 {
-    test_all_equations("tests.txt");
+    show_separator();
+
+    if (argc != 2)
+    {
+        printf(COLOR_BLUE "HOW TO USE: " COLOR_RESET "tester.cpp <filename>");
+        return 1;
+    }
+
+    test_all_equations(argv[1]);
+    show_separator();
+
     return 0;
 }
 
+static void show_separator(void)
+{
+    printf(COLOR_WHITE "=======================================================================\n" COLOR_RESET);
+}

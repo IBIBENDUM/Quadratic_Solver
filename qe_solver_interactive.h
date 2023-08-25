@@ -1,5 +1,5 @@
-#ifndef QUAD_SOLVER_INTERACTIVE_H
-#define QUAD_SOLVER_INTERACTIVE_H
+#ifndef QE_SOLVER_INTERACTIVE_H
+#define QE_SOLVER_INTERACTIVE_H
 
 /// Ask user if he want to continue
 /// ### Output example

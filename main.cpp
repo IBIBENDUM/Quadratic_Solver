@@ -5,8 +5,8 @@
 #include "quad_solver_interactive.h"
 #include "colors.h"
 
-void show_separator();
-void show_kitty();
+static void show_separator();
+static void show_kitty();
 
 int main(int argc, char **argv)
 {
@@ -38,25 +38,24 @@ int main(int argc, char **argv)
 }
 
 
-void show_separator(void)
+static void show_separator(void)
 {
     printf(COLOR_WHITE "=======================================================================\n" COLOR_RESET);
 }
 
-void show_kitty(void)
+static void show_kitty(void)
 {
-//    printf(COLOR_PURPLE "  ^~^  ,\n ('Y') )\n /   \\/\n(\\|||/)\n" COLOR_RESET);
     printf(COLOR_PURPLE "\
-       _              \n\
-       \\`*-.               \n\
+       _                  \n\
+       \\`*-.              \n\
         )  _`-.             \n\
        .  : `. .             \n\
-       : _   '  \\             \n\
+       : _   '  \\            \n\
        ; *` _.   `*-._         \n\
        `-.-'          `-.       \n\
          ;       `       `.      \n\
          :.       .        \\     \n\
-         . \\  .   :   .-'   .      \n\
+         . \\  .   :   .-'   .     \n\
          '  `+.;  ;  '      :       \n\
          :  '  |    ;       ;-.      \n\
          ; '   : :`-:     _.`* ;      \n\
