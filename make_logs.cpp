@@ -2,12 +2,14 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
+#include <complex.h>
 
 #include "make_logs.h"
-
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_DISABLED;
 char log_file_name[] = "qe_solver.log";
+const int MAX_STR_LEN = 128;
 
 
 static char* current_time_to_str();
@@ -53,4 +55,48 @@ void my_assert(const char expr[], const char file[], const char func[], const in
 void clear_log_file()
 {
     fclose(fopen(log_file_name, "w"));
+}
+
+char* my_printf(char *format, ...)
+{
+    va_list ptr;
+    va_start(ptr, format);
+
+    const int STR_LEN = 256;
+    char *str = (char *) malloc(STR_LEN * sizeof(char));
+    unsigned int i = 0, j =0;
+
+    while (format[i])
+    {
+     // TODO: switch case
+
+
+        if (format[i] == '%')
+        {
+            i++;
+            if (format[i] == 'f') // && format[i+1] == 'f')
+            {
+                i++;
+                j += sprintf(str+j, "%.2lf", va_arg(ptr, double));
+            }
+        }
+
+//        if (format[i] == '\\')
+//        {
+//            i++;
+//            if (format[i] == 'n')
+//            {
+//                 str[j] = '\n';
+//            }
+//        }
+        sprintf(str+j, "%c", format[i]);
+
+        i++;
+        j++;
+      }
+
+    strcat(str, "\0");
+    va_end(ptr);
+
+    return str;
 }

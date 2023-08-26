@@ -10,6 +10,7 @@
 static void show_separator();
 static void show_kitty();
 
+#include <string.h>
 
 int main(int argc, char **argv)
 {
@@ -18,61 +19,74 @@ int main(int argc, char **argv)
     // .\main.exe -log message -file aboba.txt
 
     // TODO: CHECK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
-    if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
-    {
-        current_log_level = LOG_MESSAGE;
+//    char str[100] = {};
+//    strcpy(str,my_printf("aboba"));
+//
+    printf("%s", my_printf("abcde %f", 1.235));
+//    printf("%s", my_printf("aboba"));
+//    for (int i =0; i < strlen("aboba"); i++)
+//    {
+//        putchar(str[i]);
+//    }
+//    printf("%s", my_printf("aboba"));
+//
 
-        if (argc >= 3)
-        {
-            if (strcmp(argv[2], "disable") == 0)
-                current_log_level = LOG_DISABLED;
 
-            else if (strcmp(argv[2], "message") == 0)
-                current_log_level = LOG_MESSAGE;
-
-            else if (strcmp(argv[2], "error") == 0)
-                current_log_level = LOG_ERROR;
-            if (argc >= 4)
-            {
-                if (strcmp(argv[3], "-console") == 0)
-                    current_log_mode = TO_CONSOLE;
-
-                else if (strcmp(argv[3], "-file") == 0)
-                    current_log_mode = TO_FILE;
-
-                if (argc >= 5)
-                    strcpy(log_file_name, argv[4]);
-            }
-        }
-
-        clear_log_file();
-    }
-
-    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
-    LOG("ABOBA", LOG_MESSAGE);
-
-    while(true)
-    {
-        show_separator();
-        double a = NAN, b = NAN, c = NAN;
-        if(ask_coefs(&a,&b,&c))
-        {
-            double _Complex x1 = NAN, x2 = NAN;
-            int num_of_roots = 0;
-
-            if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
-            {
-                print_roots(x1, x2, num_of_roots);
-            }
-        }
-
-        if(!ask_for_continue()) break;
-
-    }
-
-    show_separator();
-    show_kitty();
-    printf("That's all!\n");
+//    if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
+//    {
+//        current_log_level = LOG_MESSAGE;
+//
+//        if (argc >= 3)
+//        {
+//            if (strcmp(argv[2], "disable") == 0)
+//                current_log_level = LOG_DISABLED;
+//
+//            else if (strcmp(argv[2], "message") == 0)
+//                current_log_level = LOG_MESSAGE;
+//
+//            else if (strcmp(argv[2], "error") == 0)
+//                current_log_level = LOG_ERROR;
+//            if (argc >= 4)
+//            {
+//                if (strcmp(argv[3], "-console") == 0)
+//                    current_log_mode = TO_CONSOLE;
+//
+//                else if (strcmp(argv[3], "-file") == 0)
+//                    current_log_mode = TO_FILE;
+//
+//                if (argc >= 5)
+//                    strcpy(log_file_name, argv[4]);
+//            }
+//        }
+//
+//        clear_log_file();
+//    }
+//
+//    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+//    LOG("ABOBA", LOG_MESSAGE);
+//
+//    while(true)
+//    {
+//        show_separator();
+//        double a = NAN, b = NAN, c = NAN;
+//        if(ask_coefs(&a,&b,&c))
+//        {
+//            double _Complex x1 = NAN, x2 = NAN;
+//            int num_of_roots = 0;
+//
+//            if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
+//            {
+//                print_roots(x1, x2, num_of_roots);
+//            }
+//        }
+//
+//        if(!ask_for_continue()) break;
+//
+//    }
+//
+//    show_separator();
+//    show_kitty();
+//    printf("That's all!\n");
 
     return 0;
 }

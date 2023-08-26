@@ -20,15 +20,16 @@ static bool check_specific_cases(const double a, const double b, const double c,
 // Returns discriminant value
 static double calculate_discriminant(const double a, const double b, const double c)
 {
-    MY_ASSERT(!std::isfinite(a));
-    assert(std::isfinite(b));
-    assert(std::isfinite(c));
+    MY_ASSERT(std::isfinite(a));
+    MY_ASSERT(std::isfinite(b));
+    MY_ASSERT(std::isfinite(c));
 
-    char str[5] = {};
-    strcpy(str,"D = ");
+//    char str[5] = {};
+//    strcpy(str,"D = ");
 
     double d = b*b - 4*a*c;
-    LOG(strcat(str ,complex_number_to_str(d + I*0)), LOG_MESSAGE);
+//    my_printf("aboba %f\n", d);
+//    LOG(strcat(str ,complex_number_to_str(d + I*0)), LOG_MESSAGE);
 
     return d;
 }

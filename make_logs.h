@@ -5,8 +5,10 @@
     write_log(X, Y, __FILE__, __PRETTY_FUNCTION__, __LINE__)
 
 #define MY_ASSERT(X)\
+do {\
     if (!(X))\
-        my_assert(#X, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+        my_assert(#X, __FILE__, __PRETTY_FUNCTION__, __LINE__);}\
+while(0)
 
 enum LOG_MODE
 {
@@ -33,5 +35,6 @@ void clear_log_file();
 // Can i make format message function?
 void write_log(const char message[], int log_level, const char file[], const char func[], const int line);
 
+char* my_printf(char *format, ...);
 
 #endif

@@ -6,8 +6,8 @@ test: tester
 main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o
 	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o -o main.exe
 
-tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o
-	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o -o tester.exe
+tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o
+	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o -o tester.exe
 format_complex.o: format_complex.cpp
 	$(CC) $(CFLAGS) format_complex.cpp
 make_logs.o: make_logs.cpp
