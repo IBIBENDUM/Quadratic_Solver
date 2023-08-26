@@ -23,6 +23,7 @@ enum LOG_LEVEL
     LOG_ERROR
 };
 
+const int STR_LEN = 128;
 
 extern int current_log_mode;
 extern int current_log_level;
@@ -32,9 +33,8 @@ void my_assert(const char expr[], const char file[], const char func[], const in
 
 void clear_log_file();
 
-// Can i make format message function?
 void write_log(const char message[], int log_level, const char file[], const char func[], const int line);
 
-char* my_printf(char *format, ...);
+char* format_log(char *format, ...);
 
 #endif

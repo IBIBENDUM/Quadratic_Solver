@@ -28,8 +28,8 @@ static double calculate_discriminant(const double a, const double b, const doubl
 //    strcpy(str,"D = ");
 
     double d = b*b - 4*a*c;
-//    my_printf("aboba %f\n", d);
-//    LOG(strcat(str ,complex_number_to_str(d + I*0)), LOG_MESSAGE);
+
+    LOG(format_log("D = %lf", d), LOG_MESSAGE);
 
     return d;
 }

@@ -6,11 +6,11 @@
 #include <complex.h>
 
 #include "make_logs.h"
+#include "colors.h"
+
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_DISABLED;
 char log_file_name[] = "qe_solver.log";
-const int MAX_STR_LEN = 128;
-
 
 static char* current_time_to_str();
 
@@ -57,42 +57,48 @@ void clear_log_file()
     fclose(fopen(log_file_name, "w"));
 }
 
-char* my_printf(char *format, ...)
+char* format_log(char *format, ...)
 {
     va_list ptr;
     va_start(ptr, format);
 
-    const int STR_LEN = 256;
     char *str = (char *) malloc(STR_LEN * sizeof(char));
-    unsigned int i = 0, j =0;
 
-    while (format[i])
+    for (unsigned int i = 0, j =0; format[i]; i++, j++)
     {
-     // TODO: switch case
-
-
         if (format[i] == '%')
         {
-            i++;
-            if (format[i] == 'f') // && format[i+1] == 'f')
+            i++;                // Skip '%'
+            if (format[i] == 'l' && format[i+1] == 'f')
             {
-                i++;
+                i++;            // Skip 'l'
+                i++;            // Skip 'f'
                 j += sprintf(str+j, "%.2lf", va_arg(ptr, double));
+            }
+
+            else if (format[i] == 'd')
+            {
+                i++;            // Skip 'd'
+                j += sprintf(str+j, "%d", va_arg(ptr,int));
+            }
+
+        }
+
+        if (format[i] == '\\')
+        {
+            i++;               // Skip '\'
+            if (format[i] == 'n')
+            {
+                 str[j] = '\n';
+            }
+            else if (format[i] == '0')
+            {
+                str[j] = '\0';
             }
         }
 
-//        if (format[i] == '\\')
-//        {
-//            i++;
-//            if (format[i] == 'n')
-//            {
-//                 str[j] = '\n';
-//            }
-//        }
         sprintf(str+j, "%c", format[i]);
 
-        i++;
-        j++;
       }
 
     strcat(str, "\0");
