@@ -9,7 +9,7 @@
 #include "colors.h"
 
 int current_log_mode = TO_CONSOLE;
-int current_log_level = LOG_DISABLED;
+int current_log_level = LOG_LVL_DISABLED;
 char log_file_name[] = "qe_solver.log";
 
 static char* current_time_to_str();
@@ -34,7 +34,7 @@ void write_log(const char message[], int log_level, const char file[], const cha
         if (current_log_mode == TO_CONSOLE)
         {
             file_ptr = stdout;
-            if (current_log_level == LOG_MESSAGE)
+            if (current_log_level == LOG_LVL_MESSAGE)
                 printf("%s", COLOR_YELLOW);
             else
                 printf("%s", COLOR_RED);
@@ -44,7 +44,7 @@ void write_log(const char message[], int log_level, const char file[], const cha
             file_ptr = fopen(log_file_name, "a");
         }
 
-        fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d) %s\n", current_time_to_str(), file, func, line, message);
+        fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n%s\n", current_time_to_str(), file, func, line, message);
 
         if (current_log_mode == TO_FILE)
             fclose(file_ptr);
@@ -55,8 +55,8 @@ void write_log(const char message[], int log_level, const char file[], const cha
 
 void my_assert(const char expr[], const char file[], const char func[], const int line)
 {
-    write_log(expr, LOG_ERROR, file, func, line);
-    printf(COLOR_RED "The program ended with an error" COLOR_RESET);
+    write_log(expr, LOG_LVL_ERROR, file, func, line);
+    printf(COLOR_RED "The program ended with an error\n" COLOR_RESET);
     exit(EXIT_FAILURE);
 }
 

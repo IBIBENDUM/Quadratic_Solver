@@ -22,18 +22,18 @@ int main(int argc, char **argv)
 
     if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
     {
-        current_log_level = LOG_MESSAGE;
+        current_log_level = LOG_LVL_MESSAGE;
 
         if (argc >= 3)
         {
             if (strcmp(argv[2], "disable") == 0)
-                current_log_level = LOG_DISABLED;
+                current_log_level = LOG_LVL_DISABLED;
 
             else if (strcmp(argv[2], "message") == 0)
-                current_log_level = LOG_MESSAGE;
+                current_log_level = LOG_LVL_MESSAGE;
 
             else if (strcmp(argv[2], "error") == 0)
-                current_log_level = LOG_ERROR;
+                current_log_level = LOG_LVL_ERROR;
             if (argc >= 4)
             {
                 if (strcmp(argv[3], "-console") == 0)
@@ -51,7 +51,6 @@ int main(int argc, char **argv)
     }
 
     printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
-    LOG("ABOBA", LOG_MESSAGE);
 
     while(true)
     {

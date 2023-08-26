@@ -24,13 +24,8 @@ static double calculate_discriminant(const double a, const double b, const doubl
     MY_ASSERT(std::isfinite(b));
     MY_ASSERT(std::isfinite(c));
 
-//    char str[5] = {};
-//    strcpy(str,"D = ");
-
     double d = b*b - 4*a*c;
-
-    LOG(format_log("D = %lf", d), LOG_MESSAGE);
-
+    LOG(LOG_LVL_MESSAGE, "d = %lf", d);
     return d;
 }
 

@@ -1,8 +1,13 @@
 #ifndef MAKE_LOGS_H_
 #define MAKE_LOGS_H_
 
-#define LOG(X, Y)\
-    write_log(X, Y, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+#define LOG(LVL, FORMAT, ...)\
+do{ \
+    char *log_ptr;             \
+    log_ptr = format_log(FORMAT, __VA_ARGS__);\
+    write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__);\
+    free(log_ptr);}\
+while(0)
 
 #define MY_ASSERT(X)\
 do {\
@@ -18,9 +23,9 @@ enum LOG_MODE
 
 enum LOG_LEVEL
 {
-    LOG_DISABLED,
-    LOG_MESSAGE,
-    LOG_ERROR
+    LOG_LVL_DISABLED,
+    LOG_LVL_MESSAGE,
+    LOG_LVL_ERROR
 };
 
 const int STR_LEN = 128;
