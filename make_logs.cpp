@@ -32,23 +32,31 @@ void write_log(const char message[], int log_level, const char file[], const cha
         FILE *file_ptr = NULL;
 
         if (current_log_mode == TO_CONSOLE)
+        {
             file_ptr = stdout;
-
-        else if (current_log_mode == TO_FILE)
+            if (current_log_level == LOG_MESSAGE)
+                printf("%s", COLOR_YELLOW);
+            else
+                printf("%s", COLOR_RED);
+        }
+        else  // TO_FILE
+        {
             file_ptr = fopen(log_file_name, "a");
+        }
 
         fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d) %s\n", current_time_to_str(), file, func, line, message);
 
         if (current_log_mode == TO_FILE)
             fclose(file_ptr);
-
+        else
+            printf(COLOR_RESET);
     }
 }
 
 void my_assert(const char expr[], const char file[], const char func[], const int line)
 {
     write_log(expr, LOG_ERROR, file, func, line);
-    printf("The program ended with an error");
+    printf(COLOR_RED "The program ended with an error" COLOR_RESET);
     exit(EXIT_FAILURE);
 }
 
@@ -86,7 +94,7 @@ char* format_log(char *format, ...)
 
         if (format[i] == '\\')
         {
-            i++;               // Skip '\'
+            i++;                // Skip '\'
             if (format[i] == 'n')
             {
                  str[j] = '\n';

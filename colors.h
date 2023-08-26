@@ -8,6 +8,7 @@
 #define COLOR_GREEN "\033[92m"
 #define COLOR_BLUE "\033[94m"
 #define COLOR_PURPLE "\033[95m"
+#define COLOR_YELLOW "\033[33m"
 
 #define COLOR_RESET "\033[0m"
 
