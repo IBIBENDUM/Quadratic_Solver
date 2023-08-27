@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <assert.h>
 #include <string.h>
 
 #include "qe_solver_interactive.h"
 #include "comparators.h"
+#include "make_logs.h"
+#include "colors.h"
 
 static void skip_line();
 static void skip_space_symbols();
@@ -29,9 +30,9 @@ static void skip_space_symbols()
 
 static int get_expected_args_amount(const char *format)
 {
-    assert(format);
+    MY_ASSERT(format);
     int expected_args_amount = 0;
-    for (unsigned int i = 0; i < strlen(format); i++)
+    for (unsigned int i = 0; i < strlen(format); i++) // TODO: replace to *format
     {
         if(format[i] == '%')
             expected_args_amount++;
@@ -47,7 +48,7 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
     if(!read_coefs(a_ptr, b_ptr, c_ptr))
     {
-        printf("Error at coefficients input\n");
+        printf(COLOR_RED "Error at coefficients input\n" COLOR_RESET);
         skip_line();
         return false;
     }
@@ -69,13 +70,13 @@ bool ask_for_continue()
 
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
-    assert(a_ptr);
-    assert(b_ptr);
-    assert(c_ptr);
+    MY_ASSERT(a_ptr);
+    MY_ASSERT(b_ptr);
+    MY_ASSERT(c_ptr);
 
-    assert(a_ptr != b_ptr);
-    assert(a_ptr != c_ptr);
-    assert(b_ptr != c_ptr);
+    MY_ASSERT(a_ptr != b_ptr);
+    MY_ASSERT(a_ptr != c_ptr);
+    MY_ASSERT(b_ptr != c_ptr);
 
     char format[] = "%lf %lf %lf";
 

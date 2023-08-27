@@ -2,7 +2,6 @@
 #include <math.h>
 #include <complex.h>
 #include <stdbool.h>
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,14 +24,16 @@ static double calculate_discriminant(const double a, const double b, const doubl
     MY_ASSERT(std::isfinite(c));
 
     double d = b*b - 4*a*c;
-    LOG(LOG_LVL_MESSAGE, "d = %lf", d);
+
+    LOG(LOG_LVL_MESSAGE, "D = %lf", d);
+
     return d;
 }
 
 // Check for specific cases of quadratic equation
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 
-// Should i check for incomplete quadratic equations? (ax^2 + c = 0) ) (ax^2 + bx = 0)
+// Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0)
 
 {
     *x1 = *x2 = NAN;
@@ -41,6 +42,9 @@ static bool check_specific_cases(const double a, const double b, const double c,
     {
         solve_linear_equation(b,c,x1);
         *num_of_roots = ONE_ROOT;
+
+        LOG(LOG_LVL_MESSAGE, "Equation is linear");
+
         return true;
     }
 
@@ -48,6 +52,9 @@ static bool check_specific_cases(const double a, const double b, const double c,
     {
         *x1 = 0;
         *num_of_roots = ONE_ROOT;
+
+        LOG(LOG_LVL_MESSAGE, "Equation is linear with root = 0");
+
         return true;
     }
 
@@ -56,11 +63,17 @@ static bool check_specific_cases(const double a, const double b, const double c,
         if (compare_with_zero(c) == 0)
         {
             *num_of_roots = INFINITE_ROOTS;                // Root is any number
+
+            LOG(LOG_LVL_MESSAGE, "Root is any number");
+
             return true;
         }
         else
         {
             *num_of_roots = NO_ROOTS;
+
+            LOG(LOG_LVL_MESSAGE, "Equation have no roots");
+
             return true;                                        // No roots
         }
     }
@@ -73,10 +86,10 @@ static bool check_specific_cases(const double a, const double b, const double c,
 
 void solve_linear_equation(const double b, const double c, double _Complex *x1)
 {
-    assert(x1);
+    MY_ASSERT(x1);
 
-    assert(std::isfinite(b));
-    assert(std::isfinite(c));
+    MY_ASSERT(std::isfinite(b));
+    MY_ASSERT(std::isfinite(c));
 
     *x1 = -b/c;
 }
@@ -85,11 +98,12 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1)
 // Returns the number of roots
 bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
-    assert(x1);
-    assert(x2);
-    assert(num_of_roots);
+    MY_ASSERT(x1);
+    MY_ASSERT(x2);
+    MY_ASSERT(num_of_roots);
 
     *x1 = *x2 = NAN;
+    *num_of_roots = NO_ROOTS;
 
     if(std::isfinite(a) && std::isfinite(b) && std::isfinite(c)) // If number is finite move forward
     {
@@ -97,33 +111,43 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         {
             double d = calculate_discriminant(a,b,c);
 
-            *x1 = *x2 = -b/(a*2.0);
-
-            if (compare_with_zero(d) == 0)         // D == 0
+            if (std::isfinite(d))
             {
-                *num_of_roots = ONE_ROOT;
-            }
-            else
-            {
-                const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
 
-                if (compare_with_zero(d) > 0)      // D > 0
+                *x1 = *x2 = -b/(a*2.0);
+
+                if (compare_with_zero(d) == 0)         // D == 0
                 {
-                    *x1 -= d_sqrt_half;
-                    *x2 += d_sqrt_half;
+                    LOG(LOG_LVL_MESSAGE, "Equation have one root\n%s", cast_to_root_format(0, *x1));
+
+                    *num_of_roots = ONE_ROOT;
                 }
                 else
                 {
-                    *x1 -= I*d_sqrt_half;          // D < 0
-                    *x2 += I*d_sqrt_half;
-                }
+                    const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
 
-                *num_of_roots =  TWO_ROOTS;
+                    if (compare_with_zero(d) > 0)      // D > 0
+                    {
+                        *x1 -= d_sqrt_half;
+                        *x2 += d_sqrt_half;
+                    }
+                    else
+                    {
+                        *x1 -= I*d_sqrt_half;          // D < 0
+                        *x2 += I*d_sqrt_half;
+                    }
+
+
+                    *num_of_roots =  TWO_ROOTS;
+
+                    LOG(LOG_LVL_MESSAGE, "Equation have two roots\n%s %s", cast_to_root_format(1, *x1), cast_to_root_format(2, *x2));
+                }
             }
         }
 
         return true;
     }
+    printf("Coefficients aren't finite\n");
 
     return false;
 }

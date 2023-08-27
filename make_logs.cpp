@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <complex.h>
+#include <math.h>
 
 #include "make_logs.h"
 #include "colors.h"
@@ -25,7 +26,7 @@ static char* current_time_to_str()
     return time_str;
 }
 
-void write_log(const char message[], int log_level, const char file[], const char func[], const int line)
+void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
 {
     if (log_level == current_log_level)
     {
@@ -65,7 +66,7 @@ void clear_log_file()
     fclose(fopen(log_file_name, "w"));
 }
 
-char* format_log(char *format, ...)
+char* format_log(const char *format, ...)
 {
     va_list ptr;
     va_start(ptr, format);
@@ -74,25 +75,45 @@ char* format_log(char *format, ...)
 
     for (unsigned int i = 0, j =0; format[i]; i++, j++)
     {
+
         if (format[i] == '%')
         {
             i++;                // Skip '%'
+
             if (format[i] == 'l' && format[i+1] == 'f')
             {
-                i++;            // Skip 'l'
                 i++;            // Skip 'f'
-                j += sprintf(str+j, "%.2lf", va_arg(ptr, double));
+                double lf_val = va_arg(ptr, double);
+
+                if (std::isfinite(lf_val))
+                {
+                    if (fabs(lf_val) < MAX_VAL)
+                        j += sprintf(str+j, "%.2lf", lf_val);
+                    else
+                        j += sprintf(str+j, "%.2e", lf_val);
+                }
+
+                else
+                    j += sprintf(str+j, "Infinite");
             }
 
             else if (format[i] == 'd')
             {
-                i++;            // Skip 'd'
-                j += sprintf(str+j, "%d", va_arg(ptr,int));
+                j += sprintf(str+j, "%d", va_arg(ptr, int));
             }
 
+            else if (format[i] == 's')
+            {
+                j += sprintf(str+j, "%s", va_arg(ptr,const char*));
+                //j--; // Remove \0 ???
+            }
+
+            j--;
+
+            continue;
         }
 
-        if (format[i] == '\\')
+        else if (format[i] == '\\')
         {
             i++;                // Skip '\'
             if (format[i] == 'n')
@@ -103,9 +124,11 @@ char* format_log(char *format, ...)
             {
                 str[j] = '\0';
             }
+
+            continue;
         }
 
-        sprintf(str+j, "%c", format[i]);
+        str[j] = format[i];
 
       }
 

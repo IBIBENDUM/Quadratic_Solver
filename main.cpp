@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 
     // TODO: TAKE A LOOK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
 
+
     if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
     {
         current_log_level = LOG_LVL_MESSAGE;
@@ -49,7 +50,6 @@ int main(int argc, char **argv)
 
         clear_log_file();
     }
-
     printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
 
     while(true)

@@ -1,10 +1,12 @@
 #ifndef MAKE_LOGS_H_
 #define MAKE_LOGS_H_
 
+#include <stdlib.h>
+
 #define LOG(LVL, FORMAT, ...)\
 do{ \
     char *log_ptr;             \
-    log_ptr = format_log(FORMAT, __VA_ARGS__);\
+    log_ptr = format_log(FORMAT, ##__VA_ARGS__);\
     write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__);\
     free(log_ptr);}\
 while(0)
@@ -29,6 +31,7 @@ enum LOG_LEVEL
 };
 
 const int STR_LEN = 128;
+const float MAX_VAL = 1E5;
 
 extern int current_log_mode;
 extern int current_log_level;
@@ -38,8 +41,8 @@ void my_assert(const char expr[], const char file[], const char func[], const in
 
 void clear_log_file();
 
-void write_log(const char message[], int log_level, const char file[], const char func[], const int line);
+void write_log(const char message[], const int log_level, const char file[], const char func[], const int line);
 
-char* format_log(char *format, ...);
+char* format_log(const char *format, ...);
 
 #endif

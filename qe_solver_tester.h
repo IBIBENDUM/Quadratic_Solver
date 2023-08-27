@@ -29,9 +29,7 @@ void test_all_equations(const char *filename);
 /// @param a, b, c Coefficients of quadratic equation
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots Number of roots of quadratic equation
-bool test_one_equation(int num_of_test, struct test_values_data *test_values);
-
-char* cast_to_root_format(int n, char complex_string[]);
+bool test_one_equation(const int num_of_test, const struct test_values_data *test_values);
 
 /// Print expected values
 /// ### Example output
@@ -40,7 +38,7 @@ char* cast_to_root_format(int n, char complex_string[]);
 /// ~~~~~~~~~~~~~~~~~~~
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots_ref Reference number of roots
-void print_expected_values(_Complex double x1_ref, _Complex double x2_ref, int num_of_roots_ref);
+void print_expected_values(const _Complex double x1_ref, const _Complex double x2_ref, const int num_of_roots_ref);
 
 /// Print expected values
 /// ### Example output
@@ -50,6 +48,6 @@ void print_expected_values(_Complex double x1_ref, _Complex double x2_ref, int n
 /// ~~~~~~~~~~~~~~~~~~~
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots_ref Reference number of roots
-void print_failed_values(int num_of_test, _Complex double x1, _Complex double x2, int num_of_roots);
+void print_failed_values(const int num_of_test, const _Complex double x1, const _Complex double x2, const int num_of_roots);
 
 #endif

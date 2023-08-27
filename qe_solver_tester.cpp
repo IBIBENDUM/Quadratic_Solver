@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <complex.h>
-#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -9,6 +8,7 @@
 #include "comparators.h"
 #include "format_complex.h"
 #include "colors.h"
+#include "make_logs.h"
 
 
 static int get_file_size(FILE *file_ptr);
@@ -17,10 +17,13 @@ static int count_lines(FILE *file_ptr);
 
 static int count_values_in_line(char *line);
 
+static double strtod_with_negative(char *ptr, char **endptr);
 
-int get_file_size(FILE *file_ptr)
+
+
+static int get_file_size(FILE *file_ptr)
 {
-    assert(file_ptr);
+    MY_ASSERT(file_ptr);
 
     int prev_pos = ftell(file_ptr);
 
@@ -28,16 +31,22 @@ int get_file_size(FILE *file_ptr)
     int size = ftell(file_ptr);
     fseek(file_ptr, prev_pos, SEEK_SET);
 
+    LOG(LOG_LVL_MESSAGE, "File have %d symbols", size);
+
     return size;
 }
 
-int count_lines(FILE *file_ptr)
+static int count_lines(FILE *file_ptr)
 {
-    assert(file_ptr);
+    MY_ASSERT(file_ptr);
 
-    int n = get_file_size(file_ptr)/(char)sizeof(char);
+    int n = get_file_size(file_ptr);
+
+    LOG(LOG_LVL_MESSAGE, "File have %d symbols", n);
 
     char *symbols = (char *) malloc(n * sizeof(char));
+
+    int prev_pos = ftell(file_ptr);
 
     fseek(file_ptr, 0, SEEK_SET);
 
@@ -49,6 +58,11 @@ int count_lines(FILE *file_ptr)
         if(symbols[i] == '\n')
             lines++;
     }
+
+    fseek(file_ptr, prev_pos, SEEK_SET);
+
+    LOG(LOG_LVL_MESSAGE, "File have %d lines", lines);
+
     return lines;
 }
 
@@ -64,10 +78,12 @@ static int count_values_in_line(char *line)
         ptr = strtok(NULL, " ");
     }
 
+//    LOG(LOG_LVL_MESSAGE, "Line have %d args", args_count);
+
     return args_count;
 }
 
-double strtod_with_negative(char *ptr, char **endptr)
+static double strtod_with_negative(char *ptr, char **endptr)
 {
     if (ptr[0] == '-')
     {
@@ -79,20 +95,20 @@ double strtod_with_negative(char *ptr, char **endptr)
 
 bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 {
-    assert(file_ptr);
-    assert(test_values);
+    MY_ASSERT(file_ptr);
+    MY_ASSERT(test_values);
 
     char line[MAX_LINE_LEN] = {};
     fgets(line, MAX_LINE_LEN, file_ptr);
 
-    const int values_amount = 7;// Without num_of_roots (because it's int)
+    const int values_amount = 8;
     enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag };
-    double values[values_amount] = {};
+    double values[values_amount - 1] = {};  // Without num_of_roots (because it's int)
 
-    if (values_amount + 1 == count_values_in_line(line))
+    if (values_amount == count_values_in_line(line))
     {
         char *ptr = line;
-        for (int i = 0; i < values_amount; i++)
+        for (int i = 0; i < values_amount - 1; i++)
         {
             if ((ptr == NULL) || (strcmp(ptr,"//") == 0))  // Check if line ended too early or for comment line
                 return false;
@@ -106,7 +122,7 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
         test_values->c = values[c];
         test_values->x1_ref = write_complex_value_to_var(values[x1_real], values[x1_imag]);
         test_values->x2_ref = write_complex_value_to_var(values[x2_real], values[x2_imag]);
-        test_values->num_of_roots_ref = (strcmp(ptr,"NAN") == 0) ? NAN : strtol(ptr, NULL, 10);
+        test_values->num_of_roots_ref = (strcmp(ptr,"NAN") == 0) ? 0 : strtol(ptr, NULL, 10);
 
         return true;
     }
@@ -117,9 +133,9 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 
 void test_all_equations(const char *filename)
 {
-    assert(filename);
+    MY_ASSERT(filename);
     FILE *file_ptr = fopen(filename, "rt");
-    assert(file_ptr);
+    MY_ASSERT(file_ptr);
 
     int n = count_lines(file_ptr);
     struct test_values_data test_values;
@@ -149,9 +165,9 @@ void test_all_equations(const char *filename)
 }
 
 
-bool test_one_equation(int num_of_test, struct test_values_data *test_values)
+bool test_one_equation(const int num_of_test, const struct test_values_data *test_values)
 {
-    assert(test_values);
+    MY_ASSERT(test_values);
 
     double a = test_values->a;
     double b = test_values->b;
@@ -170,6 +186,8 @@ bool test_one_equation(int num_of_test, struct test_values_data *test_values)
     {
         if (compare_complex_doubles(x1, x1_ref, SMALL_PRECISION) == 0 && compare_complex_doubles(x2, x2_ref, SMALL_PRECISION) == 0)
         {
+            LOG(LOG_LVL_MESSAGE, "TEST N%d SUCCEED: x1 = %s, x2 = %s, num_of_roots = %d",
+            num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);
 //            printf(COLOR_GREEN "TEST N%d: OK!\n" COLOR_RESET, num_of_test);
 
             return true;
@@ -178,17 +196,18 @@ bool test_one_equation(int num_of_test, struct test_values_data *test_values)
 
     print_failed_values(num_of_test, x1, x2, num_of_roots);
     print_expected_values(x1_ref, x2_ref, num_of_roots_ref);
+
     return false;
 
 }
 
-void print_failed_values(int num_of_test, _Complex double x1, _Complex double x2, int num_of_roots)
+void print_failed_values(const int num_of_test, const _Complex double x1, const _Complex double x2, const int num_of_roots)
 {
     printf(COLOR_RED "TEST N%d FAILED: " COLOR_RESET "x1 = %s, x2 = %s, num_of_roots = %d\n",
            num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);
 }
 
-void print_expected_values(_Complex double x1_ref, _Complex double x2_ref, int num_of_roots_ref)
+void print_expected_values(const _Complex double x1_ref, const _Complex double x2_ref, const int num_of_roots_ref)
 {
     printf(COLOR_BLUE "EXPECTED: " COLOR_RESET "x1 = %s, x2 = %s, num_of_roots_ref = %d\n",
            complex_number_to_str(x1_ref), complex_number_to_str(x2_ref), num_of_roots_ref);
