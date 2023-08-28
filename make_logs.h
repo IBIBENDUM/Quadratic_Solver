@@ -11,6 +11,16 @@ do{ \
     free(log_ptr);}\
 while(0)
 
+#define PRINT_WITH_ANIM(DELAY, FORMAT, ...)\
+do{ \
+    char *log_ptr;             \
+    log_ptr = format_log(FORMAT, ##__VA_ARGS__);\
+    print_by_symbols(log_ptr, DELAY);\
+    free(log_ptr);}\
+while(0)
+
+
+
 #define MY_ASSERT(X)\
 do {\
     if (!(X))\
@@ -32,6 +42,8 @@ enum LOG_LEVEL
 
 const int STR_LEN = 128;
 const float MAX_VAL = 1E5;
+const int DELAY_FAST = 5;
+const int DELAY_SLOW = 10;
 
 extern int current_log_mode;
 extern int current_log_level;
@@ -44,5 +56,7 @@ void clear_log_file();
 void write_log(const char message[], const int log_level, const char file[], const char func[], const int line);
 
 char* format_log(const char *format, ...);
+
+void print_by_symbols(const char *string, const int delay);
 
 #endif

@@ -147,7 +147,8 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
         return true;
     }
-    printf("Coefficients aren't finite\n");
+    PRINT_WITH_ANIM(DELAY_SLOW, "Coefficients aren't finite\n");
+//    printf("Coefficients aren't finite\n");
 
     return false;
 }
@@ -168,23 +169,26 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
     switch(num_of_roots)
     {
         case INFINITE_ROOTS: {
-            printf("X belongs to R\n");
+            PRINT_WITH_ANIM(DELAY_SLOW, "X belongs to R\n");
+//            printf("X belongs to R\n");
             break;
         }
 
         case NO_ROOTS: {
+            PRINT_WITH_ANIM(DELAY_SLOW, "No roots\n");
             printf("No roots\n");
             break;
         }
 
         case ONE_ROOT: {
-            printf("%s\n", cast_to_root_format(0, x1));
+            PRINT_WITH_ANIM(DELAY_SLOW, "%s\n", cast_to_root_format(0, x1));
+//            printf("%s\n", cast_to_root_format(0, x1));
             break;
         }
 
         case TWO_ROOTS: {
-
-            printf("%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
+            PRINT_WITH_ANIM(DELAY_SLOW, "%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
+//            printf("%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
             break;
         }
 

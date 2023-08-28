@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <complex.h>
 #include <math.h>
+#include <Windows.h>
 
 #include "make_logs.h"
 #include "colors.h"
@@ -73,7 +74,9 @@ char* format_log(const char *format, ...)
 
     char *str = (char *) malloc(STR_LEN * sizeof(char));
 
-    for (unsigned int i = 0, j =0; format[i]; i++, j++)
+    unsigned int j = 0;
+
+    for (unsigned int i = 0; format[i]; i++, j++)
     {
 
         if (format[i] == '%')
@@ -105,7 +108,6 @@ char* format_log(const char *format, ...)
             else if (format[i] == 's')
             {
                 j += sprintf(str+j, "%s", va_arg(ptr,const char*));
-                //j--; // Remove \0 ???
             }
 
             j--;
@@ -132,8 +134,21 @@ char* format_log(const char *format, ...)
 
       }
 
-    strcat(str, "\0");
+    str[j] = '\0';
     va_end(ptr);
 
     return str;
+}
+
+void print_by_symbols(const char *string, const int delay)
+{
+//    printf("%s", string);
+    for (int i = 0; string[i]; i++)
+    {
+        printf("%c", toupper(string[i]));
+        Sleep(delay);
+        if (islower(string[i]))
+            printf("\b%c", string[i]);
+        Sleep(delay);
+    }
 }

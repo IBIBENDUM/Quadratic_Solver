@@ -44,11 +44,15 @@ static int get_expected_args_amount(const char *format)
 bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
 
-    printf("Enter the coefficients separated by a space:\n");
+    PRINT_WITH_ANIM(DELAY_SLOW, "Enter the coefficients separated by a space:\n");
+//    printf("Enter the coefficients separated by a space:\n");
 
     if(!read_coefs(a_ptr, b_ptr, c_ptr))
     {
-        printf(COLOR_RED "Error at coefficients input\n" COLOR_RESET);
+        printf(COLOR_RED);
+        PRINT_WITH_ANIM(DELAY_SLOW, "Enter the coefficients separated by a space:\n");
+        printf(COLOR_RESET);
+//        printf(COLOR_RED "Error at coefficients input\n" COLOR_RESET);
         skip_line();
         return false;
     }
@@ -59,13 +63,14 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
 bool ask_for_continue()
 {
-    printf("Do you want to continue? (Y for continue, something else for exit)\n");
+//    printf("Do you want to continue? (Y for continue, something else for exit)\n");
+    PRINT_WITH_ANIM(DELAY_SLOW, "Do you want to continue? (Y for continue, something else for exit)\n");
 
     skip_space_symbols();
     int ch = getchar();
     skip_line();
 
-    return (toupper(ch) == 'Y');
+    return (tolower(ch) == 'y');
 }
 
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)

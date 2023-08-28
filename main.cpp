@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <Windows.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
@@ -10,8 +11,6 @@
 static void show_separator();
 static void show_kitty();
 
-#include <string.h>
-
 int main(int argc, char **argv)
 {
     // .\main.exe -log error -console
@@ -19,7 +18,6 @@ int main(int argc, char **argv)
     // .\main.exe -log message -file aboba.txt
 
     // TODO: TAKE A LOOK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
-
 
     if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
     {
@@ -50,7 +48,10 @@ int main(int argc, char **argv)
 
         clear_log_file();
     }
-    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+//    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+    printf(COLOR_BLUE);
+    PRINT_WITH_ANIM(DELAY_SLOW, "This program solves quadratic equations!\nVersion: 1.2\n");
+    printf(COLOR_RESET);
 
     while(true)
     {
@@ -73,7 +74,10 @@ int main(int argc, char **argv)
 
     show_separator();
     show_kitty();
-    printf("That's all!\n");
+
+    PRINT_WITH_ANIM(DELAY_SLOW, "That's all!\n");
+
+//    printf("That's all!\n");
 
     return 0;
 }
