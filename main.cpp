@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     }
 //    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
     printf(COLOR_BLUE);
-    PRINT_WITH_ANIM(DELAY_SLOW, "This program solves quadratic equations!\nVersion: 1.2\n");
+    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.2\n");
     printf(COLOR_RESET);
 
     while(true)
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     show_separator();
     show_kitty();
 
-    PRINT_WITH_ANIM(DELAY_SLOW, "That's all!\n");
+    PRINT_WITH_ANIM(DELAY_FAST, "That's all!\n");
 
 //    printf("That's all!\n");
 

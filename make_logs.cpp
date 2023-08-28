@@ -29,7 +29,7 @@ static char* current_time_to_str()
 
 void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
 {
-    if (log_level == current_log_level)
+    if (log_level >= current_log_level)
     {
         FILE *file_ptr = NULL;
 
