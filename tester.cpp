@@ -1,23 +1,36 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <strings.h>
 
 #include "qe_solver_tester.h"
 #include "colors.h"
 #include "make_logs.h"
-#include "strings.h"
 
-#include <complex.h>
-
+static void print_help();
+static bool handle_cmd_args(int argc, char **argv);
 static void show_separator();
+
+static const char *test_file_name = "tests.txt";
 
 int main(int argc, char **argv)
 {
+
+    if (handle_cmd_args(argc, argv))
+        return 1;
+
+    show_separator();
+    test_all_equations(test_file_name);
     show_separator();
 
-    int arg = 0;
-    const char *test_file_name = "tests.txt";
+    return 0;
+}
 
-    while ( (arg = getopt(argc, argv, "lo::f:t:")) != -1)
+
+static bool handle_cmd_args(int argc, char **argv)
+{
+    int arg = 0;
+
+    while ( (arg = getopt(argc, argv, "lo::f:t:h")) != -1)
     {
         switch(arg)
         {
@@ -69,23 +82,45 @@ int main(int argc, char **argv)
                 break;
             }
 
-            case '?':
+            case 'h':
             {
-                printf(COLOR_RED);
-                PRINT_WITH_ANIM(DELAY_FAST, "Error found\n");
-                printf(COLOR_RESET);
+                print_help();
+
                 return 1;
             }
 
-            default:
-                break;
+            default:              // I know about '?'
+            {
+                printf(COLOR_RED);
+                PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
+                printf(COLOR_RESET);
+                print_help();
+
+                return 1;
+            }
         }
     }
 
-    test_all_equations(test_file_name);
-    show_separator();
-
     return 0;
+}
+
+static void print_help()
+{
+    show_separator();
+    printf("OPTIONS:\n");
+    printf("-h             Display help message\n");
+    printf("-t             Choose tests file (requires argument)\n");
+    printf("               Default file is ""tests.txt""\n");
+    printf("-l             Display logs (by default print message logs to console)\n");
+    printf("-o             Choose output (requires argument)\n");
+    printf("-f             Choose output file (requires argument)\n");
+    printf("\n");
+    printf("EXAMPLES:\n");
+    printf("               -t baobab.txt\n");
+    printf("               -h disable -h message -h error\n");
+    printf("               -o console -o file\n");
+    printf("               -f aboba.txt\n");
+    show_separator();
 }
 
 static void show_separator(void)

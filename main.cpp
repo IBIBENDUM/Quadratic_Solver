@@ -2,12 +2,16 @@
 #include <math.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
+#include <Windows.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
 #include "colors.h"
 #include "make_logs.h"
 
+static void print_help();
+static bool handle_cmd_args(int argc, char **argv);
 static void show_separator();
 static void show_kitty();
 
@@ -18,15 +22,46 @@ static void show_kitty();
 
 int main(int argc, char **argv)
 {
-    // .\main.exe -l error -o console
-    // .\main.exe -l message -o file
-    // .\main.exe -l message -o file -f aboba.txt
+    if (handle_cmd_args(argc, argv))
+        return 1;
 
-    //    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+    printf(COLOR_BLUE);
+    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
+    printf(COLOR_RESET);
 
+    while(true)
+    {
+        show_separator();
+        double a = NAN, b = NAN, c = NAN;
+
+        if(ask_coefs(&a,&b,&c))
+        {
+            double _Complex x1 = NAN, x2 = NAN;
+            int num_of_roots = 0;
+
+            if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
+            {
+                print_roots(x1, x2, num_of_roots);
+            }
+        }
+
+        if(!ask_for_continue()) break;
+
+    }
+
+    show_separator();
+    show_kitty();
+
+    PRINT_WITH_ANIM(DELAY_FAST, "That's all!\n");
+
+    return 0;
+}
+
+static bool handle_cmd_args(int argc, char **argv)
+{
     int arg = 0;
 
-    while ( (arg = getopt(argc, argv, "lo::f:")) != -1)
+    while ( (arg = getopt(argc, argv, "lo::f:h")) != -1)
     {
         switch(arg)
         {
@@ -73,53 +108,43 @@ int main(int argc, char **argv)
                 break;
             }
 
-            case '?':
+            case 'h':
+            {
+                print_help();
+
+                return 0;
+            }
+
+            default:                // I know about '?'
             {
                 printf(COLOR_RED);
-                PRINT_WITH_ANIM(DELAY_FAST, "Error found\n");
+                PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
                 printf(COLOR_RESET);
+                print_help();
+
                 return 1;
             }
-
-            default:
-                break;
         }
     }
-
-    printf(COLOR_BLUE);
-    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
-    printf(COLOR_RESET);
-
-    while(true)
-    {
-        show_separator();
-        double a = NAN, b = NAN, c = NAN;
-
-        if(ask_coefs(&a,&b,&c))
-        {
-            double _Complex x1 = NAN, x2 = NAN;
-            int num_of_roots = 0;
-
-            if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
-            {
-                print_roots(x1, x2, num_of_roots);
-            }
-        }
-
-        if(!ask_for_continue()) break;
-
-    }
-
-    show_separator();
-    show_kitty();
-
-    PRINT_WITH_ANIM(DELAY_FAST, "That's all!\n");
-
-//    printf("That's all!\n");
 
     return 0;
 }
 
+static void print_help()
+{
+    show_separator();
+    printf("OPTIONS:\n");
+    printf("-h             Display help message\n");
+    printf("-l             Display logs (by default print message logs to console)\n");
+    printf("-o             Choose output (requires argument)\n");
+    printf("-f             Choose output file (requires argument)\n");
+    printf("\n");
+    printf("EXAMPLES:\n");
+    printf("               -h disable -h message -h error\n");
+    printf("               -o console -o file\n");
+    printf("               -f aboba.txt\n");
+    show_separator();
+}
 
 static void show_separator()
 {
@@ -128,20 +153,22 @@ static void show_separator()
 
 static void show_kitty()
 {
-    printf(COLOR_PURPLE "\
-       _                  \n\
-       \\`*-.              \n\
-        )  _`-.             \n\
-       .  : `. .             \n\
-       : _   '  \\            \n\
-       ; *` _.   `*-._         \n\
-       `-.-'          `-.       \n\
-         ;       `       `.      \n\
-         :.       .        \\     \n\
-         . \\  .   :   .-'   .     \n\
-         '  `+.;  ;  '      :       \n\
-         :  '  |    ;       ;-.      \n\
-         ; '   : :`-:     _.`* ;      \n\
-      .*' /  .*' ; .*`- +'  `*'        \n\
-      `*-*   `*-*  `*-*'                \n" COLOR_RESET);
+    size_t sl = 10;
+    printf(COLOR_PURPLE);
+    printf("   _                  \n");               Sleep(sl);
+    printf("   \\`*-.              \n");              Sleep(sl);
+    printf("    )  _`-.             \n");             Sleep(sl);
+    printf("   .  : `. .             \n");            Sleep(sl);
+    printf("   : _   '  \\            \n");           Sleep(sl);
+    printf("   ; *` _.   `*-._         \n");          Sleep(sl);
+    printf("   `-.-'          `-.       \n");         Sleep(sl);
+    printf("     ;       `       `.      \n");        Sleep(sl);
+    printf("     :.       .        \\     \n");       Sleep(sl);
+    printf("     . \\  .   :   .-'   .     \n");      Sleep(sl);
+    printf("     '  `+.;  ;  '      :       \n");     Sleep(sl);
+    printf("     :  '  |    ;       ;-.      \n");    Sleep(sl);
+    printf("     ; '   : :`-:     _.`* ;      \n");   Sleep(sl);
+    printf("  .*' /  .*' ; .*`- +'  `*'        \n");  Sleep(sl);
+    printf("  `*-*   `*-*  `*-*'                \n");
+    printf(COLOR_RESET);
 }

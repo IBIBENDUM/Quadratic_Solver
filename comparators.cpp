@@ -7,7 +7,8 @@
 
 #include "make_logs.h"
 #include "comparators.h"
-#include "format_complex.h"
+
+
 bool complex_isnan(_Complex double x)
 {
     return (std::isnan(creal(x)));                   // _Complex double a=NAN;
