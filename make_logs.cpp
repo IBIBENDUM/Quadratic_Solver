@@ -30,7 +30,7 @@ static char* current_time_to_str()
 
 void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
 {
-    if (log_level == current_log_level)
+    if (log_level == current_log_level) // TODO: <=
     {
         FILE *file_ptr = NULL;
 
@@ -63,7 +63,7 @@ void write_log(const char message[], const int log_level, const char file[], con
     }
 }
 
-void my_assert(const char expr[], const char file[], const char func[], const int line)
+void my_assert(const char expr[], const char file[], const char func[], const int line) // TODO: rename
 {
     write_log(expr, LOG_LVL_ERROR, file, func, line);
     printf(COLOR_RED "The program ended with an error\n" COLOR_RESET);
@@ -90,6 +90,8 @@ char* format_log(const char *format, ...)
     va_list ptr;
     va_start(ptr, format);
 
+    // TODO: just use vprintf(), including vsnprintf
+
     char *str = (char *) malloc(STR_LEN * sizeof(char));
     if (!str)
         exit_with_strerror();
@@ -99,7 +101,7 @@ char* format_log(const char *format, ...)
     for (unsigned int i = 0; format[i]; i++, j++)
     {
 
-        if (format[i] == '%')
+        if (format[i] == '%') // TODO: switch...case
         {
             i++;                // Skip '%'
 
@@ -160,7 +162,7 @@ void print_by_symbols(const char *string, const size_t delay)
 {
     for (int i = 0; string[i]; i++)
     {
-//        printf("%c", toupper(string[i]));
+//        printf("%c", toupper(string[i])); // TODO: for gods sake make it into a programmable switch
         printf("%c", string[i]);
 //        Sleep(delay);
 //        if (islower(string[i]))

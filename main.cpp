@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <Windows.h>
+#include <Windows.h> // TODO: Is it necessary?
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     if (handle_cmd_args(argc, argv))
         return 1;
 
-    printf(COLOR_BLUE);
+    printf(COLOR_BLUE); // TODO: Make a shorter notation
     PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
     printf(COLOR_RESET);
 
@@ -144,10 +144,12 @@ static void print_help()
 static void show_separator()
 {
     printf(COLOR_WHITE "=======================================================================\n" COLOR_RESET);
+    // TODO: make macro COLOR_WHITE...COLOR_RESET
 }
 
 static void show_kitty()
 {
+    // TODO: Make this animation
     size_t sl = 10;
     printf(COLOR_PURPLE);
     printf("   _                  \n");               Sleep(sl);

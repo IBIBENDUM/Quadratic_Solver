@@ -16,13 +16,13 @@ char* complex_number_to_str(_Complex double a)
         sprintf(complex_string, "%.2lf%+.2lfi", creal(a), cimag(a));
 
     else if (compare_with_zero(creal(a)) != 0 && compare_with_zero(cimag(a)) == 0)
-        sprintf(complex_string, "%.2lf", creal(a));
+    sprintf(complex_string, "%.2lf", creal(a)); // TODO: clean this up, this is the same
 
     else if (compare_with_zero(creal(a)) == 0 && compare_with_zero(cimag(a)) != 0)
         sprintf(complex_string, "%+.2lfi", cimag(a));
 
     else if (compare_with_zero(creal(a)) == 0 && compare_with_zero(cimag(a)) == 0)
-        sprintf(complex_string, "0.00");
+        sprintf(complex_string, "0.00");          //        ...as this
 
     return complex_string;
 }

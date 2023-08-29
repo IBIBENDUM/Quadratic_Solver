@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "qe_solver_interactive.h"
-#include "comparators.h"
+#include "comparators.h" // TODO: unused
 #include "make_logs.h"
 #include "colors.h"
 
@@ -27,7 +27,7 @@ static void skip_space_symbols()
     ungetc(ch, stdin);
 }
 
-static int get_expected_args_amount(const char *format)
+static int get_expected_args_amount(const char *format) // klass
 {
     MY_ASSERT(format);
 
@@ -75,8 +75,24 @@ bool ask_for_continue()
 }
 
 
+// TODO: vscanf, thanks to vargs you can make your wrapper
+
+//  1 #include <stdarg.h>
+//  2 
+//  3 bool read_formatted(const char *format, ...) {
+//  4     va_list args;
+//  5     va_start(args, format);
+//  6 
+//  7     vscanf(format, args);
+//  8 
+//  9     va_end(args);
+// 10 }
+
+// TODO: __attribute__((printf))
+
 #define SCANF_WITH_CHECKER(FORMAT, ...)\
 ({scanf(FORMAT, __VA_ARGS__) == get_expected_args_amount(FORMAT);})
+
 
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
