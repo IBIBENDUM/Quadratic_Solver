@@ -7,7 +7,7 @@
 
 #include "make_logs.h"
 #include "comparators.h"
-
+#include "format_complex.h"
 bool complex_isnan(_Complex double x)
 {
     return (std::isnan(creal(x)));                   // _Complex double a=NAN;
@@ -28,24 +28,38 @@ int compare_with_zero(const double a)
     return -1;                                       // a < PRECISION
 }
 
-int compare_complex_doubles(const double _Complex a, const double _Complex b)  // compare only real part
+int compare_doubles(const double a, const double b)
 {
-    if(complex_isnan(a) && complex_isnan(b))         // NAN equals to NAN
+    if (fabs(a - b) < SMALL_PRECISION)               // a equals to b
         return 0;
 
-    if(complex_isnan(a) && !complex_isnan(b))        // NAN > b
+    if (a - b > 0)                                   // a > b
         return 1;
 
-    if(!complex_isnan(a) && complex_isnan(b))        // a < NAN
+    return -1;                                       // a < b
+}
+
+int compare_complex_doubles(const double _Complex a, const double _Complex b)
+{
+    if (complex_isnan(a) && complex_isnan(b))                       // NAN equals to NAN
+        return 0;
+
+    if (complex_isnan(a) && !complex_isnan(b))                      // NAN > b
+        return 1;
+
+    if (!complex_isnan(a) && complex_isnan(b))                      // a < NAN
         return -1;
 
-    if (fabs(creal(a) - creal(b)) < SMALL_PRECISION) // a equals to b
-        return 0;
-
-    if (creal(a) - creal(b) > 0)                     // a > b
-        return 1;
-
-    return -1;
+    if (compare_doubles(fabs(cimag(a)), fabs(cimag(b))) == 0)       // 1.23+4i ~ 5.67+5i -----
+    {                                                               //                        !
+        if (compare_with_zero(cimag(a)) == 0)                       // 1.23 < 4.56            !
+            return compare_doubles(creal(a), creal(b));             //                        !
+                                                                    //                        !
+        if (compare_doubles(creal(a), creal(b)) == 0)               //                        !
+            return compare_doubles(cimag(a), cimag(b));             // 3.45-i < 3.45+i        !
+    }                                                               //                        !
+                                                                    //                        !
+    return -1;                                                      // <<---------------------
 }
 
 #define SWAP_VARIABLES(A, B)\

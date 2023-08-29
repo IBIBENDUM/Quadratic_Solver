@@ -156,7 +156,7 @@ char* format_log(const char *format, ...)
     return str;
 }
 
-void print_by_symbols(const char *string, const int delay)
+void print_by_symbols(const char *string, const size_t delay)
 {
     for (int i = 0; string[i]; i++)
     {

@@ -11,6 +11,11 @@
 static void show_separator();
 static void show_kitty();
 
+// ABOB: remove returns after @return
+// use size_t instead of int
+
+
+
 int main(int argc, char **argv)
 {
     // .\main.exe -l error -o console
@@ -82,13 +87,14 @@ int main(int argc, char **argv)
     }
 
     printf(COLOR_BLUE);
-    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.2\n");
+    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
     printf(COLOR_RESET);
 
     while(true)
     {
         show_separator();
         double a = NAN, b = NAN, c = NAN;
+
         if(ask_coefs(&a,&b,&c))
         {
             double _Complex x1 = NAN, x2 = NAN;

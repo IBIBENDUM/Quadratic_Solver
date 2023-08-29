@@ -14,9 +14,9 @@ enum roots_number_enum
 /// @param a, b, c Coefficients of quadratic equation (*ax^2 + bx + c = 0*)
 /// @param x1, x2 Roots of quadratic equation *a*(*x - x1*)(*x - x2*) = *0*
 /// @param NumberOfRoots Number of quadratic equation roots
-/// @return Return false if coefficients are incorrect // TODO: no need for returns
+/// @return False if coefficients are incorrect
 /// @attention If equation is linear, x1 gets root value, x2 doesn't change
-/// @warning If a, b, c are infinite or NaN it will display error // TODO: assert doesn't "display error", it signals that function shouldn't be used like that
+/// @warning If a, b, c are infinite or NaN it will signal that function shouldn't be used like that
 /// @see solve_linear_equation()
 bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
@@ -45,7 +45,7 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 ///@param NumberOfRoots Number of roots
 void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots);
 
-/// Return string in root format
+/// Convert string to root format
 ///
 /// ### Examples
 /// ~~~~~~~~~~~~~~~~~~.cpp
@@ -53,6 +53,7 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
 /// x2 = +2.54i
 /// x  = 1.22
 /// ~~~~~~~~~~~~~~~~~~
+/// @return String in root format
 char* cast_to_root_format(int n, _Complex double root);
 
 

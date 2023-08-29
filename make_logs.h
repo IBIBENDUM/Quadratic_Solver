@@ -14,15 +14,14 @@
 /// @param FORMAT Format that is passed to the format_log()
 /// @param LVL Level that is passed to the write_log()
 /// @see format_log(), write_log()
-
-// TODO:  лллллллллллллллл ЪЮФ бвРЩЫ !
-#define LOG(LVL, FORMAT, ...)                      \
-do{                                                 \
-    char *log_ptr = NULL;                            \
-    log_ptr = format_log(FORMAT, ##__VA_ARGS__);      \
-    write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__);\
-    free(log_ptr);                                      \
-}                                                        \
+#define LOG(LVL, FORMAT, ...)                                    \
+do                                                                \
+{                                                                  \
+    char *log_ptr = NULL;                                           \
+    log_ptr = format_log(FORMAT, ##__VA_ARGS__);                     \
+    write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__); \
+    free(log_ptr);                                                     \
+}                                                                       \
 while(0)
 
 /// Print message with animation
@@ -30,24 +29,26 @@ while(0)
 /// Call format_log then send output to print_by_symbols()
 /// ### Example
 /// ~~~~~~~~~~~~~~~~~~~.cpp
-/// PRINT_WITH_ANIM(DELAY_SLOW, "This program solves quadratic equations!\nVersion: 1.2\n");
+/// PRINT_WITH_ANIM(DELAY_SLOW, "This program solves quadratic equations!\nVersion: ***\n");
 /// ~~~~~~~~~~~~~~~~~~~
 /// @param FORMAT Format that is passed to the print_by_symbols()
 /// @see format_log(), print_by_symbols()
-#define PRINT_WITH_ANIM(DELAY, FORMAT, ...)\
-do{ \
-    char *log_ptr = NULL;             \
-    log_ptr = format_log(FORMAT, ##__VA_ARGS__);\
-    print_by_symbols(log_ptr, DELAY);\
-    free(log_ptr);}\
+#define PRINT_WITH_ANIM(DELAY, FORMAT, ...)  \
+do                                            \
+{                                              \
+    char *log_ptr = NULL;                       \
+    log_ptr = format_log(FORMAT, ##__VA_ARGS__); \
+    print_by_symbols(log_ptr, DELAY);             \
+    free(log_ptr);                                 \
+}                                                   \
 while(0)
 
-
-
-#define MY_ASSERT(X)\
-do {\
-    if (!(X))\
-        my_assert(#X, __FILE__, __PRETTY_FUNCTION__, __LINE__);}\
+#define MY_ASSERT(X)                                        \
+do                                                           \
+{                                                             \
+    if (!(X))                                                  \
+        my_assert(#X, __FILE__, __PRETTY_FUNCTION__, __LINE__); \
+}                                                                \
 while(0)
 
 enum LOG_MODE
@@ -63,10 +64,9 @@ enum LOG_LEVEL
     LOG_LVL_ERROR
 };
 
-// TODO:
-const int STR_LEN = 128; // size_t
-const float MAX_VAL = 1E5; // double
-const int DELAY_FAST = 5 ;
+const size_t STR_LEN = 128;
+const double MAX_VAL = 1E5;
+const size_t DELAY_FAST = 5;
 
 extern int current_log_mode;
 extern int current_log_level;
@@ -109,7 +109,7 @@ char* format_log(const char *format, ...);
 /// Print string with appearance animation
 /// @param string String which will be displayed
 /// @param delay Delay value (multiples by two)
-void print_by_symbols(const char *string, const int delay);
+void print_by_symbols(const char *string, const size_t delay);
 
 void exit_with_strerror();
 

@@ -32,7 +32,7 @@ static int get_expected_args_amount(const char *format)
 {
     MY_ASSERT(format);
     int expected_args_amount = 0;
-    for (unsigned int i = 0; i < strlen(format); i++) // TODO: replace to *format
+    for (unsigned int i = 0; format[i]; i++)
     {
         if(format[i] == '%')
             expected_args_amount++;
@@ -56,6 +56,7 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
         skip_line();
         return false;
     }
+
     skip_line();
     return true;
 
@@ -83,7 +84,7 @@ int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
     MY_ASSERT(a_ptr != c_ptr);
     MY_ASSERT(b_ptr != c_ptr);
 
-    char format[] = "%lg %lg %lg";
+    const char format[] = "%lg %lg %lg";
 
     return(scanf(format, a_ptr, b_ptr, c_ptr) == get_expected_args_amount(format));
 

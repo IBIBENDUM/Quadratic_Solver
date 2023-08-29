@@ -15,8 +15,9 @@ int main(int argc, char **argv)
     show_separator();
 
     int arg = 0;
+    const char *test_file_name = "tests.txt";
 
-    while ( (arg = getopt(argc, argv, "lo::f:")) != -1)
+    while ( (arg = getopt(argc, argv, "lo::f:t:")) != -1)
     {
         switch(arg)
         {
@@ -61,6 +62,13 @@ int main(int argc, char **argv)
                 break;
             }
 
+            case 't':
+            {
+                if (optarg)
+                    test_file_name = optarg;
+                break;
+            }
+
             case '?':
             {
                 printf(COLOR_RED);
@@ -74,7 +82,7 @@ int main(int argc, char **argv)
         }
     }
 
-    test_all_equations(argv[1]);
+    test_all_equations(test_file_name);
     show_separator();
 
     return 0;

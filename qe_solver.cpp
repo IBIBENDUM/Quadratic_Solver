@@ -10,11 +10,11 @@
 #include "format_complex.h"
 #include "make_logs.h"
 
+// Local functions initialization
 static double calculate_discriminant(const double a, const double b, const double c);
 
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
 
-// Local functions initialization
 
 // Returns discriminant value
 static double calculate_discriminant(const double a, const double b, const double c)
@@ -32,10 +32,8 @@ static double calculate_discriminant(const double a, const double b, const doubl
 
 // Check for specific cases of quadratic equation
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
-
-// Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0)
-
 {
+// Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0)
     *x1 = *x2 = NAN;
 
     if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation

@@ -55,7 +55,7 @@ static int count_lines(FILE *file_ptr)
     int lines = 1;
     for(int i = 0; i < n; i++)
     {
-        if(symbols[i] == '\n') // TODO: correctness
+        if(symbols[i] == '\n' || symbols[i] == 0) // TODO: correctness
             lines++;
     }
 
@@ -190,7 +190,7 @@ bool test_one_equation(const int num_of_test, const struct test_values_data *tes
         {
             LOG(LOG_LVL_MESSAGE, "TEST N%d SUCCEED: x1 = %s, x2 = %s, num_of_roots = %d",
             num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);
-//            printf(COLOR_GREEN "TEST N%d: OK!\n" COLOR_RESET, num_of_test);
+            printf(COLOR_GREEN "TEST N%d: OK!\n" COLOR_RESET, num_of_test);
 
             return true;
         }
