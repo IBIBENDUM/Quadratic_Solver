@@ -34,8 +34,7 @@ static bool handle_cmd_args(int argc, char **argv)
     {
         switch(arg)
         {
-            case 'l':
-            {
+            case 'l': {
                 if (optarg)
                 {
                     if (strcmp(optarg, "disable") == 0)
@@ -55,8 +54,7 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
-            case 'o':
-            {
+            case 'o': {
                 if (optarg)
                 {
                     if (strcmp(optarg, "console") == 0)
@@ -68,29 +66,25 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
-            case 'f':
-            {
+            case 'f': {
                 current_log_mode = TO_FILE;
                 log_file_name = optarg;
                 break;
             }
 
-            case 't':
-            {
+            case 't': {
                 if (optarg)
                     test_file_name = optarg;
                 break;
             }
 
-            case 'h':
-            {
+            case 'h': {
                 print_help();
 
                 return 1;
             }
 
-            default:              // I know about '?'
-            {
+            default: {            // I know about '?'
                 printf(COLOR_RED);
                 PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
                 printf(COLOR_RESET);

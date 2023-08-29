@@ -34,12 +34,12 @@ int main(int argc, char **argv)
         show_separator();
         double a = NAN, b = NAN, c = NAN;
 
-        if (ask_coefs(&a, &b, &c))
+        if (!ask_coefs(&a, &b, &c))
         {
             double _Complex x1 = NAN, x2 = NAN;
             int num_of_roots = 0;
 
-            if(solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
+            if(!solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
             {
                 print_roots(x1, x2, num_of_roots);
             }
@@ -61,12 +61,11 @@ static bool handle_cmd_args(int argc, char **argv)
 {
     int arg = 0;
 
-    while ( (arg = getopt(argc, argv, "lo::f:h")) != -1)
+    while ((arg = getopt(argc, argv, "lo::f:h")) != -1)
     {
-        switch(arg)
+        switch (arg)
         {
-            case 'l':
-            {
+            case 'l': {
                 if (optarg)
                 {
                     if (strcmp(optarg, "disable") == 0)
@@ -86,8 +85,7 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
-            case 'o':
-            {
+            case 'o': {
                 if (optarg)
                 {
                     if (strcmp(optarg, "console") == 0)
@@ -99,8 +97,7 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
-            case 'f':
-            {
+            case 'f': {
                 if (current_log_level == LOG_LVL_DISABLED)
                     current_log_level = LOG_LVL_MESSAGE;
                 current_log_mode = TO_FILE;
@@ -108,15 +105,13 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
-            case 'h':
-            {
+            case 'h': {
                 print_help();
 
-                return 0;
+                return 1;
             }
 
-            default:                // I know about '?'
-            {
+            default: {            // I know about '?'
                 printf(COLOR_RED);
                 PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
                 printf(COLOR_RESET);

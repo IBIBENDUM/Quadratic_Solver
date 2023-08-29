@@ -110,7 +110,7 @@ char* format_log(const char *format, ...)
 
                 if (std::isfinite(lf_val))
                 {
-                    j += sprintf(str+j, "%.2lg", lf_val);
+                    j += sprintf(str+j, "%.3g", lf_val);
                 }
 
                 else

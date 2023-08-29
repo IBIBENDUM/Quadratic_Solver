@@ -47,19 +47,19 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
     PRINT_WITH_ANIM(DELAY_FAST, "Enter the coefficients separated by a space:\n");
 
-    if (!read_coefs(a_ptr, b_ptr, c_ptr))
+    if (read_coefs(a_ptr, b_ptr, c_ptr))
     {
         printf(COLOR_RED);
         PRINT_WITH_ANIM(DELAY_FAST, "Error at coefficients input\n");
         printf(COLOR_RESET);
         skip_line();
 
-        return false;
+        return true;
     }
 
     skip_line();
 
-    return true;
+    return false;
 
 }
 
@@ -75,11 +75,9 @@ bool ask_for_continue()
 }
 
 
-#define SCANF_WITH_CHECKER(FORMAT, ...)
-do
-{
-}
-while (0);
+#define SCANF_WITH_CHECKER(FORMAT, ...)\
+({scanf(FORMAT, __VA_ARGS__) == get_expected_args_amount(FORMAT);})
+
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
     MY_ASSERT(a_ptr);
@@ -90,8 +88,8 @@ int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
     MY_ASSERT(a_ptr != c_ptr);
     MY_ASSERT(b_ptr != c_ptr);
 
-    const char format[] = "%lg %lg %lg";
 
-    return (scanf(format, a_ptr, b_ptr, c_ptr) == get_expected_args_amount(format));
-
+    return !SCANF_WITH_CHECKER("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
 }
+
+#undef SCANF_WITH_CHECKER

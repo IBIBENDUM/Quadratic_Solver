@@ -9,7 +9,7 @@
 /// Call format_log then send output to write_log
 /// ### Example
 /// ~~~~~~~~~~~~~~~~~~~.cpp
-/// LOG(LOG_LVL_MESSAGE, "D = %lg", d);
+/// LOG(LOG_LVL_MESSAGE, "D = %g", d);
 /// ~~~~~~~~~~~~~~~~~~~
 /// @param FORMAT Format that is passed to the format_log()
 /// @param LVL Level that is passed to the write_log()

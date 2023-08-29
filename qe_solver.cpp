@@ -24,7 +24,7 @@ static double calculate_discriminant(const double a, const double b, const doubl
 
     double d = b*b - 4*a*c;
 
-    LOG(LOG_LVL_MESSAGE, "D = %lg", d);
+    LOG(LOG_LVL_MESSAGE, "D = %g", d);
 
     return d;
 }
@@ -33,26 +33,27 @@ static double calculate_discriminant(const double a, const double b, const doubl
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
 // Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0)
-    *x1 = *x2 = NAN;
 
-    if ((compare_with_zero(a) == 0) && compare_with_zero(b) != 0 && compare_with_zero(c) != 0) // Linear equation
+// Expects that this function calls only from solve_quadratic_equation() (no asserts)
+
+    if (compare_with_zero(a) == 0 && compare_with_zero(b) != 0 && compare_with_zero(c) != 0)    // Linear equation
     {
         solve_linear_equation(b,c,x1);
         *num_of_roots = ONE_ROOT;
 
         LOG(LOG_LVL_MESSAGE, "Equation is linear");
 
-        return true;
+        return false;
     }
 
-    if (compare_with_zero(a) != 0 && (compare_with_zero(b) == 0) && (compare_with_zero(c) == 0)) // Linear equation with root = 0
+    if (compare_with_zero(a) != 0 && compare_with_zero(b) == 0 && compare_with_zero(c) == 0)  // Linear equation with root = 0
     {
         *x1 = 0;
         *num_of_roots = ONE_ROOT;
 
         LOG(LOG_LVL_MESSAGE, "Equation is linear with root = 0");
 
-        return true;
+        return false;
     }
 
     if (compare_with_zero(a) == 0 && compare_with_zero(b) == 0)
@@ -63,7 +64,7 @@ static bool check_specific_cases(const double a, const double b, const double c,
 
             LOG(LOG_LVL_MESSAGE, "Root is any number");
 
-            return true;
+            return false;
         }
         else
         {
@@ -71,11 +72,11 @@ static bool check_specific_cases(const double a, const double b, const double c,
 
             LOG(LOG_LVL_MESSAGE, "Equation have no roots");
 
-            return true;                                        // No roots
+            return false;                                        // No roots
         }
     }
 
-    return false;
+    return true;
 
 }
 
@@ -102,9 +103,9 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
     *x1 = *x2 = NAN;
     *num_of_roots = NO_ROOTS;
 
-    if(std::isfinite(a) && std::isfinite(b) && std::isfinite(c)) // If number is finite move forward
+    if (std::isfinite(a) && std::isfinite(b) && std::isfinite(c))    // If number is finite move forward
     {
-        if(!check_specific_cases(a, b, c, x1, x2, num_of_roots))    // If it isn't specific case move forward otherwise return true
+        if (check_specific_cases(a, b, c, x1, x2, num_of_roots))    // If it isn't specific case move forward otherwise return true
         {
             double d = calculate_discriminant(a,b,c);
 
@@ -121,7 +122,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
                 }
                 else
                 {
-                    const double d_sqrt_half = sqrt(fabs(d))/(a*2.0);
+                    const double d_sqrt_half = sqrt(fabs(d)) / (a*2.0);
 
                     if (compare_with_zero(d) > 0)      // D > 0
                     {
@@ -142,12 +143,12 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
             }
         }
 
-        return true;
+        return false;
     }
-    PRINT_WITH_ANIM(DELAY_FAST, "Coefficients aren't finite\n");
-//    printf("Coefficients aren't finite\n");
 
-    return false;
+    PRINT_WITH_ANIM(DELAY_FAST, "Coefficients aren't finite\n");
+
+    return true;
 }
 
 // Return string in root form
@@ -163,11 +164,10 @@ char* cast_to_root_format(int n, _Complex double root)
 // Show roots on the display
 void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots)
 {
-    switch(num_of_roots)
+    switch (num_of_roots)
     {
         case INFINITE_ROOTS: {
             PRINT_WITH_ANIM(DELAY_FAST, "X belongs to R\n");
-//            printf("X belongs to R\n");
             break;
         }
 
@@ -179,13 +179,11 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
 
         case ONE_ROOT: {
             PRINT_WITH_ANIM(DELAY_FAST, "%s\n", cast_to_root_format(0, x1));
-//            printf("%s\n", cast_to_root_format(0, x1));
             break;
         }
 
         case TWO_ROOTS: {
             PRINT_WITH_ANIM(DELAY_FAST, "%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
-//            printf("%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
             break;
         }
 
