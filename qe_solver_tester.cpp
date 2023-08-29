@@ -44,18 +44,18 @@ static int count_lines(FILE *file_ptr)
 
     LOG(LOG_LVL_MESSAGE, "File have %d symbols", n);
 
-    char *symbols = (char *) malloc(n * sizeof(char));
+    char *symbols = (char *) malloc(n * sizeof(char));  // TODO: correctness
 
     int prev_pos = ftell(file_ptr);
 
-    fseek(file_ptr, 0, SEEK_SET);
+    fseek(file_ptr, 0, SEEK_SET);// TODO: correctness
 
-    fread(symbols, sizeof(char), n, file_ptr);
+    fread(symbols, sizeof(char), n, file_ptr);// TODO: correctness
 
     int lines = 1;
     for(int i = 0; i < n; i++)
     {
-        if(symbols[i] == '\n')
+        if(symbols[i] == '\n') // TODO: correctness
             lines++;
     }
 
@@ -69,7 +69,7 @@ static int count_lines(FILE *file_ptr)
 static int count_values_in_line(char *line)
 {
     int args_count = 0;
-    char *ptr = strtok(line, " ");     // strtok replace " " with \0
+    char *ptr = strtok(line, " ");     // strtok replace " " with '\0'
     while (ptr != NULL)
     {
         if(strcmp(ptr, "//") == 0)
@@ -83,14 +83,15 @@ static int count_values_in_line(char *line)
     return args_count;
 }
 
+// clang format
 static double strtod_with_negative(char *ptr, char **endptr)
 {
     if (ptr[0] == '-')
     {
-        return -strtod(ptr+1,endptr);
+        return -strtod(ptr+1, endptr);
     }
-    return strtod(ptr,endptr);
 
+    return strtod(ptr, endptr);
 }
 
 bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
@@ -134,15 +135,16 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 void test_all_equations(const char *filename)
 {
     MY_ASSERT(filename);
-    FILE *file_ptr = fopen(filename, "rt");
+    FILE *file_ptr = fopen(filename, "rt"); // TODO: RT RT RT RT RT
     MY_ASSERT(file_ptr);
 
     int n = count_lines(file_ptr);
-    struct test_values_data test_values;
+    struct test_values_data test_values; // TODO: initializing
 
-    fseek(file_ptr, 0, SEEK_SET);
+    fseek(file_ptr, 0, SEEK_SET); // TODO: correctness
 
     int number_of_succeed = 0, number_of_failed = 0;
+
     for (int i = 0, test_number = 0; i < n-1; i++)
     {
         if(!read_reference_values(&test_values, file_ptr))

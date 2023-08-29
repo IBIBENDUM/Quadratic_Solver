@@ -13,9 +13,9 @@ int main(int argc, char **argv)
 {
     show_separator();
 
-    if (argc < 3)
+    if (argc < 2)
     {
-        printf(COLOR_BLUE "HOW TO USE: " COLOR_RESET "tester.cpp <filename>");
+        printf(COLOR_BLUE "HOW TO USE: " COLOR_RESET "tester.exe <filename>");
         return 1;
     }
 

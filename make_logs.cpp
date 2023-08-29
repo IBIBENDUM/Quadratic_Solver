@@ -18,18 +18,18 @@ static char* current_time_to_str();
 
 static char* current_time_to_str()
 {
+    static char time_buf[] = "%H:%M:%S";
+
     time_t current_time = time(0);
     struct tm* tm_info = localtime(&current_time);
 
-    const int str_len = 9;
-    char *time_str = (char *) malloc(str_len * sizeof(char));
-    strftime(time_str, str_len, "%H:%M:%S", tm_info);
-    return time_str;
+    strftime(time_buf, sizeof(time_buf), "%H:%M:%S", tm_info);
+    return time_buf;
 }
 
 void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
 {
-    if (log_level >= current_log_level)
+    if (log_level == current_log_level)
     {
         FILE *file_ptr = NULL;
 
@@ -37,13 +37,15 @@ void write_log(const char message[], const int log_level, const char file[], con
         {
             file_ptr = stdout;
             if (current_log_level == LOG_LVL_MESSAGE)
-                printf("%s", COLOR_YELLOW);
+                printf(COLOR_YELLOW);
             else
-                printf("%s", COLOR_RED);
+                printf(COLOR_RED);
         }
         else  // TO_FILE
         {
             file_ptr = fopen(log_file_name, "a");
+
+            // TODO: not exists
         }
 
         fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n%s\n", current_time_to_str(), file, func, line, message);
@@ -64,7 +66,8 @@ void my_assert(const char expr[], const char file[], const char func[], const in
 
 void clear_log_file()
 {
-    fclose(fopen(log_file_name, "w"));
+    // TODO: check errno
+    fclose(fopen(log_file_name, "w")); // TODO: what if file will not open
 }
 
 char* format_log(const char *format, ...)
@@ -73,6 +76,7 @@ char* format_log(const char *format, ...)
     va_start(ptr, format);
 
     char *str = (char *) malloc(STR_LEN * sizeof(char));
+    // TODO: str == NULL ?
 
     unsigned int j = 0;
 
@@ -90,6 +94,7 @@ char* format_log(const char *format, ...)
 
                 if (std::isfinite(lf_val))
                 {
+                    // TODO: ???
                     if (fabs(lf_val) < MAX_VAL)
                         j += sprintf(str+j, "%.2lf", lf_val);
                     else
@@ -107,7 +112,7 @@ char* format_log(const char *format, ...)
 
             else if (format[i] == 's')
             {
-                j += sprintf(str+j, "%s", va_arg(ptr,const char*));
+                j += sprintf(str+j, "%s", va_arg(ptr, const char*));
             }
 
             j--;
@@ -131,8 +136,7 @@ char* format_log(const char *format, ...)
         }
 
         str[j] = format[i];
-
-      }
+    }
 
     str[j] = '\0';
     va_end(ptr);
@@ -142,13 +146,11 @@ char* format_log(const char *format, ...)
 
 void print_by_symbols(const char *string, const int delay)
 {
-//    printf("%s", string);
     for (int i = 0; string[i]; i++)
     {
         printf("%c", toupper(string[i]));
         Sleep(delay);
         if (islower(string[i]))
             printf("\b%c", string[i]);
-        Sleep(delay);
     }
 }

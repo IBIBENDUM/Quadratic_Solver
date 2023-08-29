@@ -14,12 +14,15 @@
 /// @param FORMAT Format that is passed to the format_log()
 /// @param LVL Level that is passed to the write_log()
 /// @see format_log(), write_log()
-#define LOG(LVL, FORMAT, ...)\
-do{ \
-    char *log_ptr;             \
-    log_ptr = format_log(FORMAT, ##__VA_ARGS__);\
+
+// TODO:  лллллллллллллллл ЪЮФ бвРЩЫ !
+#define LOG(LVL, FORMAT, ...)                      \
+do{                                                 \
+    char *log_ptr = NULL;                            \
+    log_ptr = format_log(FORMAT, ##__VA_ARGS__);      \
     write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__);\
-    free(log_ptr);}\
+    free(log_ptr);                                      \
+}                                                        \
 while(0)
 
 /// Print message with animation
@@ -33,7 +36,7 @@ while(0)
 /// @see format_log(), print_by_symbols()
 #define PRINT_WITH_ANIM(DELAY, FORMAT, ...)\
 do{ \
-    char *log_ptr;             \
+    char *log_ptr = NULL;             \
     log_ptr = format_log(FORMAT, ##__VA_ARGS__);\
     print_by_symbols(log_ptr, DELAY);\
     free(log_ptr);}\
@@ -60,9 +63,10 @@ enum LOG_LEVEL
     LOG_LVL_ERROR
 };
 
-const int STR_LEN = 128;
-const float MAX_VAL = 1E5;
-const int DELAY_FAST = 1;
+// TODO:
+const int STR_LEN = 128; // size_t
+const float MAX_VAL = 1E5; // double
+const int DELAY_FAST = 10 ; // ??
 
 extern int current_log_mode;
 extern int current_log_level;

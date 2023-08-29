@@ -10,4 +10,3 @@
 1 1 2.5 -0.5 -1.5 -0.5 1.5 2 // D < 0
 1 1 2.5 -0.5 1.5 -0.5 -1.5 2 // D < 0
 1 1 1 1 NAN NAN 1 1          // Only for demonstation
-aboba

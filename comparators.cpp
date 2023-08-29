@@ -19,7 +19,7 @@ int compare_with_zero(const double a)
 {
     assert(std::isfinite(a));
 
-    if (fabs(a) < PRECISION)           // a == 0
+    if (fabs(a) < PRECISION)           // a is 0
         return 0;
 
     if (a > 0.)                        // a > PRECISION
@@ -28,7 +28,7 @@ int compare_with_zero(const double a)
     return -1;                         // a < PRECISION
 }
 
-int compare_complex_doubles(const double _Complex a, const double _Complex b, const double precision)
+int compare_complex_doubles(const double _Complex a, const double _Complex b, const double precision)  // TODO: precision?
 {
     if(complex_isnan(a) && complex_isnan(b))  // NAN == NAN
         return 0;

@@ -19,6 +19,8 @@ int main(int argc, char **argv)
 
     // TODO: TAKE A LOOK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
 
+
+    // getopt() man
     if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
     {
         current_log_level = LOG_LVL_MESSAGE;
@@ -42,7 +44,7 @@ int main(int argc, char **argv)
                     current_log_mode = TO_FILE;
 
                 if (argc >= 5)
-                    strcpy(log_file_name, argv[4]);
+                    strcpy(log_file_name, argv[4]);  // TODO: assign pointer to argv[n]
             }
         }
 
