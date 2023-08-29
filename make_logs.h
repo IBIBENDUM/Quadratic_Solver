@@ -9,7 +9,7 @@
 /// Call format_log then send output to write_log
 /// ### Example
 /// ~~~~~~~~~~~~~~~~~~~.cpp
-/// LOG(LOG_LVL_MESSAGE, "D = %lf", d);
+/// LOG(LOG_LVL_MESSAGE, "D = %lg", d);
 /// ~~~~~~~~~~~~~~~~~~~
 /// @param FORMAT Format that is passed to the format_log()
 /// @param LVL Level that is passed to the write_log()
@@ -70,7 +70,7 @@ const int DELAY_FAST = 5 ;
 
 extern int current_log_mode;
 extern int current_log_level;
-extern char *log_file_name;
+extern const char *log_file_name;
 
 
 /// Assert function with write_log() call
@@ -110,5 +110,7 @@ char* format_log(const char *format, ...);
 /// @param string String which will be displayed
 /// @param delay Delay value (multiples by two)
 void print_by_symbols(const char *string, const int delay);
+
+void exit_with_strerror();
 
 #endif

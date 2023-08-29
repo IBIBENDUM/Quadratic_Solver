@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 
 #include "qe_solver_tester.h"
 #include "colors.h"
@@ -13,40 +14,64 @@ int main(int argc, char **argv)
 {
     show_separator();
 
-    if (argc < 2)
-    {
-        printf(COLOR_BLUE "HOW TO USE: " COLOR_RESET "tester.exe <filename>");
-        return 1;
-    }
+    int arg = 0;
 
-    if (argc >= 3 && strcmp(argv[2], "-log") == 0) // By default log to console
+    while ( (arg = getopt(argc, argv, "lo::f:")) != -1)
     {
-        current_log_level = LOG_LVL_MESSAGE;
-
-        if (argc >= 4)
+        switch(arg)
         {
-            if (strcmp(argv[3], "disable") == 0)
-                current_log_level = LOG_LVL_DISABLED;
-
-            else if (strcmp(argv[3], "message") == 0)
-                current_log_level = LOG_LVL_MESSAGE;
-
-            else if (strcmp(argv[3], "error") == 0)
-                current_log_level = LOG_LVL_ERROR;
-            if (argc >= 5)
+            case 'l':
             {
-                if (strcmp(argv[4], "-console") == 0)
-                    current_log_mode = TO_CONSOLE;
+                if (optarg)
+                {
+                    if (strcmp(optarg, "disable") == 0)
+                        current_log_level = LOG_LVL_DISABLED;
 
-                else if (strcmp(argv[4], "-file") == 0)
-                    current_log_mode = TO_FILE;
+                    else if (strcmp(optarg, "message") == 0)
+                        current_log_level = LOG_LVL_MESSAGE;
 
-                if (argc >= 6)
-                    strcpy(log_file_name, argv[5]);
+                    else if (strcmp(optarg, "error") == 0)
+                        current_log_level = LOG_LVL_ERROR;
+                }
+
+                else
+                    current_log_level = LOG_LVL_MESSAGE;
+
+                clear_log_file();
+                break;
             }
-        }
 
-        clear_log_file();
+            case 'o':
+            {
+                if (optarg)
+                {
+                    if (strcmp(optarg, "console") == 0)
+                        current_log_mode = TO_CONSOLE;
+
+                    else if (strcmp(optarg, "file") == 0)
+                        current_log_mode = TO_FILE;
+                }
+                break;
+            }
+
+            case 'f':
+            {
+                current_log_mode = TO_FILE;
+                log_file_name = optarg;
+                break;
+            }
+
+            case '?':
+            {
+                printf(COLOR_RED);
+                PRINT_WITH_ANIM(DELAY_FAST, "Error found\n");
+                printf(COLOR_RESET);
+                return 1;
+            }
+
+            default:
+                break;
+        }
     }
 
     test_all_equations(argv[1]);

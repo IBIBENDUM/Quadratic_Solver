@@ -61,6 +61,8 @@ int main(int argc, char **argv)
 
             case 'f':
             {
+                if (current_log_level == LOG_LVL_DISABLED)
+                    current_log_level = LOG_LVL_MESSAGE;
                 current_log_mode = TO_FILE;
                 log_file_name = optarg;
                 break;

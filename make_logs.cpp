@@ -6,13 +6,14 @@
 #include <complex.h>
 #include <math.h>
 #include <Windows.h>
+#include <errno.h>
 
 #include "make_logs.h"
 #include "colors.h"
 
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_LVL_DISABLED;
-char *log_file_name = "qe_solver.log";
+char const *log_file_name = "qe_solver.log";
 
 static char* current_time_to_str();
 
@@ -41,17 +42,22 @@ void write_log(const char message[], const int log_level, const char file[], con
             else
                 printf(COLOR_RED);
         }
+
         else  // TO_FILE
         {
             file_ptr = fopen(log_file_name, "a");
 
-            // TODO: not exists
+            if (!file_ptr)
+                exit_with_strerror();
         }
 
         fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n%s\n", current_time_to_str(), file, func, line, message);
 
         if (current_log_mode == TO_FILE)
-            fclose(file_ptr);
+        {
+            if (fclose(file_ptr))
+                exit_with_strerror();
+        }
         else
             printf(COLOR_RESET);
     }
@@ -64,10 +70,19 @@ void my_assert(const char expr[], const char file[], const char func[], const in
     exit(EXIT_FAILURE);
 }
 
+void exit_with_strerror()
+{
+    printf(COLOR_RED "%s" COLOR_RESET, strerror(errno));
+    exit(EXIT_FAILURE);
+}
+
 void clear_log_file()
 {
-    // TODO: check errno
-    fclose(fopen(log_file_name, "w")); // TODO: what if file will not open
+    FILE *file_ptr = fopen(log_file_name, "w");
+    if (!file_ptr)
+        exit_with_strerror();
+    if (fclose(file_ptr))
+        exit_with_strerror();
 }
 
 char* format_log(const char *format, ...)
@@ -76,7 +91,8 @@ char* format_log(const char *format, ...)
     va_start(ptr, format);
 
     char *str = (char *) malloc(STR_LEN * sizeof(char));
-    // TODO: str == NULL ?
+    if (!str)
+        exit_with_strerror();
 
     unsigned int j = 0;
 
@@ -87,18 +103,14 @@ char* format_log(const char *format, ...)
         {
             i++;                // Skip '%'
 
-            if (format[i] == 'l' && format[i+1] == 'f')
+            if (format[i] == 'l' && format[i+1] == 'g')
             {
                 i++;            // Skip 'f'
                 double lf_val = va_arg(ptr, double);
 
                 if (std::isfinite(lf_val))
                 {
-                    // TODO: ???
-                    if (fabs(lf_val) < MAX_VAL)
-                        j += sprintf(str+j, "%.2lf", lf_val);
-                    else
-                        j += sprintf(str+j, "%.2e", lf_val);
+                    j += sprintf(str+j, "%.2lg", lf_val);
                 }
 
                 else

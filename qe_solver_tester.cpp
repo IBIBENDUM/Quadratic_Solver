@@ -69,7 +69,7 @@ static int count_lines(FILE *file_ptr)
 static int count_values_in_line(char *line)
 {
     int args_count = 0;
-    char *ptr = strtok(line, " ");     // strtok replace " " with '\0'
+    char *ptr = strtok(line, " ");
     while (ptr != NULL)
     {
         if(strcmp(ptr, "//") == 0)
@@ -186,7 +186,7 @@ bool test_one_equation(const int num_of_test, const struct test_values_data *tes
 
     if (num_of_roots == num_of_roots_ref)
     {
-        if (compare_complex_doubles(x1, x1_ref, SMALL_PRECISION) == 0 && compare_complex_doubles(x2, x2_ref, SMALL_PRECISION) == 0)
+        if (compare_complex_doubles(x1, x1_ref) == 0 && compare_complex_doubles(x2, x2_ref) == 0)
         {
             LOG(LOG_LVL_MESSAGE, "TEST N%d SUCCEED: x1 = %s, x2 = %s, num_of_roots = %d",
             num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);

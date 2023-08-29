@@ -25,7 +25,7 @@ static double calculate_discriminant(const double a, const double b, const doubl
 
     double d = b*b - 4*a*c;
 
-    LOG(LOG_LVL_MESSAGE, "D = %lf", d);
+    LOG(LOG_LVL_MESSAGE, "D = %lg", d);
 
     return d;
 }
