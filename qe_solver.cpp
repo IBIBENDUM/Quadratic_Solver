@@ -10,7 +10,6 @@
 #include "format_complex.h"
 #include "make_logs.h"
 
-// Local functions initialization
 static double calculate_discriminant(const double a, const double b, const double c);
 
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);

@@ -17,7 +17,7 @@ static void show_kitty();
 
 // ABOB: remove returns after @return
 // use size_t instead of int
-
+// return value (error 1, success 0)
 
 
 int main(int argc, char **argv)
@@ -29,12 +29,12 @@ int main(int argc, char **argv)
     PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
     printf(COLOR_RESET);
 
-    while(true)
+    while (true)
     {
         show_separator();
         double a = NAN, b = NAN, c = NAN;
 
-        if(ask_coefs(&a,&b,&c))
+        if (ask_coefs(&a, &b, &c))
         {
             double _Complex x1 = NAN, x2 = NAN;
             int num_of_roots = 0;
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
             }
         }
 
-        if(!ask_for_continue()) break;
+        if (!ask_for_continue()) break;
 
     }
 
