@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include <Windows.h>
+#include <unistd.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
@@ -13,44 +13,72 @@ static void show_kitty();
 
 int main(int argc, char **argv)
 {
-    // .\main.exe -log error -console
-    // .\main.exe -log message -file
-    // .\main.exe -log message -file aboba.txt
+    // .\main.exe -l error -o console
+    // .\main.exe -l message -o file
+    // .\main.exe -l message -o file -f aboba.txt
 
-    // TODO: TAKE A LOOK HOW TO MAKE FLAGS BETTER (it's working but looks terrible)
+    //    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
 
+    int arg = 0;
 
-    // getopt() man
-    if (argc >= 2 && strcmp(argv[1], "-log") == 0) // By default log to console
+    while ( (arg = getopt(argc, argv, "lo::f:")) != -1)
     {
-        current_log_level = LOG_LVL_MESSAGE;
-
-        if (argc >= 3)
+        switch(arg)
         {
-            if (strcmp(argv[2], "disable") == 0)
-                current_log_level = LOG_LVL_DISABLED;
-
-            else if (strcmp(argv[2], "message") == 0)
-                current_log_level = LOG_LVL_MESSAGE;
-
-            else if (strcmp(argv[2], "error") == 0)
-                current_log_level = LOG_LVL_ERROR;
-            if (argc >= 4)
+            case 'l':
             {
-                if (strcmp(argv[3], "-console") == 0)
-                    current_log_mode = TO_CONSOLE;
+                if (optarg)
+                {
+                    if (strcmp(optarg, "disable") == 0)
+                        current_log_level = LOG_LVL_DISABLED;
 
-                else if (strcmp(argv[3], "-file") == 0)
-                    current_log_mode = TO_FILE;
+                    else if (strcmp(optarg, "message") == 0)
+                        current_log_level = LOG_LVL_MESSAGE;
 
-                if (argc >= 5)
-                    strcpy(log_file_name, argv[4]);  // TODO: assign pointer to argv[n]
+                    else if (strcmp(optarg, "error") == 0)
+                        current_log_level = LOG_LVL_ERROR;
+                }
+
+                else
+                    current_log_level = LOG_LVL_MESSAGE;
+
+                clear_log_file();
+                break;
             }
-        }
 
-        clear_log_file();
+            case 'o':
+            {
+                if (optarg)
+                {
+                    if (strcmp(optarg, "console") == 0)
+                        current_log_mode = TO_CONSOLE;
+
+                    else if (strcmp(optarg, "file") == 0)
+                        current_log_mode = TO_FILE;
+                }
+                break;
+            }
+
+            case 'f':
+            {
+                current_log_mode = TO_FILE;
+                log_file_name = optarg;
+                break;
+            }
+
+            case '?':
+            {
+                printf(COLOR_RED);
+                PRINT_WITH_ANIM(DELAY_FAST, "Error found\n");
+                printf(COLOR_RESET);
+                return 1;
+            }
+
+            default:
+                break;
+        }
     }
-//    printf(COLOR_BLUE "This program solves quadratic equations!\nVersion: 1.2\n" COLOR_RESET);
+
     printf(COLOR_BLUE);
     PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.2\n");
     printf(COLOR_RESET);

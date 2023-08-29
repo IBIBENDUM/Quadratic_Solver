@@ -66,11 +66,11 @@ enum LOG_LEVEL
 // TODO:
 const int STR_LEN = 128; // size_t
 const float MAX_VAL = 1E5; // double
-const int DELAY_FAST = 10 ; // ??
+const int DELAY_FAST = 5 ;
 
 extern int current_log_mode;
 extern int current_log_level;
-extern char log_file_name[];
+extern char *log_file_name;
 
 
 /// Assert function with write_log() call

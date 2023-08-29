@@ -12,7 +12,7 @@
 
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_LVL_DISABLED;
-char log_file_name[] = "qe_solver.log";
+char *log_file_name = "qe_solver.log";
 
 static char* current_time_to_str();
 
@@ -148,9 +148,11 @@ void print_by_symbols(const char *string, const int delay)
 {
     for (int i = 0; string[i]; i++)
     {
-        printf("%c", toupper(string[i]));
-        Sleep(delay);
-        if (islower(string[i]))
-            printf("\b%c", string[i]);
+//        printf("%c", toupper(string[i]));
+        printf("%c", string[i]);
+//        Sleep(delay);
+//        if (islower(string[i]))
+//            printf("\b%c", string[i]);
+//        Sleep(delay);
     }
 }
