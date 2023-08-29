@@ -1,7 +1,7 @@
 #ifndef QE_SOLVER_TESTER_H
 #define QE_SOLVER_TESTER_H
 
-const int MAX_LINE_LEN = 256;
+const int MAX_LINE_LEN = 256;  // TODO: max len of what?
 
 struct test_values_data {
     double a;

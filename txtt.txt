@@ -19,3 +19,6 @@ D = -8.00
 [12:13:50] (FILE: qe_solver.cpp, FUNC: bool solve_quadratic_equation(double, double, double, __complex__ double*, __complex__ double*, int*), LINE: 143)
 Equation have two roots
 x1 = -1.00-1.41i x2 = -1.00+1.41i
+
+
+# TODO: WHAT IS THIS

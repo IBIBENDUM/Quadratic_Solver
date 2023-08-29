@@ -32,7 +32,7 @@ static double calculate_discriminant(const double a, const double b, const doubl
 // Check for specific cases of quadratic equation
 static bool check_specific_cases(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
-// Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0)
+// Should i check for incomplete quadratic equations? (ax^2 + c = 0) or (ax^2 + bx = 0) TODO: measure and tell me!
 
 // Expects that this function calls only from solve_quadratic_equation() (no asserts)
 

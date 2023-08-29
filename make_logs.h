@@ -111,6 +111,7 @@ char* format_log(const char *format, ...);
 /// @param delay Delay value (multiples by two)
 void print_by_symbols(const char *string, const size_t delay);
 
+// TODO: annotate __attribute__((noreturn))
 void exit_with_strerror();
 
 #endif

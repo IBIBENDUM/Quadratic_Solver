@@ -21,22 +21,22 @@ static double strtod_with_negative(char *ptr, char **endptr);
 
 
 
-static int get_file_size(FILE *file_ptr)
+static int get_file_size(FILE *file_ptr) // TODO: useful, extract in a separate file
 {
     MY_ASSERT(file_ptr);
 
-    int prev_pos = ftell(file_ptr);
+    int prev_pos = ftell(file_ptr); // TODO: long?
 
     fseek(file_ptr, 0, SEEK_END);
     int size = ftell(file_ptr);
     fseek(file_ptr, prev_pos, SEEK_SET);
 
-    LOG(LOG_LVL_MESSAGE, "File have %d symbols", size);
+    LOG(LOG_LVL_MESSAGE, "File have %d symbols", size); // TODO: add more information (at least fileno)
 
     return size;
 }
 
-static int count_lines(FILE *file_ptr)
+static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate file
 {
     MY_ASSERT(file_ptr);
 
@@ -44,7 +44,7 @@ static int count_lines(FILE *file_ptr)
 
     LOG(LOG_LVL_MESSAGE, "File have %d symbols", n);
 
-    char *symbols = (char *) malloc(n * sizeof(char));  // TODO: correctness
+    char *symbols = (char *) malloc(n * sizeof(char));  // TODO: WHAT HORRIBLE THINGS HAVE I DONE TO YOU?
 
     int prev_pos = ftell(file_ptr);
 
@@ -96,15 +96,15 @@ static double strtod_with_negative(char *ptr, char **endptr)
 
 bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 {
-    MY_ASSERT(file_ptr);
+    MY_ASSERT(file_ptr); // TODO: too complex, can you make it simpler?
     MY_ASSERT(test_values);
 
     char line[MAX_LINE_LEN] = {};
     fgets(line, MAX_LINE_LEN, file_ptr);
 
     const int values_amount = 8;
-    enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag };
-    double values[values_amount - 1] = {};  // Without num_of_roots (because it's int)
+    enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag }; // TODO: Why enum define here?
+    double values[values_amount - 1] = {};  // Without num_of_roots (because it's int) // TODO: don't VLA's
 
     if (values_amount == count_values_in_line(line))
     {
@@ -118,7 +118,7 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
             ptr += strspn(ptr, " "); // Skip spaces
         }
 
-        test_values->a = values[a];
+        test_values->a = values[a]; // TODO: designated initializers (Why is it better?)
         test_values->b = values[b];
         test_values->c = values[c];
         test_values->x1_ref = write_complex_value_to_var(values[x1_real], values[x1_imag]);
@@ -145,7 +145,7 @@ void test_all_equations(const char *filename)
 
     int number_of_succeed = 0, number_of_failed = 0;
 
-    for (int i = 0, test_number = 0; i < n-1; i++)
+    for (int i = 0, test_number = 0; i < n-1; i++) // TODO: add example
     {
         if(!read_reference_values(&test_values, file_ptr))
             continue;
@@ -160,6 +160,7 @@ void test_all_equations(const char *filename)
         }
     }
 
+    // TODO: skomponovat' v golove
     printf(COLOR_GREEN "Succeed: %d " COLOR_RED "Failed: %d\n" COLOR_RESET, number_of_succeed, number_of_failed);
 
     fclose(file_ptr);
@@ -176,7 +177,7 @@ bool test_one_equation(const int num_of_test, const struct test_values_data *tes
     double c = test_values->c;
     _Complex double x1_ref = test_values->x1_ref;
     _Complex double x2_ref = test_values->x2_ref;
-    int num_of_roots_ref = test_values->num_of_roots_ref;
+    int num_of_roots_ref = test_values->num_of_roots_ref; // TODO: Are you sure this is necessary?
 
     double _Complex x1 = NAN, x2 = NAN;
     int num_of_roots = NAN;
@@ -209,7 +210,7 @@ void print_failed_values(const int num_of_test, const _Complex double x1, const 
            num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);
 }
 
-void print_expected_values(const _Complex double x1_ref, const _Complex double x2_ref, const int num_of_roots_ref)
+void print_expected_values(const _Complex double x1_ref, const _Complex double x2_ref, const int num_of_roots_ref) // TODO: Don't you have a struct to store it?
 {
     printf(COLOR_BLUE "EXPECTED: " COLOR_RESET "x1 = %s, x2 = %s, num_of_roots_ref = %d\n",
            complex_number_to_str(x1_ref), complex_number_to_str(x2_ref), num_of_roots_ref);

@@ -3,8 +3,9 @@
 
 const int MAX_LEN = 16;
 
+// TODO: docs?
 char* complex_number_to_str(_Complex double a);
 
-_Complex double write_complex_value_to_var(double real, double imag);
+_Complex double write_complex_value_to_var(double real, double imag); // TODO: rename
 
 #endif

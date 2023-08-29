@@ -16,7 +16,7 @@ bool complex_isnan(_Complex double x)
                                                      // cimag(a) == 0;   true
 }
 
-int compare_with_zero(const double a)
+int compare_with_zero(const double a) // TODO: express through compare_doubles 
 {
     assert(std::isfinite(a));
 
@@ -40,6 +40,7 @@ int compare_doubles(const double a, const double b)
     return -1;                                       // a < b
 }
 
+// TODO: You invented order in complex numbers?!
 int compare_complex_doubles(const double _Complex a, const double _Complex b)
 {
     if (complex_isnan(a) && complex_isnan(b))                       // NAN equals to NAN
@@ -63,13 +64,15 @@ int compare_complex_doubles(const double _Complex a, const double _Complex b)
     return -1;                                                      // <<---------------------
 }
 
-#define SWAP_VARIABLES(A, B)\
-do {\
-double _Complex temp = NAN;\
-temp = (A);\
-(A) = (B);\
-(B) = temp;\
-} while(0)
+// TODO: PLEASE
+#define SWAP_VARIABLES(A, B)		\
+    do {				\
+	double _Complex temp = NAN;	\
+	temp = (A);			\
+	(A) = (B);			\
+	(B) = temp;			\
+    } while(0)
+
 void sort_complex_by_ascending(double _Complex *a, double _Complex *b)
 {
     if(compare_complex_doubles(*a, *b) > 0)          // If a > b swap it

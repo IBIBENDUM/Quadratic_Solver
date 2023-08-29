@@ -4,6 +4,8 @@ CFLAGS = -c -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-
 OBJ = obj
 
 all: main tester
+
+# TODO: remove
 test: tester
 
 main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o
@@ -11,6 +13,12 @@ main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o 
 
 tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o
 	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o -o tester.exe
+
+
+# TODO: Header file dependencies?
+# TODO: You can write a program that will automatically generate Makefile?
+
+
 format_complex.o: format_complex.cpp
 	$(CC) $(CFLAGS) format_complex.cpp
 make_logs.o: make_logs.cpp
@@ -27,7 +35,11 @@ qe_solver_interactive: qe_solver_interactive.cpp
 	$(CC) $(CFLAGS) qe_solver_interactive.cpp
 comparators.o: comparators.cpp
 	$(CC) $(CFLAGS) comparators.cpp
+
+# TODO: PHONY target 
 clean:
 	rm -rf *.o main
+
+# TODO: make check
 
 
