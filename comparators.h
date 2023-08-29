@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 const double PRECISION = 0.0000001;
-const double SMALL_PRECISION = 0.1; // TODO: stat' uverenim
+const double SMALL_PRECISION = 0.01;
 
 /// Return true if complex real part is NAN
 bool complex_isnan(_Complex double x);

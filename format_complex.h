@@ -1,11 +1,14 @@
 #ifndef FORMAT_COMPLEX_H
 #define FORMAT_COMPLEX_H
 
-const int MAX_LEN = 16;
+const int COMPLEX_STR_LEN = 16;
 
-// TODO: docs?
+/// Write complex number to string
+/// @warning Apply free() after using
 char* complex_number_to_str(_Complex double a);
 
-_Complex double write_complex_value_to_var(double real, double imag); // TODO: rename
+// Write value to _Complex from real and imag parts
+// @return Result complex double
+_Complex double complex_from_parts(double real, double imag);
 
 #endif

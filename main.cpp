@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <Windows.h> // TODO: Is it necessary?
+#include <Windows.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
@@ -25,10 +25,6 @@ int main(int argc, char **argv)
     if (handle_cmd_args(argc, argv))
         return 1;
 
-    printf(COLOR_BLUE); // TODO: Make a shorter notation
-    PRINT_WITH_ANIM(DELAY_FAST, "This program solves quadratic equations!\nVersion: 1.47\n");
-    printf(COLOR_RESET);
-
     while (true)
     {
         show_separator();
@@ -40,19 +36,17 @@ int main(int argc, char **argv)
             int num_of_roots = 0;
 
             if(!solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
-            {
                 print_roots(x1, x2, num_of_roots);
-            }
         }
 
-        if (!ask_for_continue()) break;
+        if (!ask_if_continue()) break;
 
     }
 
     show_separator();
     show_kitty();
 
-    PRINT_WITH_ANIM(DELAY_FAST, "That's all!\n");
+    PRINT_WITH_ANIM("That's all!\n");
 
     return 0;
 }
@@ -61,7 +55,7 @@ static bool handle_cmd_args(int argc, char **argv)
 {
     int arg = 0;
 
-    while ((arg = getopt(argc, argv, "lo::f:h")) != -1)
+    while ((arg = getopt(argc, argv, "l:o::f:a:h")) != -1)
     {
         switch (arg)
         {
@@ -105,6 +99,19 @@ static bool handle_cmd_args(int argc, char **argv)
                 break;
             }
 
+            case 'a': {
+                if (optarg)
+                {
+                    if (strcmp(optarg, "disabled") == 0)
+                        current_anim_mode = ANIM_DISABLED;
+
+                    else if (strcmp(optarg, "enabled") == 0)
+                        current_anim_mode = ANIM_ENABLED;
+                }
+
+                break;
+            }
+
             case 'h': {
                 print_help();
 
@@ -113,7 +120,7 @@ static bool handle_cmd_args(int argc, char **argv)
 
             default: {            // I know about '?'
                 printf(COLOR_RED);
-                PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
+                PRINT_WITH_ANIM("Wrong option found\n");
                 printf(COLOR_RESET);
                 print_help();
 
@@ -143,13 +150,12 @@ static void print_help()
 
 static void show_separator()
 {
-    printf(COLOR_WHITE "=======================================================================\n" COLOR_RESET);
-    // TODO: make macro COLOR_WHITE...COLOR_RESET
+    printf(PAINT_TEXT(COLOR_WHITE, "=======================================================================\n"));
 }
 
 static void show_kitty()
 {
-    // TODO: Make this animation
+    // TODO: Make this animation BAH: I could not get
     size_t sl = 10;
     printf(COLOR_PURPLE);
     printf("   _                  \n");               Sleep(sl);

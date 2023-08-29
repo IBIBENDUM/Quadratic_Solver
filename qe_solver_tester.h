@@ -12,6 +12,9 @@ struct test_values_data {
     int num_of_roots_ref;
 };
 
+enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag };
+
+
 /// Read values for test from file
 ///
 /// @param *test_values Values for test

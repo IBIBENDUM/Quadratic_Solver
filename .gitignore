@@ -1,4 +1,6 @@
 *.bat
 *.save
+*.o
+*.log
 Documentation
 Doxyfile

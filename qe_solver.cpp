@@ -24,7 +24,7 @@ static double calculate_discriminant(const double a, const double b, const doubl
 
     double d = b*b - 4*a*c;
 
-    LOG(LOG_LVL_MESSAGE, "D = %g", d);
+    LOG(LOG_LVL_MESSAGE, "D = %lg", d);
 
     return d;
 }
@@ -116,7 +116,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
                 if (compare_with_zero(d) == 0)         // D == 0
                 {
-                    LOG(LOG_LVL_MESSAGE, "Equation have one root\n%s", cast_to_root_format(0, *x1));
+                    LOG(LOG_LVL_MESSAGE, "Equation have one root\nx = ", complex_number_to_str(*x1));
 
                     *num_of_roots = ONE_ROOT;
                 }
@@ -138,7 +138,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 
                     *num_of_roots =  TWO_ROOTS;
 
-                    LOG(LOG_LVL_MESSAGE, "Equation have two roots\n%s %s", cast_to_root_format(1, *x1), cast_to_root_format(2, *x2));
+                    LOG(LOG_LVL_MESSAGE, "Equation have two roots\n%s %s", complex_number_to_str(*x1), complex_number_to_str(*x2));
                 }
             }
         }
@@ -146,19 +146,9 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         return false;
     }
 
-    PRINT_WITH_ANIM(DELAY_FAST, "Coefficients aren't finite\n");
+    PRINT_WITH_ANIM("Coefficients aren't finite\n");
 
     return true;
-}
-
-// Return string in root form
-char* cast_to_root_format(int n, _Complex double root)
-{
-    char *root_string = (char *) malloc(50 * sizeof(char));
-
-    sprintf(root_string, "x%c = %s", (n == 0) ? ' ' : n + '0', complex_number_to_str(root));
-
-    return root_string;
 }
 
 // Show roots on the display
@@ -167,23 +157,30 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
     switch (num_of_roots)
     {
         case INFINITE_ROOTS: {
-            PRINT_WITH_ANIM(DELAY_FAST, "X belongs to R\n");
+            PRINT_WITH_ANIM("X belongs to R\n");
             break;
         }
 
         case NO_ROOTS: {
-            PRINT_WITH_ANIM(DELAY_FAST, "No roots\n");
+            PRINT_WITH_ANIM("No roots\n");
             printf("No roots\n");
             break;
         }
 
         case ONE_ROOT: {
-            PRINT_WITH_ANIM(DELAY_FAST, "%s\n", cast_to_root_format(0, x1));
+
+            char *ptr_1 = complex_number_to_str(x1);
+            PRINT_WITH_ANIM("x = %s\n", ptr_1);
+            free(ptr_1);
             break;
         }
 
         case TWO_ROOTS: {
-            PRINT_WITH_ANIM(DELAY_FAST, "%s %s\n", cast_to_root_format(1, x1), cast_to_root_format(2, x2));
+            char *ptr_1 = complex_number_to_str(x1);
+            char *ptr_2 = complex_number_to_str(x2);
+            PRINT_WITH_ANIM("%x1 = %s x2 = %s\n", ptr_1, ptr_2);
+            free(ptr_1);
+            free(ptr_2);
             break;
         }
 

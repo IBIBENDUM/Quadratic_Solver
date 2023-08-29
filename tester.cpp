@@ -30,7 +30,7 @@ static bool handle_cmd_args(int argc, char **argv)
 {
     int arg = 0;
 
-    while ( (arg = getopt(argc, argv, "lo::f:t:h")) != -1)
+    while ( (arg = getopt(argc, argv, "l:o::f:t:h")) != -1)
     {
         switch(arg)
         {
@@ -86,7 +86,7 @@ static bool handle_cmd_args(int argc, char **argv)
 
             default: {            // I know about '?'
                 printf(COLOR_RED);
-                PRINT_WITH_ANIM(DELAY_FAST, "Wrong option found\n");
+                PRINT_WITH_ANIM("Wrong option found\n");
                 printf(COLOR_RESET);
                 print_help();
 

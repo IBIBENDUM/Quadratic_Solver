@@ -11,6 +11,8 @@
 #include "make_logs.h"
 #include "colors.h"
 
+size_t current_anim_mode = ANIM_ENABLED;
+
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_LVL_DISABLED;
 char const *log_file_name = "qe_solver.log";
@@ -30,14 +32,14 @@ static char* current_time_to_str()
 
 void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
 {
-    if (log_level == current_log_level) // TODO: <=
+    if (log_level <= current_log_level)
     {
         FILE *file_ptr = NULL;
 
         if (current_log_mode == TO_CONSOLE)
         {
             file_ptr = stdout;
-            if (current_log_level == LOG_LVL_MESSAGE)
+            if (log_level == LOG_LVL_MESSAGE)
                 printf(COLOR_YELLOW);
             else
                 printf(COLOR_RED);
@@ -92,7 +94,7 @@ char* format_log(const char *format, ...)
 
     // TODO: just use vprintf(), including vsnprintf
 
-    char *str = (char *) malloc(STR_LEN * sizeof(char));
+    char *str = (char *) malloc(LOG_STR_LEN * sizeof(char));
     if (!str)
         exit_with_strerror();
 
@@ -158,15 +160,29 @@ char* format_log(const char *format, ...)
     return str;
 }
 
-void print_by_symbols(const char *string, const size_t delay)
+void print_by_symbols(const char *string)
 {
-    for (int i = 0; string[i]; i++)
+    switch (current_anim_mode)
     {
-//        printf("%c", toupper(string[i])); // TODO: for gods sake make it into a programmable switch
-        printf("%c", string[i]);
-//        Sleep(delay);
-//        if (islower(string[i]))
-//            printf("\b%c", string[i]);
-//        Sleep(delay);
+        case ANIM_DISABLED: {
+            printf("%s", string);
+            break;
+        }
+
+        case ANIM_ENABLED: {
+            for (size_t i = 0; string[i]; i++)
+            {
+                printf("%c", toupper(string[i]));
+                Sleep(ANIM_DELAY);
+                if (islower(string[i]))
+                    printf("\b%c", string[i]);
+                Sleep(ANIM_DELAY);
+            }
+            break;
+        }
+
+        default: {
+            break;
+        }
     }
 }

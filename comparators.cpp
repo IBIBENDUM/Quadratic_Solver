@@ -16,21 +16,18 @@ bool complex_isnan(_Complex double x)
                                                      // cimag(a) == 0;   true
 }
 
-int compare_with_zero(const double a) // TODO: express through compare_doubles 
+int compare_with_zero(const double a)
 {
-    assert(std::isfinite(a));
+    MY_ASSERT(std::isfinite(a));
 
-    if (fabs(a) < PRECISION)                         // a is 0
-        return 0;
-
-    if (a > 0.)                                      // a > PRECISION
-        return 1;
-
-    return -1;                                       // a < PRECISION
+    compare_doubles(a, 0);
 }
 
 int compare_doubles(const double a, const double b)
 {
+    MY_ASSERT(std::isfinite(a));
+    MY_ASSERT(std::isfinite(b));
+
     if (fabs(a - b) < SMALL_PRECISION)               // a equals to b
         return 0;
 
@@ -40,7 +37,6 @@ int compare_doubles(const double a, const double b)
     return -1;                                       // a < b
 }
 
-// TODO: You invented order in complex numbers?!
 int compare_complex_doubles(const double _Complex a, const double _Complex b)
 {
     if (complex_isnan(a) && complex_isnan(b))                       // NAN equals to NAN
@@ -52,30 +48,32 @@ int compare_complex_doubles(const double _Complex a, const double _Complex b)
     if (!complex_isnan(a) && complex_isnan(b))                      // a < NAN
         return -1;
 
-    if (compare_doubles(fabs(cimag(a)), fabs(cimag(b))) == 0)       // 1.23+4i ~ 5.67+5i -----
-    {                                                               //                        !
-        if (compare_with_zero(cimag(a)) == 0)                       // 1.23 < 4.56            !
-            return compare_doubles(creal(a), creal(b));             //                        !
-                                                                    //                        !
-        if (compare_doubles(creal(a), creal(b)) == 0)               //                        !
-            return compare_doubles(cimag(a), cimag(b));             // 3.45-i < 3.45+i        !
-    }                                                               //                        !
-                                                                    //                        !
-    return -1;                                                      // <<---------------------
+    if (compare_doubles(fabs(cimag(a)), fabs(cimag(b))) == 0)       // 1.23+4i ~ 5.67+5i if there attempt compare complex return -1
+    {                                                               //
+        if (compare_with_zero(cimag(a)) == 0)                       // 1.23 < 4.56
+            return compare_doubles(creal(a), creal(b));             //
+                                                                    //
+        if (compare_doubles(creal(a), creal(b)) == 0)               //
+            return compare_doubles(cimag(a), cimag(b));             // 3.45-i < 3.45+i
+    }                                                               //
+                                                                    //
+    return -1;
 }
 
-// TODO: PLEASE
-#define SWAP_VARIABLES(A, B)		\
-    do {				\
-	double _Complex temp = NAN;	\
-	temp = (A);			\
-	(A) = (B);			\
-	(B) = temp;			\
-    } while(0)
+#define SWAP_VARIABLES(A, B)     \
+    do                            \
+    {				               \
+        double _Complex temp = NAN;	\
+        temp = (A);			         \
+        (A) = (B);			          \
+        (B) = temp;			           \
+    }                                   \
+    while(0)
 
 void sort_complex_by_ascending(double _Complex *a, double _Complex *b)
 {
     if(compare_complex_doubles(*a, *b) > 0)          // If a > b swap it
         SWAP_VARIABLES(*a,*b);
 }
+
 #undef SWAP_VARIABLES

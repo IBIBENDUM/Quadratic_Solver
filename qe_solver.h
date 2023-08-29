@@ -45,7 +45,7 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1);
 ///@param NumberOfRoots Number of roots
 void print_roots(const double _Complex x1, const double _Complex x2, const int num_of_roots);
 
-/// Convert string to root format // TODO: free memory after use! (Maybe you can allow user to choose)  
+/// Convert string to root format // TODO: free memory after use! (Maybe you can allow user to choose)
 ///
 /// ### Examples
 /// ~~~~~~~~~~~~~~~~~~.cpp
@@ -54,7 +54,7 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
 /// x  = 1.22
 /// ~~~~~~~~~~~~~~~~~~
 /// @return String in root format
-char* cast_to_root_format(int n, _Complex double root); // TODO: rename, describe_root?
+//char* cast_to_root_format(int n, _Complex double root); // TODO: rename, describe_root?
 
 
 #endif
