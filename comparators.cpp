@@ -10,18 +10,18 @@
 #include "comparators.h"
 
 
-bool complex_isnan(_Complex double x)
+bool complex_isnan(_Complex double a)
 {
-    return (std::isnan(creal(x)));                   // _Complex double a=NAN;
+    return (std::isnan(creal(a)));                   // _Complex double a=NAN;
                                                      // creal(a) == NAN; true
                                                      // cimag(a) == 0;   true
 }
 
 int compare_with_zero(const double a)
 {
-    assert(std::isfinite(a));
+//    assert(std::isfinite(a));
 
-    compare_doubles(a, 0);
+    return compare_doubles(a, 0);
 }
 
 int compare_doubles(const double a, const double b)

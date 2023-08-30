@@ -21,6 +21,11 @@
     }                                                                       \
     while(0)
 
+#define RETURN_WITH_STRERROR(VAR)\
+{                               \
+        printf(COLOR_RED "%s\n" COLOR_RESET, strerror(errno)); \
+        return VAR;\
+}
 
 enum LOG_MODE
 {
@@ -37,14 +42,6 @@ enum LOG_LEVEL
 
 const size_t LOG_STR_LEN = 128;
 const double MAX_VAL = 1E5;
-
-enum ANIM_MODE
-{
-    ANIM_DISABLED,
-    ANIM_ENABLED
-};
-const size_t ANIM_DELAY = 5;
-extern size_t current_anim_mode; // BAH: Come up with something better
 
 extern int current_log_mode;
 extern int current_log_level;
@@ -67,10 +64,7 @@ bool clear_log_file();
 /// @param file, func, line File, func, line where write_log() called from
 void write_log(const int log_level, const char file[], const char func[], const int line, const char *format, ...);
 
-/// Print string with appearance animation
-/// @param string String which will be displayed
-/// @param delay Delay value (multiples by two)
-void print_with_anim(const char color[], const char *format, ...);
+
 
 // TODO: annotate __attribute__((noreturn))
 

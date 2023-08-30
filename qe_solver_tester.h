@@ -19,7 +19,7 @@ enum value_id { a, b, c, x1_real, x1_imag, x2_real, x2_imag };
 ///
 /// @param *test_values Values for test
 /// @param *file_ptr File pointer
-bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr);
+bool read_reference_values(struct test_values_data *test_values_ptr, FILE *file_ptr);
 
 /// Test quad_solver by file with values
 /// @param *filename Filename
@@ -32,7 +32,7 @@ void test_all_equations(const char *filename);
 /// @param a, b, c Coefficients of quadratic equation
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots Number of roots of quadratic equation
-bool test_one_equation(const int num_of_test, struct test_values_data *tv);
+bool test_one_equation(const int num_of_test, struct test_values_data *tv_ptr);
 
 /// Print expected values
 /// ### Example output

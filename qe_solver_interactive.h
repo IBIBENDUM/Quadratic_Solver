@@ -14,7 +14,7 @@ bool ask_if_continue();
 /// @param a_ptr, b_ptr, c_ptr Pointers of coefficients
 /// @return Function return true if input correct, false if incorrect
 /// @see read_coefs()
-bool ask_coefs(double *a, double *b, double *c);
+bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr);
 
 /// Read coefficient from standard input
 /// ### Input examples

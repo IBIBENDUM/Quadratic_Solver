@@ -10,13 +10,14 @@
 #include "qe_solver_interactive.h"
 #include "colors.h"
 #include "make_logs.h"
+#include "print_with_anim.h"
 
 static void print_help();
 static bool handle_cmd_args(int argc, char **argv);
 static void show_separator();
 static void show_kitty();
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
     if (handle_cmd_args(argc, argv))
         return 1;
@@ -50,7 +51,7 @@ int main(int argc, char **argv)
 }
 
 static bool handle_cmd_args(int argc, char **argv)
-{
+{        //assert
     int arg = 0;
 
     while ((arg = getopt(argc, argv, "l:o:f:a:h")) != -1)
@@ -70,11 +71,8 @@ static bool handle_cmd_args(int argc, char **argv)
                         current_log_level = LOG_LVL_ERROR;
                 }
 
-                else
-                    current_log_level = LOG_LVL_MESSAGE;
-
                 if (clear_log_file())
-                    exit(EXIT_FAILURE);
+                    return 1;
                 break;
             }
 

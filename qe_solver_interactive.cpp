@@ -4,10 +4,12 @@
 #include <string.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <math.h>
 
 #include "qe_solver_interactive.h"
 #include "make_logs.h"
 #include "colors.h"
+#include "print_with_anim.h"
 
 static void skip_line();
 static void skip_space_symbols();
@@ -17,15 +19,18 @@ static bool read_formated(const char *format, ...);
 static void skip_line()
 {
     int ch = 0;
-    while ( ((ch=getchar()) != '\n') && (ch != EOF) )
+
+    while (((ch=getchar()) != '\n') && (ch != EOF))
         continue;
 }
 
 static void skip_space_symbols()
 {
     int ch = 0;
+
     while (isspace(ch = getchar()))
         continue;
+
     ungetc(ch, stdin);
 }
 
@@ -46,7 +51,7 @@ static size_t get_expected_args_amount(const char *format)
 
 bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
-
+//assert
     print_with_anim(COLOR_STD, "Enter the coefficients separated by a space:\n");
 
     if (read_coefs(a_ptr, b_ptr, c_ptr))
@@ -56,6 +61,13 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
         return true;
     }
+
+    if (!isfinite(*a_ptr) || !isfinite(*b_ptr) || !isfinite(*c_ptr))
+    {
+        print_with_anim(COLOR_RED, "Coefficients aren't finite\n");
+        return true;
+    }
+
 
     skip_line();
 
@@ -80,6 +92,8 @@ bool ask_if_continue()
 
 static bool read_formated(const char *format, ...)
 {
+    assert(format);
+
     va_list args;
     va_start(args, format);
     int n = vscanf(format, args);
@@ -100,5 +114,3 @@ int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
     return read_formated("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
 }
-
-#undef SCANF_WITH_CHECKER

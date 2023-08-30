@@ -6,7 +6,7 @@ const double PRECISION = 0.0000001;
 const double SMALL_PRECISION = 0.01;
 
 /// Return true if complex real part is NAN
-bool complex_isnan(_Complex double x);
+bool complex_isnan(_Complex double a);
 
 /// Compare double with zero
 /// ### Example

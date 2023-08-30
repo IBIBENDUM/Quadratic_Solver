@@ -5,6 +5,7 @@
 #include "qe_solver_tester.h"
 #include "colors.h"
 #include "make_logs.h"
+#include "print_with_anim.h"
 
 static void print_help();
 static bool handle_cmd_args(int argc, char **argv);

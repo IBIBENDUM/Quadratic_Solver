@@ -18,7 +18,7 @@ enum roots_number_enum
 /// @attention If equation is linear, x1 gets root value, x2 doesn't change
 /// @warning If a, b, c are infinite or NaN it will signal that function shouldn't be used like that
 /// @see solve_linear_equation()
-bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots);
+bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1_ptr, double _Complex *x2_ptr, int *num_of_roots_ptr);
 
 /// Calculate root of linear equation
 ///
@@ -27,7 +27,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
 /// @param b, c Coefficients of linear equation
 /// @param x1 Root of linear equation
 /// @see solve_quadratic_equation()
-void solve_linear_equation(const double b, const double c, double _Complex *x1);
+void solve_linear_equation(const double a, const double b, double _Complex *x1_ptr);
 
 /// Display roots on the display
 ///

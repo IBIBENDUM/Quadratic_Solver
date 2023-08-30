@@ -9,16 +9,9 @@
 #include <errno.h>
 #include <assert.h>
 
+#include "print_with_anim.h"
 #include "make_logs.h"
 #include "colors.h"
-
-#define RETURN_WITH_STRERROR(X)\
-{                               \
-        printf(COLOR_RED "%s" COLOR_RESET, strerror(errno)); \
-        return X;\
-}
-
-size_t current_anim_mode = ANIM_ENABLED;
 
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_LVL_DISABLED;
@@ -62,15 +55,14 @@ void write_log(const int log_level, const char file[], const char func[], const 
 
 
 
+        fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n", current_time_to_str(), file, func, line);
+
+        // printf message
         va_list args;
         va_start(args, format);
-        char message[LOG_STR_LEN] = {};
-        vsnprintf(message, LOG_STR_LEN, format, args);
-
+        vfprintf(file_ptr, format, args);
         va_end(args);
-
-
-        fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n%s\n", current_time_to_str(), file, func, line, message);
+        putc('\n', file_ptr);
 
         if (current_log_mode == TO_FILE)
         {
@@ -92,40 +84,4 @@ bool clear_log_file()
         RETURN_WITH_STRERROR(true);
 
     return false;
-}
-
-void print_with_anim(const char color[], const char *format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    char message[LOG_STR_LEN] = {};
-    vsnprintf(message, LOG_STR_LEN, format, args);
-
-    va_end(args);
-
-    switch (current_anim_mode)
-    {
-        case ANIM_DISABLED: {
-            printf("%s%s%s", color, message, COLOR_RESET);
-            break;
-        }
-
-        case ANIM_ENABLED: {
-            printf(color);
-            for (size_t i = 0; message[i]; i++)
-            {
-                printf("%c", toupper(message[i]));
-                Sleep(ANIM_DELAY);
-                if (islower(message[i]))
-                    printf("\b%c", message[i]);
-                Sleep(ANIM_DELAY);
-            }
-            printf(COLOR_RESET);
-            break;
-        }
-
-        default: {
-            break;
-        }
-    }
 }

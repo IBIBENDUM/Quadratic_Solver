@@ -5,14 +5,11 @@ OBJ = obj
 
 all: main tester
 
-# TODO: remove
-test: tester
+main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o print_with_anim.o
+	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o print_with_anim.o -o main.exe
 
-main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o
-	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o -o main.exe
-
-tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o
-	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o -o tester.exe
+tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o print_with_anim.o
+	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o print_with_anim.o -o tester.exe
 
 
 # TODO: Header file dependencies?
@@ -23,6 +20,8 @@ format_complex.o: format_complex.cpp
 	$(CC) $(CFLAGS) format_complex.cpp
 make_logs.o: make_logs.cpp
 	$(CC) $(CFLAGS) make_logs.cpp
+print_with_anim.o: print_with_anim.cpp
+	$(CC) $(CFLAGS) print_with_anim.cpp
 tester.o: tester.cpp
 	$(CC) $(CFLAGS) tester.cpp
 main.o: main.cpp
