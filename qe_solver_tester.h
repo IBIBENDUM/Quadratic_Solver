@@ -1,7 +1,7 @@
 #ifndef QE_SOLVER_TESTER_H
 #define QE_SOLVER_TESTER_H
 
-const int MAX_LINE_LEN = 256;  // TODO: max len of what?
+const int MAX_LINE_LEN = 256;
 
 struct test_values_data {
     double a;
@@ -32,7 +32,7 @@ void test_all_equations(const char *filename);
 /// @param a, b, c Coefficients of quadratic equation
 /// @param x1_ref, x2_ref Reference roots of quadratic equation
 /// @param num_of_roots Number of roots of quadratic equation
-bool test_one_equation(const int num_of_test, const struct test_values_data *test_values);
+bool test_one_equation(const int num_of_test, struct test_values_data *tv);
 
 /// Print expected values
 /// ### Example output

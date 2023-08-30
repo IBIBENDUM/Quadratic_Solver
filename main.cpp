@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <Windows.h>
+#include <stdlib.h>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
@@ -15,15 +16,12 @@ static bool handle_cmd_args(int argc, char **argv);
 static void show_separator();
 static void show_kitty();
 
-// ABOB: remove returns after @return
-// use size_t instead of int
-// return value (error 1, success 0)
-
-
 int main(int argc, char **argv)
 {
     if (handle_cmd_args(argc, argv))
         return 1;
+
+    print_with_anim(COLOR_BLUE, "This program solves quadratic equations!\nVersion: 1.47\n");
 
     while (true)
     {
@@ -46,7 +44,7 @@ int main(int argc, char **argv)
     show_separator();
     show_kitty();
 
-    PRINT_WITH_ANIM("That's all!\n");
+    print_with_anim(COLOR_STD, "That's all!\n");
 
     return 0;
 }
@@ -55,7 +53,7 @@ static bool handle_cmd_args(int argc, char **argv)
 {
     int arg = 0;
 
-    while ((arg = getopt(argc, argv, "l:o::f:a:h")) != -1)
+    while ((arg = getopt(argc, argv, "l:o:f:a:h")) != -1)
     {
         switch (arg)
         {
@@ -75,7 +73,8 @@ static bool handle_cmd_args(int argc, char **argv)
                 else
                     current_log_level = LOG_LVL_MESSAGE;
 
-                clear_log_file();
+                if (clear_log_file())
+                    exit(EXIT_FAILURE);
                 break;
             }
 
@@ -87,6 +86,14 @@ static bool handle_cmd_args(int argc, char **argv)
 
                     else if (strcmp(optarg, "file") == 0)
                         current_log_mode = TO_FILE;
+
+                    else
+                    {
+                        print_help();
+
+                        return 1;
+                    }
+
                 }
                 break;
             }
@@ -107,6 +114,13 @@ static bool handle_cmd_args(int argc, char **argv)
 
                     else if (strcmp(optarg, "enabled") == 0)
                         current_anim_mode = ANIM_ENABLED;
+
+                    else
+                    {
+                        print_help();
+
+                        return 1;
+                    }
                 }
 
                 break;
@@ -119,9 +133,7 @@ static bool handle_cmd_args(int argc, char **argv)
             }
 
             default: {            // I know about '?'
-                printf(COLOR_RED);
-                PRINT_WITH_ANIM("Wrong option found\n");
-                printf(COLOR_RESET);
+                print_with_anim(COLOR_RED, "Wrong option found\n");
                 print_help();
 
                 return 1;

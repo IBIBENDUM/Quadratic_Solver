@@ -7,7 +7,7 @@
 /// Do you want to continue? (Y for continue, something else for exit)
 /// ~~~~~~~~~~~~~~~~~~~~~~~~
 ///@return Return true if 'Y', false otherwise
-bool ask_if_continue(); // TODO: ask_if_... ask_whether_...? https://translate.yandex.com/en/?source_lang=ru&target_lang=en&text=%D0%A1%D0%BF%D1%80%D0%BE%D1%81%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B4%D0%BE%D0%BB%D0%B6%D0%B8%D1%82%D1%8C%20%D0%BB%D0%B8
+bool ask_if_continue();
 
 /// Ask user for coefficients value
 ///

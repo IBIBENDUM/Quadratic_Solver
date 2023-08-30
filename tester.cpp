@@ -30,7 +30,7 @@ static bool handle_cmd_args(int argc, char **argv)
 {
     int arg = 0;
 
-    while ( (arg = getopt(argc, argv, "l:o::f:t:h")) != -1)
+    while ( (arg = getopt(argc, argv, "l:o:f:t:h")) != -1)
     {
         switch(arg)
         {
@@ -62,6 +62,14 @@ static bool handle_cmd_args(int argc, char **argv)
 
                     else if (strcmp(optarg, "file") == 0)
                         current_log_mode = TO_FILE;
+
+                    else
+                    {
+                        print_help();
+
+                        return 1;
+                    }
+
                 }
                 break;
             }
@@ -85,9 +93,7 @@ static bool handle_cmd_args(int argc, char **argv)
             }
 
             default: {            // I know about '?'
-                printf(COLOR_RED);
-                PRINT_WITH_ANIM("Wrong option found\n");
-                printf(COLOR_RESET);
+                print_with_anim(COLOR_RED,"Wrong option found\n");
                 print_help();
 
                 return 1;

@@ -35,8 +35,8 @@ int compare_with_zero(const double a);
 /// @param precision Precision with
 int compare_complex_doubles(const double _Complex a, const double _Complex b);
 
-/// Sort complex number by ascending
-void sort_complex_by_ascending(double _Complex *a, double _Complex *b);
+/// Sort complex numbers
+void sort_complex(double _Complex *a, double _Complex *b);
 
 int compare_doubles(const double a, const double b);
 

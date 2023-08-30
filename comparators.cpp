@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "make_logs.h"
 #include "comparators.h"
@@ -18,15 +19,15 @@ bool complex_isnan(_Complex double x)
 
 int compare_with_zero(const double a)
 {
-    MY_ASSERT(std::isfinite(a));
+    assert(std::isfinite(a));
 
     compare_doubles(a, 0);
 }
 
 int compare_doubles(const double a, const double b)
 {
-    MY_ASSERT(std::isfinite(a));
-    MY_ASSERT(std::isfinite(b));
+    assert(std::isfinite(a));
+    assert(std::isfinite(b));
 
     if (fabs(a - b) < SMALL_PRECISION)               // a equals to b
         return 0;
@@ -70,7 +71,7 @@ int compare_complex_doubles(const double _Complex a, const double _Complex b)
     }                                   \
     while(0)
 
-void sort_complex_by_ascending(double _Complex *a, double _Complex *b)
+void sort_complex(double _Complex *a, double _Complex *b)
 {
     if(compare_complex_doubles(*a, *b) > 0)          // If a > b swap it
         SWAP_VARIABLES(*a,*b);

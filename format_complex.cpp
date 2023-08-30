@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <complex.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "format_complex.h"
 #include "comparators.h"
 
 char* complex_number_to_str(_Complex double a)
 {
-    char *complex_string = (char *) malloc(COMPLEX_STR_LEN * sizeof(char));
+    char *complex_string = (char *) calloc(COMPLEX_STR_LEN, sizeof(char));
 
     if (complex_isnan(a))
         sprintf(complex_string, "NaN");

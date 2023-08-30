@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <assert.h>
 
 #include "qe_solver_tester.h"
 #include "qe_solver.h"
@@ -24,14 +25,14 @@ static double strtod_with_negative(char *ptr, char **endptr);
 
 static int get_file_size(FILE *file_ptr) // TODO: useful, extract in a separate file
 {
-    MY_ASSERT(file_ptr);
+    assert(file_ptr);
 
     size_t prev_pos = ftell(file_ptr);
 
-    MY_ASSERT(!fseek(file_ptr, 0, SEEK_END));
+    assert(!fseek(file_ptr, 0, SEEK_END));
     int size = ftell(file_ptr);
-    MY_ASSERT(size > -1);
-    MY_ASSERT(!fseek(file_ptr, prev_pos, SEEK_SET));
+    assert(size > -1);
+    assert(!fseek(file_ptr, prev_pos, SEEK_SET));
 
     LOG(LOG_LVL_MESSAGE, "File %d have %d symbols", fileno(file_ptr), size);
 
@@ -40,7 +41,7 @@ static int get_file_size(FILE *file_ptr) // TODO: useful, extract in a separate 
 
 static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate file
 {
-    MY_ASSERT(file_ptr);
+    assert(file_ptr);
 
     int n = get_file_size(file_ptr);
 
@@ -49,7 +50,7 @@ static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate fi
 
     int prev_pos = ftell(file_ptr);
 
-    MY_ASSERT(!fseek(file_ptr, 0, SEEK_SET));
+    assert(!fseek(file_ptr, 0, SEEK_SET));
 
     fread(symbols, sizeof(char), n, file_ptr);// TODO: correctness
 
@@ -60,7 +61,7 @@ static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate fi
             lines++;
     }
 
-    MY_ASSERT(!fseek(file_ptr, prev_pos, SEEK_SET));
+    assert(!fseek(file_ptr, prev_pos, SEEK_SET));
 
     LOG(LOG_LVL_MESSAGE, "File have %d lines", lines);
 
@@ -94,8 +95,8 @@ static double strtod_with_negative(char *ptr, char **endptr)
 
 bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 {
-    MY_ASSERT(file_ptr);       // TODO: too complex, can you make it simpler?
-    MY_ASSERT(test_values);
+    assert(file_ptr);       // TODO: too complex, can you make it simpler?
+    assert(test_values);
 
     char line[MAX_LINE_LEN] = {};
     fgets(line, MAX_LINE_LEN, file_ptr);
@@ -106,7 +107,7 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
     if (values_amount == count_values_in_line(line))
     {
         char *ptr = line;
-        for (int i = 0; i < values_amount - 1; i++)
+        for (int i = 0; i < values_amount - 1; i++)       // num_of_roots_ref handle separately
         {
             if ((ptr == NULL) || (strcmp(ptr,"//") == 0))  // Check if line ended too early or for comment line
                 return false;
@@ -115,12 +116,11 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
             ptr += strspn(ptr, " "); // Skip spaces
         }
 
-        test_values->a = values[a]; // TODO: designated initializers (Why is it better?)
-        test_values->b = values[b];
-        test_values->c = values[c];
-        test_values->x1_ref = complex_from_parts(values[x1_real], values[x1_imag]);
-        test_values->x2_ref = complex_from_parts(values[x2_real], values[x2_imag]);
-        test_values->num_of_roots_ref = (strcmp(ptr,"NAN") == 0) ? 0 : strtol(ptr, NULL, 10);
+        *test_values = test_values_data
+        {values[a], values[b], values[c],
+        complex_from_parts(values[x1_real], values[x1_imag]),
+        complex_from_parts(values[x2_real], values[x2_imag]),
+        (strcmp(ptr,"NAN") == 0) ? 0 : strtol(ptr, NULL, 10)};
 
         return true;
     }
@@ -131,29 +131,27 @@ bool read_reference_values(struct test_values_data *test_values, FILE *file_ptr)
 
 void test_all_equations(const char *filename)
 {
-    MY_ASSERT(filename);
-    FILE *file_ptr = fopen(filename, "rt"); // TODO: RT RT RT RT RT
-    MY_ASSERT(file_ptr);
+    assert(filename);
+    FILE *file_ptr = fopen(filename, "rt"); // RT RT RT RT RT
+    assert(file_ptr);
 
     int n = count_lines(file_ptr);
-    struct test_values_data test_values; // TODO: initializing
+    struct test_values_data test_values = {};
 
-    fseek(file_ptr, 0, SEEK_SET); // TODO: correctness
+    assert(!fseek(file_ptr, 0, SEEK_SET));
 
-    int number_of_succeed = 0, number_of_failed = 0;
+    int number_of_succeed = 0, test_number = 0;
 
-    for (int i = 0, test_number = 0; i < n-1; i++)                          // n != test_number
+    for (int i = 0; i < n-1; i++)                                           // n != test_number
     {                                                                       // n increments every line
         if(!read_reference_values(&test_values, file_ptr))                  // test_number increments only if line consist args
             continue;
         test_number++;
         if(test_one_equation(test_number, &test_values))
             number_of_succeed += 1;
-        else
-            number_of_failed += 1;
     }
 
-    // TODO: skomponovat' v golove
+    int number_of_failed = test_number - number_of_succeed;
     printf(PAINT_TEXT(COLOR_GREEN, "Succeed: %d " COLOR_RED "Failed: %d\n"), number_of_succeed, number_of_failed);
 
     fclose(file_ptr);
@@ -161,26 +159,19 @@ void test_all_equations(const char *filename)
 }
 
 
-bool test_one_equation(const int num_of_test, const struct test_values_data *test_values)
+bool test_one_equation(const int num_of_test, struct test_values_data *tv)
 {
-    MY_ASSERT(test_values);
-
-    double a = test_values->a;
-    double b = test_values->b;
-    double c = test_values->c;
-    _Complex double x1_ref = test_values->x1_ref;
-    _Complex double x2_ref = test_values->x2_ref;
-    int num_of_roots_ref = test_values->num_of_roots_ref; // TODO: Are you sure this is necessary?
+    assert(tv);
 
     double _Complex x1 = NAN, x2 = NAN;
     int num_of_roots = NAN;
-    solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots);
+    solve_quadratic_equation(tv->a, tv->b, tv->c, &x1, &x2, &num_of_roots);
 
-    sort_complex_by_ascending(&x1_ref,&x2_ref);
+    sort_complex(&tv->x1_ref,&tv->x2_ref);
 
-    if (num_of_roots == num_of_roots_ref)
+    if (num_of_roots == tv->num_of_roots_ref)
     {
-        if (compare_complex_doubles(x1, x1_ref) == 0 && compare_complex_doubles(x2, x2_ref) == 0)
+        if (compare_complex_doubles(x1, tv->x1_ref) == 0 && compare_complex_doubles(x2, tv->x2_ref) == 0)
         {
             LOG(LOG_LVL_MESSAGE, "TEST N%d SUCCEED: x1 = %s, x2 = %s, num_of_roots = %d",
             num_of_test, complex_number_to_str(x1), complex_number_to_str(x2), num_of_roots);
@@ -191,7 +182,7 @@ bool test_one_equation(const int num_of_test, const struct test_values_data *tes
     }
 
     print_failed_values(num_of_test, x1, x2, num_of_roots);
-    print_expected_values(x1_ref, x2_ref, num_of_roots_ref);
+    print_expected_values(tv->x1_ref, tv->x2_ref, tv->num_of_roots_ref);
 
     return false;
 

@@ -17,39 +17,10 @@
 #define LOG(LVL, FORMAT, ...)                                        \
     do                                                                \
     {                                                                  \
-        char *log_ptr = NULL;                                           \
-        log_ptr = format_log(FORMAT, ##__VA_ARGS__);                     \
-        write_log(log_ptr, LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__); \
-        free(log_ptr);                                                     \
+        write_log(LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__, FORMAT, ##__VA_ARGS__); \
     }                                                                       \
     while(0)
 
-/// Print message with animation
-///
-/// Call format_log then send output to print_by_symbols()
-/// ### Example
-/// ~~~~~~~~~~~~~~~~~~~.cpp
-/// PRINT_WITH_ANIM(DELAY_SLOW, "This program solves quadratic equations!\nVersion: ***\n");
-/// ~~~~~~~~~~~~~~~~~~~
-/// @param FORMAT Format that is passed to the print_by_symbols()
-/// @see format_log(), print_by_symbols()
-#define PRINT_WITH_ANIM(FORMAT, ...)             \
-    do                                            \
-    {                                              \
-        char *log_ptr = NULL;                       \
-        log_ptr = format_log(FORMAT, ##__VA_ARGS__); \
-        print_by_symbols(log_ptr);                    \
-        free(log_ptr);                                 \
-    }                                                   \
-    while(0)
-
-#define MY_ASSERT(X)                                            \
-    do                                                           \
-    {                                                             \
-        if (!(X))                                                  \
-            my_assert(#X, __FILE__, __PRETTY_FUNCTION__, __LINE__); \
-    }                                                                \
-    while(0)
 
 enum LOG_MODE
 {
@@ -80,20 +51,8 @@ extern int current_log_level;
 extern const char *log_file_name;
 
 
-/// Assert function with write_log() call
-/// ### Output example
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~.cpp
-/// [11:57:03] (FILE: qe_solver_interactive.cpp, FUNC: int get_expected_args_amount(const char*), LINE: 33)
-/// !format
-/// The program ended with an error
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// @param expr Assert expression
-/// @param file, func, line File, func, line where my_assert() called from
-/// @see write_log()
-void my_assert(const char expr[], const char file[], const char func[], const int line);
-
 /// Clear file where log will write
-void clear_log_file();
+bool clear_log_file();
 
 /// Write log to selected output
 ///
@@ -106,19 +65,14 @@ void clear_log_file();
 /// @param message Output message
 /// @param log_level Level or higher at which the message will be displayed
 /// @param file, func, line File, func, line where write_log() called from
-void write_log(const char message[], const int log_level, const char file[], const char func[], const int line);
-
-/// Printf alternative but output is string
-///
-/// Usually calling from LOG() or PRINT_WITH_ANIM() macros
-char* format_log(const char *format, ...);
+void write_log(const int log_level, const char file[], const char func[], const int line, const char *format, ...);
 
 /// Print string with appearance animation
 /// @param string String which will be displayed
 /// @param delay Delay value (multiples by two)
-void print_by_symbols(const char *string);
+void print_with_anim(const char color[], const char *format, ...);
 
 // TODO: annotate __attribute__((noreturn))
-void exit_with_strerror();
+
 
 #endif

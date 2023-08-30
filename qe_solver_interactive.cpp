@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #include "qe_solver_interactive.h"
 #include "make_logs.h"
@@ -30,7 +31,7 @@ static void skip_space_symbols()
 
 static size_t get_expected_args_amount(const char *format)
 {
-    MY_ASSERT(format);
+    assert(format);
 
     size_t expected_args_amount = 0;
     for (size_t i = 0; format[i]; i++)
@@ -46,11 +47,11 @@ static size_t get_expected_args_amount(const char *format)
 bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
 
-    PRINT_WITH_ANIM("Enter the coefficients separated by a space:\n");
+    print_with_anim(COLOR_STD, "Enter the coefficients separated by a space:\n");
 
     if (read_coefs(a_ptr, b_ptr, c_ptr))
     {
-        PRINT_WITH_ANIM(PAINT_TEXT(COLOR_RED, "Error at coefficients input\n"));
+        print_with_anim(COLOR_RED, "Error at coefficients input\n");
         skip_line();
 
         return true;
@@ -64,7 +65,7 @@ bool ask_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 
 bool ask_if_continue()
 {
-    PRINT_WITH_ANIM("Do you want to continue? (Y for continue, something else for exit)\n");
+    print_with_anim(COLOR_STD, "Do you want to continue? (Y for continue, something else for exit)\n");
 
     skip_space_symbols();
     int ch = getchar();
@@ -89,13 +90,13 @@ static bool read_formated(const char *format, ...)
 
 int read_coefs(double *a_ptr, double *b_ptr, double *c_ptr)
 {
-    MY_ASSERT(a_ptr);
-    MY_ASSERT(b_ptr);
-    MY_ASSERT(c_ptr);
+    assert(a_ptr);
+    assert(b_ptr);
+    assert(c_ptr);
 
-    MY_ASSERT(a_ptr != b_ptr);
-    MY_ASSERT(a_ptr != c_ptr);
-    MY_ASSERT(b_ptr != c_ptr);
+    assert(a_ptr != b_ptr);
+    assert(a_ptr != c_ptr);
+    assert(b_ptr != c_ptr);
 
     return read_formated("%lf %lf %lf", a_ptr, b_ptr, c_ptr);
 }

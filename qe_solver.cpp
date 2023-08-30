@@ -4,9 +4,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "qe_solver.h"
 #include "comparators.h"
+#include "colors.h"
 #include "format_complex.h"
 #include "make_logs.h"
 
@@ -18,13 +20,11 @@ static bool check_specific_cases(const double a, const double b, const double c,
 // Returns discriminant value
 static double calculate_discriminant(const double a, const double b, const double c)
 {
-    MY_ASSERT(std::isfinite(a));
-    MY_ASSERT(std::isfinite(b));
-    MY_ASSERT(std::isfinite(c));
+    double d = NAN;
+    if (std::isfinite(a) && std::isfinite(b) && std::isfinite(c))
+        d = b*b - 4*a*c;
 
-    double d = b*b - 4*a*c;
-
-    LOG(LOG_LVL_MESSAGE, "D = %lg", d);
+    LOG(LOG_LVL_MESSAGE, "D = %.3g", d);
 
     return d;
 }
@@ -84,10 +84,10 @@ static bool check_specific_cases(const double a, const double b, const double c,
 
 void solve_linear_equation(const double b, const double c, double _Complex *x1)
 {
-    MY_ASSERT(x1);
+    assert(x1);
 
-    MY_ASSERT(std::isfinite(b));
-    MY_ASSERT(std::isfinite(c));
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
 
     *x1 = -b/c;
 }
@@ -96,9 +96,9 @@ void solve_linear_equation(const double b, const double c, double _Complex *x1)
 // Returns the number of roots
 bool solve_quadratic_equation(const double a, const double b, const double c, double _Complex *x1, double _Complex *x2, int *num_of_roots)
 {
-    MY_ASSERT(x1);
-    MY_ASSERT(x2);
-    MY_ASSERT(num_of_roots);
+    assert(x1);
+    assert(x2);
+    assert(num_of_roots);
 
     *x1 = *x2 = NAN;
     *num_of_roots = NO_ROOTS;
@@ -146,7 +146,7 @@ bool solve_quadratic_equation(const double a, const double b, const double c, do
         return false;
     }
 
-    PRINT_WITH_ANIM("Coefficients aren't finite\n");
+    print_with_anim(COLOR_STD, "Coefficients aren't finite\n");
 
     return true;
 }
@@ -157,20 +157,19 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
     switch (num_of_roots)
     {
         case INFINITE_ROOTS: {
-            PRINT_WITH_ANIM("X belongs to R\n");
+            print_with_anim(COLOR_STD, "X belongs to R\n");
             break;
         }
 
         case NO_ROOTS: {
-            PRINT_WITH_ANIM("No roots\n");
-            printf("No roots\n");
+            print_with_anim(COLOR_STD, "No roots\n");
             break;
         }
 
         case ONE_ROOT: {
 
             char *ptr_1 = complex_number_to_str(x1);
-            PRINT_WITH_ANIM("x = %s\n", ptr_1);
+            print_with_anim(COLOR_STD, "x = %s\n", ptr_1);
             free(ptr_1);
             break;
         }
@@ -178,7 +177,7 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
         case TWO_ROOTS: {
             char *ptr_1 = complex_number_to_str(x1);
             char *ptr_2 = complex_number_to_str(x2);
-            PRINT_WITH_ANIM("%x1 = %s x2 = %s\n", ptr_1, ptr_2);
+            print_with_anim(COLOR_STD, "x1 = %s x2 = %s\n", ptr_1, ptr_2);
             free(ptr_1);
             free(ptr_2);
             break;

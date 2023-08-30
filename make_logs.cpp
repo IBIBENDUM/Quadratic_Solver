@@ -7,9 +7,16 @@
 #include <math.h>
 #include <Windows.h>
 #include <errno.h>
+#include <assert.h>
 
 #include "make_logs.h"
 #include "colors.h"
+
+#define RETURN_WITH_STRERROR(X)\
+{                               \
+        printf(COLOR_RED "%s" COLOR_RESET, strerror(errno)); \
+        return X;\
+}
 
 size_t current_anim_mode = ANIM_ENABLED;
 
@@ -30,7 +37,7 @@ static char* current_time_to_str()
     return time_buf;
 }
 
-void write_log(const char message[], const int log_level, const char file[], const char func[], const int line)
+void write_log(const int log_level, const char file[], const char func[], const int line, const char *format, ...)
 {
     if (log_level <= current_log_level)
     {
@@ -50,134 +57,70 @@ void write_log(const char message[], const int log_level, const char file[], con
             file_ptr = fopen(log_file_name, "a");
 
             if (!file_ptr)
-                exit_with_strerror();
+                RETURN_WITH_STRERROR();
         }
+
+
+
+        va_list args;
+        va_start(args, format);
+        char message[LOG_STR_LEN] = {};
+        vsnprintf(message, LOG_STR_LEN, format, args);
+
+        va_end(args);
+
 
         fprintf(file_ptr, "[%s] (FILE: %s, FUNC: %s, LINE: %d)\n%s\n", current_time_to_str(), file, func, line, message);
 
         if (current_log_mode == TO_FILE)
         {
             if (fclose(file_ptr))
-                exit_with_strerror();
+                RETURN_WITH_STRERROR();
         }
         else
             printf(COLOR_RESET);
     }
 }
 
-void my_assert(const char expr[], const char file[], const char func[], const int line) // TODO: rename
-{
-    write_log(expr, LOG_LVL_ERROR, file, func, line);
-    printf(COLOR_RED "The program ended with an error\n" COLOR_RESET);
-    exit(EXIT_FAILURE);
-}
-
-void exit_with_strerror()
-{
-    printf(COLOR_RED "%s" COLOR_RESET, strerror(errno));
-    exit(EXIT_FAILURE);
-}
-
-void clear_log_file()
+bool clear_log_file()
 {
     FILE *file_ptr = fopen(log_file_name, "w");
     if (!file_ptr)
-        exit_with_strerror();
+        RETURN_WITH_STRERROR(true);
+
     if (fclose(file_ptr))
-        exit_with_strerror();
+        RETURN_WITH_STRERROR(true);
+
+    return false;
 }
 
-char* format_log(const char *format, ...)
+void print_with_anim(const char color[], const char *format, ...)
 {
-    va_list ptr;
-    va_start(ptr, format);
+    va_list args;
+    va_start(args, format);
+    char message[LOG_STR_LEN] = {};
+    vsnprintf(message, LOG_STR_LEN, format, args);
 
-    // TODO: just use vprintf(), including vsnprintf
+    va_end(args);
 
-    char *str = (char *) malloc(LOG_STR_LEN * sizeof(char));
-    if (!str)
-        exit_with_strerror();
-
-    unsigned int j = 0;
-
-    for (unsigned int i = 0; format[i]; i++, j++)
-    {
-
-        if (format[i] == '%') // TODO: switch...case
-        {
-            i++;                // Skip '%'
-
-            if (format[i] == 'l' && format[i+1] == 'g')
-            {
-                i++;            // Skip 'f'
-                double lf_val = va_arg(ptr, double);
-
-                if (std::isfinite(lf_val))
-                {
-                    j += sprintf(str+j, "%.3g", lf_val);
-                }
-
-                else
-                    j += sprintf(str+j, "Infinite");
-            }
-
-            else if (format[i] == 'd')
-            {
-                j += sprintf(str+j, "%d", va_arg(ptr, int));
-            }
-
-            else if (format[i] == 's')
-            {
-                j += sprintf(str+j, "%s", va_arg(ptr, const char*));
-            }
-
-            j--;
-
-            continue;
-        }
-
-        else if (format[i] == '\\')
-        {
-            i++;                // Skip '\'
-            if (format[i] == 'n')
-            {
-                 str[j] = '\n';
-            }
-            else if (format[i] == '0')
-            {
-                str[j] = '\0';
-            }
-
-            continue;
-        }
-
-        str[j] = format[i];
-    }
-
-    str[j] = '\0';
-    va_end(ptr);
-
-    return str;
-}
-
-void print_by_symbols(const char *string)
-{
     switch (current_anim_mode)
     {
         case ANIM_DISABLED: {
-            printf("%s", string);
+            printf("%s%s%s", color, message, COLOR_RESET);
             break;
         }
 
         case ANIM_ENABLED: {
-            for (size_t i = 0; string[i]; i++)
+            printf(color);
+            for (size_t i = 0; message[i]; i++)
             {
-                printf("%c", toupper(string[i]));
+                printf("%c", toupper(message[i]));
                 Sleep(ANIM_DELAY);
-                if (islower(string[i]))
-                    printf("\b%c", string[i]);
+                if (islower(message[i]))
+                    printf("\b%c", message[i]);
                 Sleep(ANIM_DELAY);
             }
+            printf(COLOR_RESET);
             break;
         }
 
