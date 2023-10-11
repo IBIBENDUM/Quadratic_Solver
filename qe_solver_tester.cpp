@@ -50,8 +50,7 @@ static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate fi
 
     int prev_pos = ftell(file_ptr);
 
-    assert(prev_pos != -1);
-    assert(!fseek(file_ptr, 0, SEEK_SET));
+    assert(!fseek(file_ptr, 0, SEEK_SET)); // TODO: ...
 
     fread(symbols, sizeof(char), n, file_ptr);// TODO: correctness
 
@@ -62,7 +61,7 @@ static int count_lines(FILE *file_ptr) // TODO: useful, extract in a separate fi
             lines++;
     }
 
-    assert(!fseek(file_ptr, prev_pos, SEEK_SET));
+    assert(!fseek(file_ptr, prev_pos, SEEK_SET)); // TODO: what if assert gets disabled?
 
     LOG(LOG_LVL_MESSAGE, "File have %d lines", lines);
 
@@ -112,12 +111,14 @@ bool read_reference_values(struct test_values_data *tv_ptr, FILE *file_ptr)
         {
             if ((ptr == NULL) || (strcmp(ptr, "//") == 0))  // Check if line ended too early or for comment line
                 return false;
-            values[i] = (strcmp(ptr, "NAN") == 0) ? NAN : strtod_with_negative(ptr, NULL);  // if arg isn't value return 0
+
+            // TODO: doesn't strtod accept NANs?
+            values[i] = (strcmp(ptr,"NAN") == 0) ? NAN : strtod_with_negative(ptr, NULL);  // if arg isn't value return 0
             ptr += strlen(ptr) + 1;  // Skip \0
             ptr += strspn(ptr, " "); // Skip spaces
         }
 
-        *tv_ptr = test_values_data
+        *test_values = test_values_data // TODO: formatting
         {values[a], values[b], values[c],
         complex_from_parts(values[x1_real], values[x1_imag]),
         complex_from_parts(values[x2_real], values[x2_imag]),

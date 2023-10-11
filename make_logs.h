@@ -4,6 +4,27 @@
 #include <stdlib.h>
 
 
+// ===================================== BEFORE =====================================
+// #define LOG(LVL, FORMAT, ...)                                        \
+//     do                                                                \
+//     {                                                                  \
+//         write_log(LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__, FORMAT, ##__VA_ARGS__); \
+//     }                                                                       \
+//     while(0)
+
+// ================================= AND THEN AFTER =================================
+// #define LOG(LVL, FORMAT, ...)                                                           \
+//     do                                                                                  \
+//     {                                                                                   \
+//         write_log(LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__, FORMAT, ##__VA_ARGS__); \
+//     }                                                                                   \
+//     while(0)
+
+// TODO: ^^^ DECIDE WHAT DO YOU THINK IS BETTER FOR MY MENTAL HEALTH AND YOUR TOO ^^^
+// ==================================================================================
+
+
+
 /// Log message
 ///
 /// Call format_log then send output to write_log
@@ -14,11 +35,11 @@
 /// @param FORMAT Format that is passed to the format_log()
 /// @param LVL Level that is passed to the write_log()
 /// @see format_log(), write_log()
-#define LOG(LVL, FORMAT, ...)                                        \
-    do                                                                \
-    {                                                                  \
+#define LOG(LVL, FORMAT, ...)                                                           \
+    do                                                                                  \
+    {                                                                                   \
         write_log(LVL, __FILE__, __PRETTY_FUNCTION__, __LINE__, FORMAT, ##__VA_ARGS__); \
-    }                                                                       \
+    }                                                                                   \
     while(0)
 
 #define RETURN_WITH_STRERROR(VAR)\
@@ -43,8 +64,26 @@ enum LOG_LEVEL
 const size_t LOG_STR_LEN = 128;
 const double MAX_VAL = 1E5;
 
+enum ANIM_MODE
+{
+    ANIM_DISABLED,
+    ANIM_ENABLED
+}; // TODO: not enough... space... c.c..can't... breeea..th!
+const size_t ANIM_DELAY = 5;
+extern size_t current_anim_mode; // BAH: Come up with something better
+
 extern int current_log_mode;
 extern int current_log_level;
+
+
+// TODO: I think you just ruined this library's speed with
+//       your decision to reopen log file every time.
+
+//       Also you made it a lot narrower than it needs to be:
+//       you can't write to files without names (buffers, 
+//       stdout, stderr, so on, but you could if you were
+//       to use file descriptors)
+
 extern const char *log_file_name;
 
 
