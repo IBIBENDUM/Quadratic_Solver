@@ -8,16 +8,15 @@ all: main tester
 # TODO: remove
 test: tester
 
-main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o
-	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o -o main.exe
+main: main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o time_utils.o 
+	$(CC) main.o qe_solver.o qe_solver_interactive.o comparators.o format_complex.o make_logs.o time_utils.o -o main.exe
 
-tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o
-	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o -o tester.exe
+tester: tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o time_utils.o
+	$(CC) tester.o qe_solver.o comparators.o qe_solver_tester.o format_complex.o make_logs.o time_utils.o -o tester.exe
 
 
 # TODO: Header file dependencies?
 # TODO: You can write a program that will automatically generate Makefile?
-
 
 format_complex.o: format_complex.cpp
 	$(CC) $(CFLAGS) format_complex.cpp
@@ -35,6 +34,10 @@ qe_solver_interactive: qe_solver_interactive.cpp
 	$(CC) $(CFLAGS) qe_solver_interactive.cpp
 comparators.o: comparators.cpp
 	$(CC) $(CFLAGS) comparators.cpp
+time_utils.o: time_utils.cpp
+	$(CC) $(CFLAGS) time_utils.cpp
+# TODO: kill me, why ^^^^^^^^^^^^^^^^^^
+
 
 # TODO: PHONY target 
 clean:
@@ -42,4 +45,8 @@ clean:
 
 # TODO: make check
 
+# TODO: rewrite
 
+
+
+# TODO: cleanup all extra file in repository

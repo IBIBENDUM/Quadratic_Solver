@@ -56,6 +56,7 @@ void print_roots(const double _Complex x1, const double _Complex x2, const int n
 /// @warning Function requires free() after using
 /// @return String in root format
 //char* cast_to_root_format(int n, _Complex double root); // TODO: rename, describe_root?
+// TODO: never comment parts of code, use git for that
 
 
 #endif

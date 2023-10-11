@@ -6,6 +6,7 @@
 #include "format_complex.h"
 #include "comparators.h"
 
+// TODO: delete?
 char* complex_number_to_str(_Complex double a)
 {
     char *complex_string = (char *) calloc(COMPLEX_STR_LEN, sizeof(char));
@@ -17,7 +18,7 @@ char* complex_number_to_str(_Complex double a)
         sprintf(complex_string, "%.2lf%+.2lfi", creal(a), cimag(a));
 
     else if (compare_with_zero(creal(a)) != 0 && compare_with_zero(cimag(a)) == 0)
-    sprintf(complex_string, "%.2lf", creal(a));
+    sprintf(complex_string, "%.2lf", creal(a)); // TODO: align
 
     else if (compare_with_zero(creal(a)) == 0 && compare_with_zero(cimag(a)) != 0)
         sprintf(complex_string, "%+.2lfi", cimag(a));
@@ -26,6 +27,7 @@ char* complex_number_to_str(_Complex double a)
 }
 
 
+// TODO: delete?
 _Complex double complex_from_parts(double real, double imag)
 {
     if(std::isnan(real) && std::isnan(imag))

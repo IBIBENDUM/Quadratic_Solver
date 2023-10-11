@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <strings.h>
+#include <string.h>
 
 #include "qe_solver_tester.h"
 #include "colors.h"
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
 
 static bool handle_cmd_args(int argc, char **argv)
-{
+{ // TODO: WHAT IS THIS COPY PASTE?
     int arg = 0;
 
     while ( (arg = getopt(argc, argv, "l:o:f:t:h")) != -1)

@@ -3,19 +3,24 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <Windows.h>
 #include <stdlib.h>
+#include <chrono>
+#include <thread>
 
 #include "qe_solver.h"
 #include "qe_solver_interactive.h"
 #include "colors.h"
 #include "make_logs.h"
+#include "time_utils.h"
 
 static void print_help();
 static bool handle_cmd_args(int argc, char **argv);
 static void show_separator();
 static void show_kitty();
 
+
+
+// TODO: projecti dolzhni rabotat' (v tom chisle compilirovats'a)
 int main(int argc, char **argv)
 {
     if (handle_cmd_args(argc, argv))
@@ -33,6 +38,7 @@ int main(int argc, char **argv)
             double _Complex x1 = NAN, x2 = NAN;
             int num_of_roots = 0;
 
+            // TODO: what is this negation "!", if we can't solve equation than celebrate?
             if(!solve_quadratic_equation(a, b, c, &x1, &x2, &num_of_roots))
                 print_roots(x1, x2, num_of_roots);
         }

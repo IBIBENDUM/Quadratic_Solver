@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -5,26 +6,34 @@
 #include <stdarg.h>
 #include <complex.h>
 #include <math.h>
-#include <Windows.h>
 #include <errno.h>
 #include <assert.h>
 
 #include "make_logs.h"
 #include "colors.h"
+#include "time_utils.h"
 
 #define RETURN_WITH_STRERROR(X)\
 {                               \
         printf(COLOR_RED "%s" COLOR_RESET, strerror(errno)); \
         return X;\
 }
+// TODO: do...while?
 
-size_t current_anim_mode = ANIM_ENABLED;
+size_t current_anim_mode = ANIM_ENABLED; // TODO: size_t??
+
+// TODO: Why even create enum types if you then never use them?
+
+// LOG_MODE current_log_mode = TO_CONSOLE;
+// ^~~~~~~~ also, what is with this naming style? 
+
+
 
 int current_log_mode = TO_CONSOLE;
 int current_log_level = LOG_LVL_DISABLED;
-char const *log_file_name = "qe_solver.log";
+char const *log_file_name = "qe_solver.log"; // TODO: hardcoded file name with related project's name embeded in it?
 
-static char* current_time_to_str();
+static char* current_time_to_str(); // TODO: Man...
 
 static char* current_time_to_str()
 {
@@ -43,7 +52,7 @@ void write_log(const int log_level, const char file[], const char func[], const 
     {
         FILE *file_ptr = NULL;
 
-        if (current_log_mode == TO_CONSOLE)
+        if (current_log_mode == TO_CONSOLE) // TODO: this should be gone after changes
         {
             file_ptr = stdout;
             if (log_level == LOG_LVL_MESSAGE)
@@ -82,16 +91,16 @@ void write_log(const int log_level, const char file[], const char func[], const 
     }
 }
 
-bool clear_log_file()
+bool clear_log_file() // TODO: Why is your user even exposed to this?
 {
     FILE *file_ptr = fopen(log_file_name, "w");
     if (!file_ptr)
-        RETURN_WITH_STRERROR(true);
+        RETURN_WITH_STRERROR(true); // TODO: And what would you do if clear log failed?...
 
     if (fclose(file_ptr))
         RETURN_WITH_STRERROR(true);
 
-    return false;
+    return false; // TODO: false if success, why?
 }
 
 void print_with_anim(const char color[], const char *format, ...)
@@ -105,7 +114,7 @@ void print_with_anim(const char color[], const char *format, ...)
 
     switch (current_anim_mode)
     {
-        case ANIM_DISABLED: {
+        case ANIM_DISABLED: { // TODO: isn't this an "if"?
             printf("%s%s%s", color, message, COLOR_RESET);
             break;
         }
@@ -115,6 +124,8 @@ void print_with_anim(const char color[], const char *format, ...)
             for (size_t i = 0; message[i]; i++)
             {
                 printf("%c", toupper(message[i]));
+
+                // TODO: shouldn't this animation's delay be an explicit parameter instead of a global variable?
                 Sleep(ANIM_DELAY);
                 if (islower(message[i]))
                     printf("\b%c", message[i]);
@@ -125,7 +136,9 @@ void print_with_anim(const char color[], const char *format, ...)
         }
 
         default: {
-            break;
+            break; // TODO: As it wasn't obviouse already
+            // TODO: Why do you think compiler issues a warning here? Just for you to silence it? Wrong!
+            //       For you to fix!
         }
     }
 }
