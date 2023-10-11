@@ -7,6 +7,7 @@
 #define COLOR_RED	    "\033[91m"
 #define COLOR_GREEN	    "\033[92m"
 #define COLOR_BLUE	    "\033[94m"
+// TODO:                ^~~~ what is this?
 #define COLOR_PURPLE	"\033[95m"
 #define COLOR_YELLOW	"\033[33m"
 

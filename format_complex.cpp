@@ -6,8 +6,11 @@
 #include "format_complex.h"
 #include "comparators.h"
 
-char* complex_number_to_str(char *complex_string, _Complex double a)
-{                   // assert
+// TODO: delete?
+char* complex_number_to_str(_Complex double a)
+{
+    char *complex_string = (char *) calloc(COMPLEX_STR_LEN, sizeof(char));
+
     if (complex_isnan(a))
         sprintf(complex_string, "NaN");
 
@@ -15,7 +18,7 @@ char* complex_number_to_str(char *complex_string, _Complex double a)
         sprintf(complex_string, "%.2lg%+.2lgi", creal(a), cimag(a));
 
     else if (compare_with_zero(creal(a)) != 0 && compare_with_zero(cimag(a)) == 0)
-    sprintf(complex_string, "%.2lg", creal(a));
+    sprintf(complex_string, "%.2lf", creal(a)); // TODO: align
 
     else if (compare_with_zero(creal(a)) == 0 && compare_with_zero(cimag(a)) != 0)
         sprintf(complex_string, "%+.2lgi", cimag(a));
@@ -24,6 +27,7 @@ char* complex_number_to_str(char *complex_string, _Complex double a)
 }
 
 
+// TODO: delete?
 _Complex double complex_from_parts(double real, double imag)
 {
     if(isnan(real) && isnan(imag))                  // If the test enters NAN
